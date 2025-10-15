@@ -734,40 +734,57 @@
             validateJSONConfig('market-overview-config');
             validateJSONConfig('market-news-config');
 
-            // Load Wallet Addresses
-            async function loadWalletAddresses() {
+            // Load Wallet Addresses with Real-Time Listener
+            function loadWalletAddresses() {
                 const walletRef = doc(db, 'wallets', 'walletAddresses');
-                try {
-                    const walletSnap = await getDoc(walletRef);
-                    const defaultAddresses = {
-                        btc: 'Enter Bitcoin wallet address',
-                        eth: 'Enter Ethereum wallet address',
-                        usdc: 'Enter USDC wallet address',
-                        usdt: 'Enter USDT wallet address'
-                    };
-                    if (!walletSnap.exists()) {
-                        await setDoc(walletRef, defaultAddresses);
-                        document.getElementById('btc-wallet').textContent = defaultAddresses.btc;
-                        document.getElementById('eth-wallet').textContent = defaultAddresses.eth;
-                        document.getElementById('usdc-wallet').textContent = defaultAddresses.usdc;
-                        document.getElementById('usdt-wallet').textContent = defaultAddresses.usdt;
-                    } else {
-                        const data = walletSnap.data();
-                        document.getElementById('btc-wallet').textContent = data.btc || defaultAddresses.btc;
-                        document.getElementById('eth-wallet').textContent = data.eth || defaultAddresses.eth;
-                        document.getElementById('usdc-wallet').textContent = data.usdc || defaultAddresses.usdc;
-                        document.getElementById('usdt-wallet').textContent = data.usdt || defaultAddresses.usdt;
+                console.log('Fetching wallet addresses from:', walletRef.path);
+                onSnapshot(walletRef, (walletSnap) => {
+                    console.log('Snapshot received:', walletSnap.exists(), walletSnap.data());
+                    try {
+                        const defaultAddresses = {
+                            btc: 'Enter Bitcoin wallet address',
+                            eth: 'Enter Ethereum wallet address',
+                            usdc: 'Enter USDC wallet address',
+                            usdt: 'Enter USDT wallet address'
+                        };
+                        if (!walletSnap.exists()) {
+                            console.log('Wallet document does not exist, creating with defaults');
+                            setDoc(walletRef, defaultAddresses).then(() => {
+                                console.log('Default addresses set:', defaultAddresses);
+                                document.getElementById('btc-wallet').textContent = defaultAddresses.btc;
+                                document.getElementById('eth-wallet').textContent = defaultAddresses.eth;
+                                document.getElementById('usdc-wallet').textContent = defaultAddresses.usdc;
+                                document.getElementById('usdt-wallet').textContent = defaultAddresses.usdt;
+                            }).catch(error => {
+                                console.error('Error creating default wallet addresses:', error);
+                                document.getElementById('wallet-error').textContent = 'Failed to initialize wallet addresses: ' + error.message;
+                                document.getElementById('wallet-error').style.display = 'block';
+                            });
+                        } else {
+                            const data = walletSnap.data();
+                            console.log('Wallet data:', data);
+                            document.getElementById('btc-wallet').textContent = data.btc || defaultAddresses.btc;
+                            document.getElementById('eth-wallet').textContent = data.eth || defaultAddresses.eth;
+                            document.getElementById('usdc-wallet').textContent = data.usdc || defaultAddresses.usdc;
+                            document.getElementById('usdt-wallet').textContent = data.usdt || defaultAddresses.usdt;
+                            document.getElementById('wallet-error').style.display = 'none';
+                        }
+                    } catch (error) {
+                        console.error('Error processing wallet addresses:', error);
+                        document.getElementById('wallet-error').textContent = 'Failed to load wallet addresses: ' + error.message;
+                        document.getElementById('wallet-error').style.display = 'block';
                     }
-                } catch (error) {
-                    console.error('Error loading wallet addresses:', error);
+                }, (error) => {
+                    console.error('Snapshot error:', error);
                     document.getElementById('wallet-error').textContent = 'Failed to load wallet addresses: ' + error.message;
                     document.getElementById('wallet-error').style.display = 'block';
-                }
+                });
             }
             loadWalletAddresses();
 
             // Auth State Handler
             onAuthStateChanged(auth, async (user) => {
+                console.log('Auth state:', user ? `Logged in as ${user.uid}` : 'Not logged in');
                 if (user) {
                     document.getElementById('welcome-message').textContent = `Welcome, ${user.displayName || 'User'}!`;
                     const userId = user.uid;
