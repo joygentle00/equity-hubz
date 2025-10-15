@@ -337,6 +337,7 @@
             font-weight: 600;
             margin-bottom: 10px;
             word-break: break-all;
+            flex-wrap: wrap;
         }
         .wallet-address {
             user-select: all;
@@ -365,6 +366,11 @@
             margin-top: 10px;
             text-align: center;
             display: none;
+        }
+        .bank-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
         @media (max-width: 900px) {
             .market-widgets-row {
@@ -689,6 +695,18 @@
                         <i class="fa-regular fa-copy"></i>
                     </button>
                 </div>
+                <div class="wallet-row">
+                    <i class="fa-solid fa-building-columns"></i>
+                    Bank Account:
+                    <div class="bank-details">
+                        <span class="wallet-address" id="bank-name">Loading...</span>
+                        <span class="wallet-address" id="account-number">Loading...</span>
+                        <span class="wallet-address" id="routing-number">Loading...</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyWallet('bank-details', this)" title="Copy Bank Details">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
                 <div class="upload-payment-receipt">
                     <label for="payment-receipt" style="color:#00ffff; margin-bottom:8px; display:block;">Upload Payment Receipt:</label>
                     <input type="file" id="payment-receipt" name="payment-receipt" accept="image/*,application/pdf" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; background:#222; color:#fff;">
@@ -734,49 +752,58 @@
             validateJSONConfig('market-overview-config');
             validateJSONConfig('market-news-config');
 
-            // Load Wallet Addresses with Real-Time Listener
+            // Load Wallet and Bank Account Details with Real-Time Listener
             function loadWalletAddresses() {
                 const walletRef = doc(db, 'wallets', 'walletAddresses');
-                console.log('Fetching wallet addresses from:', walletRef.path);
+                console.log('Fetching wallet and bank details from:', walletRef.path);
                 onSnapshot(walletRef, (walletSnap) => {
                     console.log('Snapshot received:', walletSnap.exists(), walletSnap.data());
                     try {
-                        const defaultAddresses = {
+                        const defaultDetails = {
                             btc: 'Enter Bitcoin wallet address',
                             eth: 'Enter Ethereum wallet address',
                             usdc: 'Enter USDC wallet address',
-                            usdt: 'Enter USDT wallet address'
+                            usdt: 'Enter USDT wallet address',
+                            bankName: 'Enter Bank Name',
+                            accountNumber: 'Enter Account Number',
+                            routingNumber: 'Enter Routing Number'
                         };
                         if (!walletSnap.exists()) {
                             console.log('Wallet document does not exist, creating with defaults');
-                            setDoc(walletRef, defaultAddresses).then(() => {
-                                console.log('Default addresses set:', defaultAddresses);
-                                document.getElementById('btc-wallet').textContent = defaultAddresses.btc;
-                                document.getElementById('eth-wallet').textContent = defaultAddresses.eth;
-                                document.getElementById('usdc-wallet').textContent = defaultAddresses.usdc;
-                                document.getElementById('usdt-wallet').textContent = defaultAddresses.usdt;
+                            setDoc(walletRef, defaultDetails).then(() => {
+                                console.log('Default details set:', defaultDetails);
+                                document.getElementById('btc-wallet').textContent = defaultDetails.btc;
+                                document.getElementById('eth-wallet').textContent = defaultDetails.eth;
+                                document.getElementById('usdc-wallet').textContent = defaultDetails.usdc;
+                                document.getElementById('usdt-wallet').textContent = defaultDetails.usdt;
+                                document.getElementById('bank-name').textContent = defaultDetails.bankName;
+                                document.getElementById('account-number').textContent = defaultDetails.accountNumber;
+                                document.getElementById('routing-number').textContent = defaultDetails.routingNumber;
                             }).catch(error => {
-                                console.error('Error creating default wallet addresses:', error);
-                                document.getElementById('wallet-error').textContent = 'Failed to initialize wallet addresses: ' + error.message;
+                                console.error('Error creating default wallet and bank details:', error);
+                                document.getElementById('wallet-error').textContent = 'Failed to initialize payment details: ' + error.message;
                                 document.getElementById('wallet-error').style.display = 'block';
                             });
                         } else {
                             const data = walletSnap.data();
-                            console.log('Wallet data:', data);
-                            document.getElementById('btc-wallet').textContent = data.btc || defaultAddresses.btc;
-                            document.getElementById('eth-wallet').textContent = data.eth || defaultAddresses.eth;
-                            document.getElementById('usdc-wallet').textContent = data.usdc || defaultAddresses.usdc;
-                            document.getElementById('usdt-wallet').textContent = data.usdt || defaultAddresses.usdt;
+                            console.log('Payment details:', data);
+                            document.getElementById('btc-wallet').textContent = data.btc || defaultDetails.btc;
+                            document.getElementById('eth-wallet').textContent = data.eth || defaultDetails.eth;
+                            document.getElementById('usdc-wallet').textContent = data.usdc || defaultDetails.usdc;
+                            document.getElementById('usdt-wallet').textContent = data.usdt || defaultDetails.usdt;
+                            document.getElementById('bank-name').textContent = data.bankName || defaultDetails.bankName;
+                            document.getElementById('account-number').textContent = data.accountNumber || defaultDetails.accountNumber;
+                            document.getElementById('routing-number').textContent = data.routingNumber || defaultDetails.routingNumber;
                             document.getElementById('wallet-error').style.display = 'none';
                         }
                     } catch (error) {
-                        console.error('Error processing wallet addresses:', error);
-                        document.getElementById('wallet-error').textContent = 'Failed to load wallet addresses: ' + error.message;
+                        console.error('Error processing payment details:', error);
+                        document.getElementById('wallet-error').textContent = 'Failed to load payment details: ' + error.message;
                         document.getElementById('wallet-error').style.display = 'block';
                     }
                 }, (error) => {
                     console.error('Snapshot error:', error);
-                    document.getElementById('wallet-error').textContent = 'Failed to load wallet addresses: ' + error.message;
+                    document.getElementById('wallet-error').textContent = 'Failed to load payment details: ' + error.message;
                     document.getElementById('wallet-error').style.display = 'block';
                 });
             }
@@ -882,15 +909,27 @@
                 });
             }
 
-            // Copy Wallet Address
+            // Copy Wallet or Bank Details
             window.copyWallet = function(walletId, btn) {
-                const walletEl = document.getElementById(walletId);
-                const wallet = walletEl.textContent.trim();
-                navigator.clipboard.writeText(wallet).then(() => {
+                let textToCopy;
+                if (walletId === 'bank-details') {
+                    const bankName = document.getElementById('bank-name').textContent;
+                    const accountNumber = document.getElementById('account-number').textContent;
+                    const routingNumber = document.getElementById('routing-number').textContent;
+                    textToCopy = `Bank: ${bankName}\nAccount Number: ${accountNumber}\nRouting Number: ${routingNumber}`;
+                } else {
+                    const walletEl = document.getElementById(walletId);
+                    textToCopy = walletEl.textContent.trim();
+                }
+                navigator.clipboard.writeText(textToCopy).then(() => {
                     btn.innerHTML = '<i class="fa-solid fa-check"></i>';
                     setTimeout(() => {
                         btn.innerHTML = '<i class="fa-regular fa-copy"></i>';
                     }, 1500);
+                }).catch(error => {
+                    console.error('Error copying text:', error);
+                    document.getElementById('wallet-error').textContent = 'Failed to copy details: ' + error.message;
+                    document.getElementById('wallet-error').style.display = 'block';
                 });
             };
 

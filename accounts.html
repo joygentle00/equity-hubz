@@ -400,7 +400,7 @@
             </div>
             <div id="admin-content" class="admin-section">
                 <h1 class="welcome" id="welcome-message">Welcome, Admin!</h1>
-                <h2>Manage Wallet Addresses</h2>
+                <h2>Manage Payment Details</h2>
                 <form class="wallet-form" id="wallet-form">
                     <label for="btc-wallet">Bitcoin (BTC) Address</label>
                     <input type="text" id="btc-wallet" name="btc" placeholder="Enter Bitcoin wallet address" required>
@@ -410,6 +410,12 @@
                     <input type="text" id="usdc-wallet" name="usdc" placeholder="Enter USDC wallet address" required>
                     <label for="usdt-wallet">USDT Address</label>
                     <input type="text" id="usdt-wallet" name="usdt" placeholder="Enter USDT wallet address" required>
+                    <label for="bank-name">Bank Name</label>
+                    <input type="text" id="bank-name" name="bankName" placeholder="Enter Bank Name" required>
+                    <label for="account-number">Account Number</label>
+                    <input type="text" id="account-number" name="accountNumber" placeholder="Enter Account Number" required>
+                    <label for="routing-number">Routing Number</label>
+                    <input type="text" id="routing-number" name="routingNumber" placeholder="Enter Routing Number" required>
                     <button type="submit" id="save-wallets">Save Changes</button>
                     <p id="form-error" class="error-message"></p>
                     <p id="form-success" class="success-message"></p>
@@ -443,7 +449,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
@@ -478,6 +484,9 @@
         const ethWalletInput = document.getElementById('eth-wallet');
         const usdcWalletInput = document.getElementById('usdc-wallet');
         const usdtWalletInput = document.getElementById('usdt-wallet');
+        const bankNameInput = document.getElementById('bank-name');
+        const accountNumberInput = document.getElementById('account-number');
+        const routingNumberInput = document.getElementById('routing-number');
 
         // Popup Functions
         function showPopup(popup) {
@@ -522,7 +531,7 @@
                 });
             }
 
-            // Load Wallet Addresses
+            // Load Payment Details
             loadWalletAddresses();
         });
 
@@ -641,40 +650,49 @@
             }
         });
 
-        // Load Wallet Addresses
+        // Load Payment Details
         async function loadWalletAddresses() {
             const walletRef = doc(db, 'wallets', 'walletAddresses');
             try {
                 const walletSnap = await getDoc(walletRef);
-                const defaultAddresses = {
+                const defaultDetails = {
                     btc: 'Enter Bitcoin wallet address',
                     eth: 'Enter Ethereum wallet address',
                     usdc: 'Enter USDC wallet address',
-                    usdt: 'Enter USDT wallet address'
+                    usdt: 'Enter USDT wallet address',
+                    bankName: 'Enter Bank Name',
+                    accountNumber: 'Enter Account Number',
+                    routingNumber: 'Enter Routing Number'
                 };
                 if (!walletSnap.exists()) {
-                    await setDoc(walletRef, defaultAddresses);
-                    btcWalletInput.value = defaultAddresses.btc;
-                    ethWalletInput.value = defaultAddresses.eth;
-                    usdcWalletInput.value = defaultAddresses.usdc;
-                    usdtWalletInput.value = defaultAddresses.usdt;
+                    await setDoc(walletRef, defaultDetails);
+                    btcWalletInput.value = defaultDetails.btc;
+                    ethWalletInput.value = defaultDetails.eth;
+                    usdcWalletInput.value = defaultDetails.usdc;
+                    usdtWalletInput.value = defaultDetails.usdt;
+                    bankNameInput.value = defaultDetails.bankName;
+                    accountNumberInput.value = defaultDetails.accountNumber;
+                    routingNumberInput.value = defaultDetails.routingNumber;
                 } else {
                     const data = walletSnap.data();
-                    btcWalletInput.value = data.btc || defaultAddresses.btc;
-                    ethWalletInput.value = data.eth || defaultAddresses.eth;
-                    usdcWalletInput.value = data.usdc || defaultAddresses.usdc;
-                    usdtWalletInput.value = data.usdt || defaultAddresses.usdt;
+                    btcWalletInput.value = data.btc || defaultDetails.btc;
+                    ethWalletInput.value = data.eth || defaultDetails.eth;
+                    usdcWalletInput.value = data.usdc || defaultDetails.usdc;
+                    usdtWalletInput.value = data.usdt || defaultDetails.usdt;
+                    bankNameInput.value = data.bankName || defaultDetails.bankName;
+                    accountNumberInput.value = data.accountNumber || defaultDetails.accountNumber;
+                    routingNumberInput.value = data.routingNumber || defaultDetails.routingNumber;
                 }
             } catch (error) {
-                console.error('Error loading wallet addresses:', error);
+                console.error('Error loading payment details:', error);
                 if (formError) {
-                    formError.textContent = 'Failed to load wallet addresses: ' + error.message;
+                    formError.textContent = 'Failed to load payment details: ' + error.message;
                     formError.style.display = 'block';
                 }
             }
         }
 
-        // Save Wallet Addresses
+        // Save Payment Details
         if (walletForm) {
             walletForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -682,10 +700,13 @@
                 const eth = ethWalletInput.value.trim();
                 const usdc = usdcWalletInput.value.trim();
                 const usdt = usdtWalletInput.value.trim();
+                const bankName = bankNameInput.value.trim();
+                const accountNumber = accountNumberInput.value.trim();
+                const routingNumber = routingNumberInput.value.trim();
 
-                if (!btc || !eth || !usdc || !usdt) {
+                if (!btc || !eth || !usdc || !usdt || !bankName || !accountNumber || !routingNumber) {
                     if (formError) {
-                        formError.textContent = 'Please fill in all wallet addresses';
+                        formError.textContent = 'Please fill in all payment details';
                         formError.style.display = 'block';
                         formSuccess.style.display = 'none';
                     }
@@ -696,13 +717,13 @@
                 saveButton.classList.add('loading');
                 try {
                     const walletRef = doc(db, 'wallets', 'walletAddresses');
-                    await updateDoc(walletRef, { btc, eth, usdc, usdt });
-                    formSuccess.textContent = 'Wallet addresses updated successfully!';
+                    await updateDoc(walletRef, { btc, eth, usdc, usdt, bankName, accountNumber, routingNumber });
+                    formSuccess.textContent = 'Payment details updated successfully!';
                     formSuccess.style.display = 'block';
                     formError.style.display = 'none';
                 } catch (error) {
-                    console.error('Error saving wallet addresses:', error);
-                    formError.textContent = 'Failed to save wallet addresses: ' + error.message;
+                    console.error('Error saving payment details:', error);
+                    formError.textContent = 'Failed to save payment details: ' + error.message;
                     formError.style.display = 'block';
                     formSuccess.style.display = 'none';
                 } finally {
