@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Equity Hubs</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <title>Admin Deposit - Equity Hubs</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com 'unsafe-inline'; style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https://*.firebaseio.com;">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         * {
             margin: 0;
@@ -89,52 +90,66 @@
             font-size: 20px;
             color: #00ffff;
             margin-bottom: 20px;
+            text-align: center;
         }
-        .user-list, .deposit-requests {
-            margin-bottom: 40px;
+        .wallet-form {
+            max-width: 600px;
+            margin: 0 auto;
         }
-        .user-table, .request-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #111827;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .user-table th, .user-table td,
-        .request-table th, .request-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #2d3748;
-        }
-        .user-table th, .request-table th {
-            background: #1e293b;
+        .wallet-form label {
+            display: block;
             color: #00ffff;
+            margin-bottom: 8px;
             font-weight: 600;
         }
-        .editable-field {
-            cursor: pointer;
-            color: #00ffff;
-        }
-        .editable-field:hover {
-            text-decoration: underline;
-        }
-        .action-btn {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-right: 5px;
-        }
-        .approve-btn {
-            background: #00ff00;
-            color: #000;
-        }
-        .reject-btn {
-            background: #ff0000;
+        .wallet-form input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 16px;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            background: #111827;
             color: #fff;
+            font-size: 16px;
+            font-family: monospace;
         }
-        .action-btn:hover {
-            opacity: 0.9;
+        .wallet-form input:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+        .wallet-form button {
+            width: 100%;
+            padding: 12px;
+            background: #00ffff;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+        .wallet-form button:hover {
+            background: #00e5e5;
+        }
+        .wallet-form button.loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .error-message {
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+        .success-message {
+            color: #00ff00;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
         }
         .hamburger {
             display: none;
@@ -282,11 +297,11 @@
             text-align: center;
             display: none;
         }
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
         @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
             .sidebar {
                 position: fixed;
                 top: 0;
@@ -334,13 +349,12 @@
                 width: 28px;
                 height: 28px;
             }
-            .user-table, .request-table {
-                display: block;
-                overflow-x: auto;
+            .wallet-form input {
+                font-size: 14px;
+                padding: 10px;
             }
-            .user-table th, .user-table td,
-            .request-table th, .request-table td {
-                font-size: 12px;
+            .wallet-form button {
+                font-size: 14px;
                 padding: 10px;
             }
         }
@@ -354,16 +368,16 @@
         <div class="sidebar" id="sidebar">
             <nav>
                 <ul>
-                    <li class="active">
+                    <li>
                         <a href="admin.html">
                             <span class="icon"><i class="fa-solid fa-user-shield"></i></span>
                             <span class="text">Admin Dashboard</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="accounts.html">
-                            <span class="icon"><i class="fa-solid fa-house"></i></span>
-                            <span class="text">Edit Bank</span>
+                    <li class="active">
+                        <a href="admin-deposit.html">
+                            <span class="icon"><i class="fa-regular fa-credit-card"></i></span>
+                            <span class="text">Edit Wallets</span>
                         </a>
                     </li>
                     <li>
@@ -384,40 +398,22 @@
                     <button class="auth-btn" id="register-btn">Create Account</button>
                 </div>
             </div>
-            <div id="admin-content" style="display: none;">
+            <div id="admin-content" class="admin-section">
                 <h1 class="welcome" id="welcome-message">Welcome, Admin!</h1>
-                <section class="admin-section">
-                    <h2>User Management</h2>
-                    <div class="user-list">
-                        <table class="user-table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Total Deposit</th>
-                                    <th>Total Profit</th>
-                                    <th>Total Bonus</th>
-                                    <th>Balance</th>
-                                </tr>
-                            </thead>
-                            <tbody id="user-table-body"></tbody>
-                        </table>
-                    </div>
-                    <h2>Deposit Requests</h2>
-                    <div class="deposit-requests">
-                        <table class="request-table">
-                            <thead>
-                                <tr>
-                                    <th>User Email</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="request-table-body"></tbody>
-                        </table>
-                    </div>
-                </section>
+                <h2>Manage Wallet Addresses</h2>
+                <form class="wallet-form" id="wallet-form">
+                    <label for="btc-wallet">Bitcoin (BTC) Address</label>
+                    <input type="text" id="btc-wallet" name="btc" placeholder="Enter Bitcoin wallet address" required>
+                    <label for="eth-wallet">Ethereum (ETH) Address</label>
+                    <input type="text" id="eth-wallet" name="eth" placeholder="Enter Ethereum wallet address" required>
+                    <label for="usdc-wallet">USDC Address</label>
+                    <input type="text" id="usdc-wallet" name="usdc" placeholder="Enter USDC wallet address" required>
+                    <label for="usdt-wallet">USDT Address</label>
+                    <input type="text" id="usdt-wallet" name="usdt" placeholder="Enter USDT wallet address" required>
+                    <button type="submit" id="save-wallets">Save Changes</button>
+                    <p id="form-error" class="error-message"></p>
+                    <p id="form-success" class="success-message"></p>
+                </form>
             </div>
             <div id="login-popup" class="popup">
                 <div class="popup-content">
@@ -442,21 +438,12 @@
                     <a href="#" id="switch-to-login">Already have an admin account? Login</a>
                 </div>
             </div>
-            <div id="edit-popup" class="popup">
-                <div class="popup-content">
-                    <span class="close-btn">&times;</span>
-                    <h2 id="edit-popup-title">Edit Field</h2>
-                    <input type="number" id="edit-input" placeholder="Enter amount" min="0" step="0.01" required>
-                    <p id="edit-error" class="error-message"></p>
-                    <button id="edit-submit">Save</button>
-                </div>
-            </div>
         </main>
     </div>
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-        import { getFirestore, collection, onSnapshot, doc, getDoc, setDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
@@ -475,20 +462,22 @@
         // DOM Elements
         const loginPopup = document.getElementById('login-popup');
         const registerPopup = document.getElementById('register-popup');
-        const editPopup = document.getElementById('edit-popup');
+        const authSection = document.getElementById('auth-section');
+        const adminContent = document.getElementById('admin-content');
         const loginBtn = document.getElementById('login-btn');
         const registerBtn = document.getElementById('register-btn');
         const closeButtons = document.querySelectorAll('.close-btn');
         const switchToRegister = document.getElementById('switch-to-register');
         const switchToLogin = document.getElementById('switch-to-login');
-        const authSection = document.getElementById('auth-section');
-        const adminContent = document.getElementById('admin-content');
         const loginError = document.getElementById('login-error');
         const registerError = document.getElementById('register-error');
-        const editError = document.getElementById('edit-error');
-        const editSubmit = document.getElementById('edit-submit');
-        const editInput = document.getElementById('edit-input');
-        const editPopupTitle = document.getElementById('edit-popup-title');
+        const walletForm = document.getElementById('wallet-form');
+        const formError = document.getElementById('form-error');
+        const formSuccess = document.getElementById('form-success');
+        const btcWalletInput = document.getElementById('btc-wallet');
+        const ethWalletInput = document.getElementById('eth-wallet');
+        const usdcWalletInput = document.getElementById('usdc-wallet');
+        const usdtWalletInput = document.getElementById('usdt-wallet');
 
         // Popup Functions
         function showPopup(popup) {
@@ -512,20 +501,29 @@
 
         // Close Button Logic
         document.addEventListener('DOMContentLoaded', () => {
-            console.log(`Found ${closeButtons.length} close buttons`);
             closeButtons.forEach((btn, index) => {
-                const computedStyle = window.getComputedStyle(btn);
-                console.log(`Close button ${index} (in ${btn.closest('.popup')?.id || 'no popup'}): display=${computedStyle.display}, visibility=${computedStyle.visibility}, opacity=${computedStyle.opacity}`);
                 btn.addEventListener('click', () => {
                     const popup = btn.closest('.popup');
-                    if (popup) {
-                        hidePopup(popup);
-                        console.log(`Close button ${index} clicked for popup: ${popup.id}`);
-                    } else {
-                        console.error(`No parent popup found for close button ${index}`);
-                    }
+                    if (popup) hidePopup(popup);
                 });
             });
+
+            // Sidebar Hamburger Logic
+            const sidebar = document.getElementById('sidebar');
+            const hamburger = document.querySelector('.hamburger');
+            if (sidebar && hamburger) {
+                hamburger.addEventListener('click', () => {
+                    sidebar.classList.toggle('show');
+                });
+                document.addEventListener('click', (e) => {
+                    if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+                        sidebar.classList.remove('show');
+                    }
+                });
+            }
+
+            // Load Wallet Addresses
+            loadWalletAddresses();
         });
 
         // Auth Button Listeners
@@ -628,8 +626,6 @@
                     if (document.getElementById('welcome-message')) {
                         document.getElementById('welcome-message').textContent = `Welcome, ${user.displayName || 'Admin'}!`;
                     }
-                    await loadUsers();
-                    await loadDepositRequests();
                 } catch (error) {
                     console.error('Error checking admin status:', error);
                     alert('Error loading admin dashboard. Please try again.');
@@ -645,201 +641,78 @@
             }
         });
 
-        // Load Users
-        async function loadUsers() {
-            const userTableBody = document.getElementById('user-table-body');
-            if (!userTableBody) {
-                console.error('User table body element not found');
-                return;
-            }
-            userTableBody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
-
+        // Load Wallet Addresses
+        async function loadWalletAddresses() {
+            const walletRef = doc(db, 'wallets', 'walletAddresses');
             try {
-                onSnapshot(collection(db, 'users'), (usersSnapshot) => {
-                    userTableBody.innerHTML = '';
-                    if (usersSnapshot.empty) {
-                        userTableBody.innerHTML = '<tr><td colspan="6">No users found</td></tr>';
-                        return;
-                    }
-
-                    usersSnapshot.forEach(doc => {
-                        const userData = doc.data();
-                        const userId = doc.id;
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${userData.displayName || 'N/A'}</td>
-                            <td>${userData.email || 'N/A'}</td>
-                            <td>
-                                <span class="editable-field" data-field="totalDeposit" data-user="${userId}">
-                                    $${parseFloat(userData.totalDeposit || 0).toFixed(2)}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="editable-field" data-field="totalProfit" data-user="${userId}">
-                                    $${parseFloat(userData.totalProfit || 0).toFixed(2)}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="editable-field" data-field="totalBonus" data-user="${userId}">
-                                    $${parseFloat(userData.totalBonus || 0).toFixed(2)}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="editable-field" data-field="balance" data-user="${userId}">
-                                    $${parseFloat(userData.balance || 0).toFixed(2)}
-                                </span>
-                            </td>
-                        `;
-                        userTableBody.appendChild(row);
-                    });
-
-                    // Add click listeners for editable fields
-                    document.querySelectorAll('.editable-field').forEach(fieldElement => {
-                        fieldElement.addEventListener('click', () => {
-                            const field = fieldElement.getAttribute('data-field');
-                            const userId = fieldElement.getAttribute('data-user');
-                            const currentValue = parseFloat(fieldElement.textContent.replace('$', '')) || 0;
-                            editPopupTitle.textContent = `Edit ${field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}`;
-                            editInput.value = currentValue.toFixed(2);
-                            editPopup.setAttribute('data-user', userId);
-                            editPopup.setAttribute('data-field', field);
-                            showPopup(editPopup);
-                            editInput.focus();
-                        });
-                    });
-                }, (error) => {
-                    console.error('Error listening for users:', error);
-                    userTableBody.innerHTML = '<tr><td colspan="6">Failed to load users: ${error.message}</td></tr>';
-                });
+                const walletSnap = await getDoc(walletRef);
+                const defaultAddresses = {
+                    btc: 'Enter Bitcoin wallet address',
+                    eth: 'Enter Ethereum wallet address',
+                    usdc: 'Enter USDC wallet address',
+                    usdt: 'Enter USDT wallet address'
+                };
+                if (!walletSnap.exists()) {
+                    await setDoc(walletRef, defaultAddresses);
+                    btcWalletInput.value = defaultAddresses.btc;
+                    ethWalletInput.value = defaultAddresses.eth;
+                    usdcWalletInput.value = defaultAddresses.usdc;
+                    usdtWalletInput.value = defaultAddresses.usdt;
+                } else {
+                    const data = walletSnap.data();
+                    btcWalletInput.value = data.btc || defaultAddresses.btc;
+                    ethWalletInput.value = data.eth || defaultAddresses.eth;
+                    usdcWalletInput.value = data.usdc || defaultAddresses.usdc;
+                    usdtWalletInput.value = data.usdt || defaultAddresses.usdt;
+                }
             } catch (error) {
-                console.error('Error initializing users:', error);
-                userTableBody.innerHTML = '<tr><td colspan="6">Failed to load users: ${error.message}</td></tr>';
+                console.error('Error loading wallet addresses:', error);
+                if (formError) {
+                    formError.textContent = 'Failed to load wallet addresses: ' + error.message;
+                    formError.style.display = 'block';
+                }
             }
         }
 
-        // Edit Popup Submit Handler
-        if (editSubmit) {
-            editSubmit.addEventListener('click', async () => {
-                const userId = editPopup.getAttribute('data-user');
-                const field = editPopup.getAttribute('data-field');
-                const newValue = parseFloat(editInput.value);
-                if (isNaN(newValue) || newValue < 0 || editInput.value === '') {
-                    if (editError) {
-                        editError.textContent = 'Please enter a valid positive number (e.g., 100.00)';
-                        editError.style.display = 'block';
+        // Save Wallet Addresses
+        if (walletForm) {
+            walletForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btc = btcWalletInput.value.trim();
+                const eth = ethWalletInput.value.trim();
+                const usdc = usdcWalletInput.value.trim();
+                const usdt = usdtWalletInput.value.trim();
+
+                if (!btc || !eth || !usdc || !usdt) {
+                    if (formError) {
+                        formError.textContent = 'Please fill in all wallet addresses';
+                        formError.style.display = 'block';
+                        formSuccess.style.display = 'none';
                     }
                     return;
                 }
 
-                editSubmit.classList.add('loading');
+                const saveButton = document.getElementById('save-wallets');
+                saveButton.classList.add('loading');
                 try {
-                    const userRef = doc(db, 'users', userId);
-                    await updateDoc(userRef, { [field]: newValue });
-                    const userSnap = await getDoc(userRef);
-                    const userData = userSnap.data();
-                    const newWithdrawals = (userData.totalDeposit || 0) + (userData.totalProfit || 0) + (userData.totalBonus || 0) - (userData.balance || 0);
-                    await updateDoc(userRef, { withdrawals: newWithdrawals });
-                    alert(`${field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())} updated successfully!`);
-                    hidePopup(editPopup);
+                    const walletRef = doc(db, 'wallets', 'walletAddresses');
+                    await updateDoc(walletRef, { btc, eth, usdc, usdt });
+                    formSuccess.textContent = 'Wallet addresses updated successfully!';
+                    formSuccess.style.display = 'block';
+                    formError.style.display = 'none';
                 } catch (error) {
-                    console.error(`Error updating ${field}:`, error);
-                    if (editError) {
-                        editError.textContent = `Failed to update ${field}: ${error.message}`;
-                        editError.style.display = 'block';
-                    }
+                    console.error('Error saving wallet addresses:', error);
+                    formError.textContent = 'Failed to save wallet addresses: ' + error.message;
+                    formError.style.display = 'block';
+                    formSuccess.style.display = 'none';
                 } finally {
-                    editSubmit.classList.remove('loading');
+                    saveButton.classList.remove('loading');
+                    setTimeout(() => {
+                        formSuccess.style.display = 'none';
+                        formError.style.display = 'none';
+                    }, 3000);
                 }
             });
-        }
-
-        // Load Deposit Requests
-        async function loadDepositRequests() {
-            const requestTableBody = document.getElementById('request-table-body');
-            if (!requestTableBody) {
-                console.error('Request table body element not found');
-                return;
-            }
-            requestTableBody.innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
-
-            try {
-                onSnapshot(collection(db, 'depositRequests'), (requestsSnapshot) => {
-                    requestTableBody.innerHTML = '';
-                    if (requestsSnapshot.empty) {
-                        requestTableBody.innerHTML = '<tr><td colspan="4">No pending requests</td></tr>';
-                        return;
-                    }
-
-                    requestsSnapshot.forEach(doc => {
-                        const requestData = doc.data();
-                        const requestId = doc.id;
-                        if (requestData.status === 'pending') {
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
-                                <td>${requestData.userEmail}</td>
-                                <td>$${parseFloat(requestData.amount || 0).toFixed(2)}</td>
-                                <td>${requestData.status}</td>
-                                <td>
-                                    <button class="action-btn approve-btn" data-request="${requestId}" data-user="${requestData.userId}" data-amount="${requestData.amount}">Approve</button>
-                                    <button class="action-btn reject-btn" data-request="${requestId}">Reject</button>
-                                </td>
-                            `;
-                            requestTableBody.appendChild(row);
-                        }
-                    });
-
-                    document.querySelectorAll('.approve-btn').forEach(btn => {
-                        btn.addEventListener('click', async () => {
-                            const requestId = btn.getAttribute('data-request');
-                            const userId = btn.getAttribute('data-user');
-                            const amount = parseFloat(btn.getAttribute('data-amount'));
-
-                            btn.classList.add('loading');
-                            try {
-                                const userRef = doc(db, 'users', userId);
-                                const userSnap = await getDoc(userRef);
-                                const userData = userSnap.exists() ? userSnap.data() : { totalDeposit: 0, totalProfit: 0, totalBonus: 0, balance: 0, withdrawals: 0 };
-                                const newDeposit = (userData.totalDeposit || 0) + amount;
-                                const newBalance = newDeposit + (userData.totalProfit || 0) + (userData.totalBonus || 0) - (userData.withdrawals || 0);
-
-                                await updateDoc(userRef, {
-                                    totalDeposit: newDeposit,
-                                    balance: newBalance
-                                });
-                                await updateDoc(doc(db, 'depositRequests', requestId), { status: 'approved' });
-                                alert('Deposit approved successfully!');
-                            } catch (error) {
-                                console.error('Error approving deposit:', error);
-                                alert(`Failed to approve deposit: ${error.message}`);
-                            } finally {
-                                btn.classList.remove('loading');
-                            }
-                        });
-                    });
-
-                    document.querySelectorAll('.reject-btn').forEach(btn => {
-                        btn.addEventListener('click', async () => {
-                            const requestId = btn.getAttribute('data-request');
-                            btn.classList.add('loading');
-                            try {
-                                await updateDoc(doc(db, 'depositRequests', requestId), { status: 'rejected' });
-                                alert('Deposit rejected successfully!');
-                            } catch (error) {
-                                console.error('Error rejecting deposit:', error);
-                                alert(`Failed to reject deposit: ${error.message}`);
-                            } finally {
-                                btn.classList.remove('loading');
-                            }
-                        });
-                    });
-                }, (error) => {
-                    console.error('Error listening for deposit requests:', error);
-                    requestTableBody.innerHTML = '<tr><td colspan="4">Failed to load requests: ${error.message}</td></tr>';
-                });
-            } catch (error) {
-                console.error('Error initializing deposit requests:', error);
-                requestTableBody.innerHTML = '<tr><td colspan="4">Failed to load requests: ${error.message}</td></tr>';
-            }
         }
 
         // Logout Handler
@@ -859,24 +732,6 @@
                     alert('Unable to log out. Please try again.');
                 }
             });
-        } else {
-            console.error('Logout link element not found');
-        }
-
-        // Sidebar Hamburger Logic
-        const sidebar = document.getElementById('sidebar');
-        const hamburger = document.querySelector('.hamburger');
-        if (sidebar && hamburger) {
-            hamburger.addEventListener('click', () => {
-                sidebar.classList.toggle('show');
-            });
-            document.addEventListener('click', (e) => {
-                if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-                    sidebar.classList.remove('show');
-                }
-            });
-        } else {
-            console.error('Sidebar or hamburger element not found');
         }
     </script>
 </body>

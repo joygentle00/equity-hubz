@@ -2,336 +2,228 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Dashboard</title>
+    <title>Deposit Funds</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://s3.tradingview.com https://www.tradingview.com https://www.gstatic.com https://apis.google.com 'unsafe-inline'; frame-src 'self' https://www.tradingview.com https://s.tradingview.com https://tradingview-widget.com https://www.tradingview-widget.com https://investment-40343.firebaseapp.com; style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; connect-src 'self' https://www.alphavantage.co https://*.firebaseio.com https://*.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https://*.firebaseio.com;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         * {
-            margin:  0;
+            margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
-
         body {
             background: #0c1018;
-            color:     #fff;
-            display:   flex;
+            color: #fff;
+            display: flex;
             justify-content: center;
-            align-items:    center;
+            align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
         }
-
         .container {
-            display:   flex;
-            width:     100%;
+            display: flex;
+            width: 100%;
             max-width: 1200px;
-            height:    95vh;
-            background:    #1e293b;
+            height: 95vh;
+            background: #1e293b;
             border-radius: 12px;
-            box-shadow:    0 0 20px rgba(0, 255, 255, 0.1);
-            position:      relative;
-            margin:        10px 0;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+            position: relative;
+            margin: 10px 0;
         }
-
         .sidebar {
-            width:          250px;
-            background:     #111827;
-            padding:        20px;
-            display:        flex;
+            width: 250px;
+            background: #111827;
+            padding: 20px;
+            display: flex;
             flex-direction: column;
-            transition:     transform 0.3s ease-in-out;
+            transition: transform 0.3s ease-in-out;
         }
-
         .sidebar nav ul {
             list-style-type: none;
         }
-
         .sidebar nav ul li {
-            padding:          15px 10px;
-            border-radius:    8px;
-            margin-bottom:    10px;
-            cursor:           pointer;
-            transition:       background-color 0.3s ease-in-out;
+            padding: 15px 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
         }
-
         .sidebar nav ul li.active a,
         .sidebar nav ul li:hover a {
             background-color: #00ffff;
             padding: 18px;
             border-radius: 15px;
-            color:            #000;
-            text-decoration:  none;
+            color: #000;
+            text-decoration: none;
         }
-
         .sidebar nav ul li a {
-            display:          flex;
-            align-items:      center;
-            color:            inherit;
-            text-decoration:  none;
-            width:            100%;
+            display: flex;
+            align-items: center;
+            color: inherit;
+            text-decoration: none;
+            width: 100%;
         }
-
         .sidebar nav ul li .icon {
             margin-right: 10px;
-            font-size:    18px;
+            font-size: 18px;
         }
-
         .main-content {
-            flex-grow:   1;
-            padding:     30px 40px;
-            overflow-y:  auto;
-            position:    relative;
+            flex-grow: 1;
+            padding: 30px 40px;
+            overflow-y: auto;
+            position: relative;
         }
-
         .welcome {
-            font-size:    24px;
+            font-size: 24px;
             margin-bottom: 30px;
         }
-
         .balance-section {
-            background:    #0c1018;
-            padding:       20px;
+            background: #0c1018;
+            padding: 20px;
             border-radius: 12px;
-            box-shadow:    inset 0 0 20px rgba(0, 255, 255, 0.05);
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
         }
-
         .balance-card {
             text-align: center;
         }
-
         .balance-header {
-            font-size:      14px;
-            color:          #00ffff;
-            margin-bottom:  10px;
+            font-size: 14px;
+            color: #00ffff;
+            margin-bottom: 10px;
             letter-spacing: 1px;
-            font-weight:    600;
+            font-weight: 600;
         }
-
         .balance-value {
-            font-size:    36px;
-            font-weight:  bold;
+            font-size: 36px;
+            font-weight: bold;
             margin-bottom: 10px;
         }
-
         .balance-growth {
-            font-size:    14px;
+            font-size: 14px;
             margin-bottom: 20px;
         }
-
-        .balance-growth .up {
-            color:        #00ff00;
-            font-weight:  600;
-        }
-
+        .balance-growth .up,
         .balance-growth .green {
-            color:        #00ff00;
-            font-weight:  600;
+            color: #00ff00;
+            font-weight: 600;
         }
-
         .balance-details {
-            display:          flex;
-            flex-wrap:        wrap;
-            gap:              30px;
-            justify-content:  space-between;
-            margin-top:       20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: space-between;
+            margin-top: 20px;
         }
-
         .balance-chart {
-            flex:             1 1 45%;
-            min-width:        300px;
-            height:           300px;
-            background:       #111827;
-            border-radius:    12px;
-            box-shadow:       inset 0 0 20px rgba(0, 255, 255, 0.05);
-            display:          flex;
-            justify-content:  center;
-            align-items:      center;
+            flex: 1 1 45%;
+            min-width: 300px;
+            height: 300px;
+            background: #111827;
+            border-radius: 12px;
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-
         .chart-box {
-            position:      relative;
-            width:         100%;
-            height:        100%;
-            background:    linear-gradient(to bottom, #0c1018, #111827);
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #0c1018, #111827);
             border-radius: 12px;
-            overflow:      hidden;
-            box-shadow:    inset 0 0 20px rgba(0, 255, 255, 0.05);
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
         }
-
         .balance-info-grid {
-            flex:       1 1 50%;
-            min-width:  350px;
-            display:    grid;
+            flex: 1 1 50%;
+            min-width: 350px;
+            display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap:        20px;
+            gap: 20px;
         }
-
         .info-card {
-            background:    #111827;
-            padding:       15px;
+            background: #111827;
+            padding: 15px;
             border-radius: 12px;
-            text-align:    center;
-            box-shadow:    inset 0 0 20px rgba(0, 255, 255, 0.05);
-            position:      relative;
+            text-align: center;
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
+            position: relative;
         }
-
         .info-card.light-black {
             background: #1e293b;
         }
-
         .info-value {
-            font-size:    24px;
-            font-weight:  bold;
+            font-size: 24px;
+            font-weight: bold;
             margin-bottom: 5px;
         }
-
         .info-label {
-            font-size:      12px;
-            color:          #00ffff;
-            margin-bottom:  10px;
+            font-size: 12px;
+            color: #00ffff;
+            margin-bottom: 10px;
             letter-spacing: 1px;
-            font-weight:    600;
+            font-weight: 600;
         }
-
         .info-icon {
-            position:  absolute;
-            top:       10px;
-            right:     10px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
             font-size: 20px;
-            color:     #00ffff;
+            color: #00ffff;
         }
-
         .chat-bubble {
-            position:      fixed;
-            bottom:        40px;
-            right:         40px;
-            background:    #00ffff;
-            color:         #000;
-            padding:       12px 20px;
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: #00ffff;
+            color: #000;
+            padding: 12px 20px;
             border-radius: 30px;
-            box-shadow:    0 0 12px rgba(0, 255, 255, 0.3);
-            display:       flex;
-            align-items:   center;
-            cursor:        pointer;
-            transition:    background-color 0.3s ease-in-out;
-            z-index:       1000;
+            box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            z-index: 1000;
         }
-
         .chat-bubble:hover {
             background: #00e5e5;
         }
-
         .chat-bubble .bubble-text {
             margin-right: 10px;
-            font-weight:  600;
+            font-weight: 600;
         }
-
         .chat-bubble .bubble-icon {
             font-size: 18px;
         }
-
         .chat-bubble .bubble-status {
-            width:      10px;
-            height:     10px;
+            width: 10px;
+            height: 10px;
             background: #00ff00;
             border-radius: 50%;
             margin-left: 10px;
-            animation:  pulse 2s infinite;
+            animation: pulse 2s infinite;
         }
-
         @keyframes pulse {
-            0% { transform: scale(1);   opacity: 1; }
+            0% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.2); opacity: 0.7; }
-            100% { transform: scale(1);   opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
         }
-
         .hamburger {
-            display:   none;
-            position:  absolute;
-            top:       20px;
-            left:      20px;
+            display: none;
+            position: absolute;
+            top: 20px;
+            left: 20px;
             background: none;
-            border:    none;
-            color:     #00ffff;
+            border: none;
+            color: #00ffff;
             font-size: 24px;
-            cursor:    pointer;
-            z-index:   1000;
+            cursor: pointer;
+            z-index: 1000;
         }
-
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                height: auto;
-            }
-            .sidebar {
-                position:  fixed;
-                top:       0;
-                left:      0;
-                height:    100%;
-                transform: translateX(-100%);
-                z-index:   999;
-            }
-            .sidebar.show {
-                transform: translateX(0);
-            }
-            .hamburger {
-                display: block;
-            }
-            .main-content {
-                padding: 20px;
-            }
-            .balance-details {
-                flex-direction: column;
-            }
-            .balance-chart,
-            .balance-info-grid {
-                flex: 1 1 100%;
-            }
-            .chart-box {
-                height: 50vh;
-            }
-            .market-widgets-row {
-                flex-direction: column !important;
-                gap: 20px;
-            }
-            .market-widget {
-                max-width: 100% !important;
-            }
-        }
-
-        .tradingview-widget-container {
-            width:  100% !important;
-            height: 100% !important;
-        }
-
-        .current-price {
-            position:      absolute;
-            top:           10px;
-            right:         10px;
-            background:    rgba(0, 0, 0, 0.7);
-            color:         #00ff88;
-            padding:       5px 10px;
-            border-radius: 4px;
-            font-size:     14px;
-            z-index:       10;
-            pointer-events: none;
-        }
-
-        .time-line {
-            position:      absolute;
-            bottom:        0;
-            left:          0;
-            width:         100%;
-            height:        20px;
-            background:    linear-gradient(to right, #333, #555);
-            z-index:       5;
-            pointer-events: none;
-        }
-
-        /* Market widgets styles */
         .market-widgets-row {
             display: flex;
             gap: 32px;
@@ -354,41 +246,68 @@
             margin-bottom: 20px;
             color: #fff;
         }
-        @media (max-width: 900px) {
-            .market-widgets-row {
-                flex-direction: column;
-                gap: 20px;
-            }
-            .market-widget {
-                max-width: 100%;
-            }
+        .tradingview-widget-container {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .current-price {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #00ff88;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .time-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(to right, #333, #555);
+            z-index: 5;
+            pointer-events: none;
         }
         .payment-method {
-            background:    #111827;
-            padding:       20px;
+            background: #111827;
+            padding: 20px;
             border-radius: 12px;
-            box-shadow:    inset 0 0 20px rgba(0, 255, 255, 0.05);
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
             margin-bottom: 30px;
-            width:         100%;
+            width: 100%;
         }
         .payment-method h2 {
-            color:          #00ffff;
-            margin-bottom:  20px;
-            text-align:     center;
-            font-weight:    600;
+            color: #00ffff;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
             letter-spacing: 1px;
         }
-        @media (max-width: 768px) {
-            .payment-method {
-                padding: 15px;
-            }
+        .deposit-button {
+            width: 100%;
+            padding: 12px;
+            background: #00ffff;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
         }
-        /* Wallet Popup Styles */
+        .deposit-button:hover {
+            background: #00e5e5;
+        }
         #deposit-popup {
             display: none;
             position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             background: rgba(0,0,0,0.5);
             z-index: 2000;
             justify-content: center;
@@ -440,6 +359,70 @@
         .copy-btn:hover {
             color: #19ffe3;
         }
+        .error-message {
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+        @media (max-width: 900px) {
+            .market-widgets-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .market-widget {
+                max-width: 100%;
+            }
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                transform: translateX(-100%);
+                z-index: 999;
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .hamburger {
+                display: block;
+            }
+            .main-content {
+                padding: 20px;
+            }
+            .balance-details {
+                flex-direction: column;
+            }
+            .balance-info-grid {
+                flex: 1 1 100%;
+                order: 1;
+                grid-template-columns: 1fr;
+                gap: 16px;
+                min-width: unset;
+            }
+            .balance-chart {
+                flex: 1 1 100%;
+                order: 2;
+                height: 250px;
+                min-width: unset;
+            }
+            .market-widget {
+                padding: 16px;
+            }
+            .payment-method {
+                padding: 15px;
+            }
+            .welcome {
+                font-size: 20px;
+            }
+        }
         @media (max-width: 600px) {
             #deposit-popup .deposit-modal-content {
                 padding: 16px 5px;
@@ -450,6 +433,26 @@
                 padding: 8px;
             }
         }
+        @media (max-width: 500px) {
+            .main-content {
+                padding: 10px;
+            }
+            .balance-section {
+                padding: 10px;
+            }
+            .market-widget-title {
+                font-size: 18px;
+            }
+            .market-widget {
+                padding: 10px;
+            }
+            .info-value {
+                font-size: 18px;
+            }
+            .balance-value {
+                font-size: 24px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -457,12 +460,10 @@
         <button class="hamburger" aria-label="Toggle Sidebar">
             <i class="fa-solid fa-bars"></i>
         </button>
-
         <div class="sidebar" id="sidebar">
-            <!-- Sidebar Nav (unchanged) -->
             <nav>
                 <ul>
-                    <li class="active">
+                    <li>
                         <a href="dashboard.html">
                             <span class="icon"><i class="fa-solid fa-house"></i></span>
                             <span class="text">Home</span>
@@ -474,7 +475,7 @@
                             <span class="text">Packages</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="deposit.html">
                             <span class="icon"><i class="fa-regular fa-credit-card"></i></span>
                             <span class="text">Deposit</span>
@@ -487,7 +488,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="histories.html">
+                        <a href="transactions.html">
                             <span class="icon"><i class="fa-regular fa-file-lines"></i></span>
                             <span class="text">Transactions</span>
                         </a>
@@ -504,39 +505,21 @@
                             <span class="text">Profile</span>
                         </a>
                     </li>
-                    
+                    <li>
+                        <a href="#" id="logout-link">
+                            <span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+                            <span class="text">Logout</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
-        <div class="payment-method">
-            <h2 style="text-align: center; margin-bottom: 20px;">Deposit Funds</h2>
-            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="max-width: 400px; margin: 0 auto;">
-                <input type="hidden" name="cmd" value="_s-xclick">
-                <input type="hidden" name="hosted_button_id" value="YOUR_HOSTED_BUTTON_ID">
-                <div style="margin-bottom: 15px;">
-                    <label for="amount" style="display: block; margin-bottom: 5px;">Select Amount:</label>
-                    <select name="amount" id="amount" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
-                        <option value="100.00">$100.00</option>
-                        <option value="250.00">$250.00</option>
-                        <option value="500.00">$500.00</option>
-                        <option value="600.00">$600.00</option>
-                        <option value="800.00">$800.00</option>
-                        <option value="1000.00">$1000.00</option>
-                        <option value="2000.00">$2000.00</option>
-                        <option value="5000.00">$5000.00</option>
-                        <option value="10000.00">$10000.00</option>
-                        <option value="20000.00">$20000.00</option>
-                        <option value="50000.00">$50000.00</option>
-                        <option value="100000.00">$100000.00</option>
-                    </select>
-                </div>
-                <input type="hidden" name="currency_code" value="USD">
-                <button id="popup-wallets" type="submit" style="width: 100%; padding: 12px; background-color: #0070ba; color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">
-                    Deposit Now!
-                </button>
-            </form>
-        </div>
-        <div class="main-content">
+        <main class="main-content">
+            <h1 class="welcome" id="welcome-message">Welcome, User!</h1>
+            <div class="payment-method">
+                <h2>Deposit Funds</h2>
+                <button class="deposit-button" id="popup-wallets">Deposit Now!</button>
+            </div>
             <div class="balance-section">
                 <div class="balance-card">
                     <div class="balance-header">Current Balance</div>
@@ -547,16 +530,17 @@
                     <div class="balance-details">
                         <div class="balance-chart">
                             <div class="chart-box">
-                                <div class="current-price" id="current-price">EUR/USD: N/A</div>
-                                <div class="time-line"></div>
-                                <!-- TradingView Widget BEGIN -->
                                 <div class="tradingview-widget-container">
-                                    <div id="tradingview_12345"></div>
+                                    <div id="tradingview_forex_chart" class="tradingview-widget-container__widget"></div>
+                                    <div class="tradingview-widget-copyright">
+                                        <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
+                                            <span class="blue-text">Track all markets on TradingView</span>
+                                        </a>
+                                    </div>
                                     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
                                     <script type="text/javascript">
                                         new TradingView.widget({
-                                            "width": "100%",
-                                            "height": "100%",
+                                            "autosize": true,
                                             "symbol": "FX:EURUSD",
                                             "interval": "D",
                                             "timezone": "Etc/UTC",
@@ -565,13 +549,18 @@
                                             "locale": "en",
                                             "toolbar_bg": "#f1f3f6",
                                             "enable_publishing": false,
+                                            "allow_symbol_change": true,
+                                            "container_id": "tradingview_forex_chart",
+                                            "studies": ["MASimple@tv-basicstudies"],
                                             "hide_top_toolbar": true,
                                             "save_image": false,
-                                            "container_id": "tradingview_12345"
+                                            "hide_volume": false,
+                                            "support_host": "https://www.tradingview.com"
                                         });
                                     </script>
                                 </div>
-                                <!-- TradingView Widget END -->
+                                <div class="current-price" id="current-price">EUR/USD: Loading...</div>
+                                <div class="time-line"></div>
                             </div>
                         </div>
                         <div class="balance-info-grid">
@@ -595,258 +584,325 @@
                                 <div class="info-value" id="withdrawals">$0.00</div>
                                 <div class="info-label">Withdrawals</div>
                             </div>
-                            
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Market Widgets Row BELOW BALANCE SECTION -->
             <div class="market-widgets-row">
-                <!-- Market Overview Widget -->
                 <div class="market-widget" id="market-overview-widget">
                     <div class="market-widget-title">Market Overview</div>
                     <div class="tradingview-widget-container">
                         <div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async></script>
                         <script type="application/json" id="market-overview-config">
-                        {
-                          "title": "Market Overview",
-                          "tabs": [
-                            {
-                              "title": "Crypto",
-                              "symbols": [
-                                {"s":"BINANCE:BTCUSDT","d":"Bitcoin / TetherUS"},
-                                {"s":"BINANCE:ETHUSDT","d":"Ethereum / TetherUS"},
-                                {"s":"CRYPTOCAP:USDT.D","d":"Market Cap USDT Dominance, %"},
-                                {"s":"BINANCE:BNBUSDT","d":"Binance Coin / TetherUS"},
-                                {"s":"CRYPTOCAP:USDC","d":"Market Cap USDC, $"},
-                                {"s":"BINANCE:XRPUSDT","d":"XRP / TetherUS"}
-                              ]
-                            }
-                          ],
-                          "width": "100%",
-                          "height": "400",
-                          "locale": "en",
-                          "showSymbolLogo": true,
-                          "theme": "dark"
-                        }
+{
+    "title": "Market Overview",
+    "tabs": [
+        {
+            "title": "Crypto",
+            "symbols": [
+                {"s": "BINANCE:BTCUSDT", "d": "Bitcoin / TetherUS"},
+                {"s": "BINANCE:ETHUSDT", "d": "Ethereum / TetherUS"},
+                {"s": "CRYPTOCAP:USDT.D", "d": "Market Cap USDT Dominance, %"},
+                {"s": "BINANCE:BNBUSDT", "d": "Binance Coin / TetherUS"},
+                {"s": "CRYPTOCAP:USDC", "d": "Market Cap USDC, $"},
+                {"s": "BINANCE:XRPUSDT", "d": "XRP / TetherUS"}
+            ]
+        }
+    ],
+    "width": "100%",
+    "height": "400",
+    "locale": "en",
+    "showSymbolLogo": true,
+    "colorTheme": "dark"
+}
                         </script>
+                        <script src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async></script>
                     </div>
                 </div>
-                <!-- Market News Widget -->
                 <div class="market-widget" id="market-news-widget">
                     <div class="market-widget-title">Market News</div>
                     <div class="tradingview-widget-container">
                         <div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-news.js" async>
-                        </script>
                         <script type="application/json" id="market-news-config">
-                        {
-                          "feedMode": "market",
-                          "market": "crypto",
-                          "colorTheme": "dark",
-                          "isTransparent": false,
-                          "displayMode": "regular",
-                          "width": "100%",
-                          "height": "400",
-                          "locale": "en"
-                        }
+{
+    "feedMode": "market",
+    "market": "crypto",
+    "width": "100%",
+    "height": "400",
+    "locale": "en",
+    "colorTheme": "dark",
+    "symbols": [
+        {"proName": "OANDA:SPX500USD"},
+        {"proName": "BITSTAMP:BTCUSD"},
+        {"proName": "BITSTAMP:ETHUSD"}
+    ]
+}
                         </script>
+                        <script src="https://s3.tradingview.com/external-embedding/embed-widget-news.js" async></script>
                     </div>
                 </div>
             </div>
-            <!-- End Market Widgets Row -->
-        </div>
+        </main>
     </div>
     <div class="chat-bubble" id="chat-bubble" title="Chat with Support">
         <span class="bubble-text">Chat with Support</span>
         <i class="fa-solid fa-comments bubble-icon"></i>
         <span class="bubble-status"></span>
     </div>
-    <!-- Deposit Popup Modal (wallets copiable, modal scrollable) -->
-    <div class="popup-wallets">
-        <div id="deposit-popup">
-            <div class="deposit-modal-content">
-                <button id="close-deposit-popup" style="position:absolute; top:16px; right:16px; background:none; border:none; color:#00ffff; font-size:22px; cursor:pointer;">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-                <h2 style="color:#00ffff; text-align:center; margin-bottom:18px;">Deposit Funds</h2>
-                <p style="color:#fff; text-align:center; margin-bottom:18px;">Select your payment method:</p>
-                <div style="display:flex; flex-direction:column; gap:12px;">
-                    <div class="wallet-row">
-                        <i class="fa-brands fa-bitcoin"></i>
-                        Bitcoin:
-                        <span class="wallet-address" id="btc-wallet">AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w</span>
-                        <button class="copy-btn" onclick="copyWallet('btc-wallet', this)" title="Copy">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                    </div>
-                    <div class="wallet-row">
-                        <i class="fa-brands fa-ethereum"></i>
-                        Ethereum:
-                        <span class="wallet-address" id="eth-wallet">AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w</span>
-                        <button class="copy-btn" onclick="copyWallet('eth-wallet', this)" title="Copy">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                    </div>
-                    <div class="wallet-row">
-                        <i class="fa-brands fa-usd-coin"></i>
-                        USDC:
-                        <span class="wallet-address" id="usdc-wallet">AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w</span>
-                        <button class="copy-btn" onclick="copyWallet('usdc-wallet', this)" title="Copy">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                    </div>
-                    <div class="wallet-row">
-                        <i class="fa-brands fa-tether"></i>
-                        USDT:
-                        <span class="wallet-address" id="usdt-wallet">AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w</span>
-                        <button class="copy-btn" onclick="copyWallet('usdt-wallet', this)" title="Copy">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                    </div>
-                    <div class="pload-payment-reciept">
-                        <label for="payment-receipt" style="color:#00ffff; margin-bottom:8px; display:block;">Upload Payment Receipt:</label>
-                        <input type="file" id="payment-receipt" name="payment-receipt" accept="image/*,application/pdf" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; background:#222; color:#fff;">
-                    </div>
+    <div id="deposit-popup">
+        <div class="deposit-modal-content">
+            <button id="close-deposit-popup" style="position:absolute; top:16px; right:16px; background:none; border:none; color:#00ffff; font-size:22px; cursor:pointer;">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2 style="color:#00ffff; text-align:center; margin-bottom:18px;">Deposit Funds</h2>
+            <p style="color:#fff; text-align:center; margin-bottom:18px;">Select your payment method:</p>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <div class="wallet-row">
+                    <i class="fa-brands fa-bitcoin"></i>
+                    Bitcoin:
+                    <span class="wallet-address" id="btc-wallet">Loading...</span>
+                    <button class="copy-btn" onclick="copyWallet('btc-wallet', this)" title="Copy">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
+                <div class="wallet-row">
+                    <i class="fa-brands fa-ethereum"></i>
+                    Ethereum:
+                    <span class="wallet-address" id="eth-wallet">Loading...</span>
+                    <button class="copy-btn" onclick="copyWallet('eth-wallet', this)" title="Copy">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
+                <div class="wallet-row">
+                    <i class="fa-brands fa-usd-coin"></i>
+                    USDC:
+                    <span class="wallet-address" id="usdc-wallet">Loading...</span>
+                    <button class="copy-btn" onclick="copyWallet('usdc-wallet', this)" title="Copy">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
+                <div class="wallet-row">
+                    <i class="fa-brands fa-tether"></i>
+                    USDT:
+                    <span class="wallet-address" id="usdt-wallet">Loading...</span>
+                    <button class="copy-btn" onclick="copyWallet('usdt-wallet', this)" title="Copy">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
+                <div class="upload-payment-receipt">
+                    <label for="payment-receipt" style="color:#00ffff; margin-bottom:8px; display:block;">Upload Payment Receipt:</label>
+                    <input type="file" id="payment-receipt" name="payment-receipt" accept="image/*,application/pdf" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; background:#222; color:#fff;">
                 </div>
             </div>
+            <p id="wallet-error" class="error-message"></p>
         </div>
-        <script>
-            // Show popup when Deposit button is clicked
-            document.getElementById('popup-wallets').addEventListener('click', function(e) {
-                e.preventDefault();
-                document.getElementById('deposit-popup').style.display = 'flex';
-            });
-            // Close popup
-            document.getElementById('close-deposit-popup').addEventListener('click', function() {
-                document.getElementById('deposit-popup').style.display = 'none';
-            });
-            // Close popup when clicking outside modal
-            document.getElementById('deposit-popup').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    this.style.display = 'none';
+    </div>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
+            authDomain: "investment-40343.firebaseapp.com",
+            projectId: "investment-40343",
+            storageBucket: "investment-40343.firebasestorage.app",
+            messagingSenderId: "126093031981",
+            appId: "1:126093031981:web:fd4ae73c063044693b16a4",
+            measurementId: "G-SXL6ZGL49W"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Validate TradingView JSON configs
+            function validateJSONConfig(id) {
+                try {
+                    const scriptElement = document.getElementById(id);
+                    if (scriptElement) {
+                        JSON.parse(scriptElement.textContent);
+                        console.log(`JSON config for ${id} is valid`);
+                    } else {
+                        console.warn(`Element with id ${id} not found`);
+                    }
+                } catch (error) {
+                    console.error(`Error parsing JSON for ${id}:`, error.message);
+                }
+            }
+            validateJSONConfig('market-overview-config');
+            validateJSONConfig('market-news-config');
+
+            // Load Wallet Addresses
+            async function loadWalletAddresses() {
+                const walletRef = doc(db, 'wallets', 'walletAddresses');
+                try {
+                    const walletSnap = await getDoc(walletRef);
+                    const defaultAddresses = {
+                        btc: 'Enter Bitcoin wallet address',
+                        eth: 'Enter Ethereum wallet address',
+                        usdc: 'Enter USDC wallet address',
+                        usdt: 'Enter USDT wallet address'
+                    };
+                    if (!walletSnap.exists()) {
+                        await setDoc(walletRef, defaultAddresses);
+                        document.getElementById('btc-wallet').textContent = defaultAddresses.btc;
+                        document.getElementById('eth-wallet').textContent = defaultAddresses.eth;
+                        document.getElementById('usdc-wallet').textContent = defaultAddresses.usdc;
+                        document.getElementById('usdt-wallet').textContent = defaultAddresses.usdt;
+                    } else {
+                        const data = walletSnap.data();
+                        document.getElementById('btc-wallet').textContent = data.btc || defaultAddresses.btc;
+                        document.getElementById('eth-wallet').textContent = data.eth || defaultAddresses.eth;
+                        document.getElementById('usdc-wallet').textContent = data.usdc || defaultAddresses.usdc;
+                        document.getElementById('usdt-wallet').textContent = data.usdt || defaultAddresses.usdt;
+                    }
+                } catch (error) {
+                    console.error('Error loading wallet addresses:', error);
+                    document.getElementById('wallet-error').textContent = 'Failed to load wallet addresses: ' + error.message;
+                    document.getElementById('wallet-error').style.display = 'block';
+                }
+            }
+            loadWalletAddresses();
+
+            // Auth State Handler
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    document.getElementById('welcome-message').textContent = `Welcome, ${user.displayName || 'User'}!`;
+                    const userId = user.uid;
+                    const userRef = doc(db, 'users', userId);
+
+                    try {
+                        let userSnap = await getDoc(userRef);
+                        if (!userSnap.exists()) {
+                            const initialData = {
+                                balance: 0,
+                                totalDeposit: 0,
+                                totalProfit: 0,
+                                totalBonus: 0,
+                                withdrawals: 0,
+                                email: user.email || '',
+                                createdAt: Date.now()
+                            };
+                            await setDoc(userRef, initialData);
+                            userSnap = await getDoc(userRef);
+                        }
+
+                        const data = userSnap.data();
+                        const formatCurrency = (value) => `$${parseFloat(value || 0).toFixed(2)}`;
+                        document.getElementById('balance-value').textContent = formatCurrency(data.balance);
+                        document.getElementById('total-deposit').textContent = formatCurrency(data.totalDeposit);
+                        document.getElementById('total-profit').textContent = formatCurrency(data.totalProfit);
+                        document.getElementById('total-bonus').textContent = formatCurrency(data.totalBonus);
+                        document.getElementById('withdrawals').textContent = formatCurrency(data.withdrawals);
+                    } catch (error) {
+                        console.error('Error fetching user data:', error);
+                        alert(`Error loading deposit page: ${error.message}`);
+                        await signOut(auth);
+                        window.location.href = 'index.html';
+                    }
+                } else {
+                    window.location.href = 'index.html';
                 }
             });
-            // Copiable wallet address
+
+            // Logout Logic
+            const logoutLink = document.getElementById('logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    try {
+                        await signOut(auth);
+                        window.location.href = 'index.html';
+                    } catch (error) {
+                        console.error('Logout failed:', error.message);
+                        alert('Logout failed. Please try again.');
+                    }
+                });
+            }
+
+            // Sidebar Hamburger Logic
+            const sidebar = document.getElementById('sidebar');
+            const hamburger = document.querySelector('.hamburger');
+            if (hamburger && sidebar) {
+                hamburger.addEventListener('click', () => {
+                    sidebar.classList.toggle('show');
+                });
+                document.addEventListener('click', (e) => {
+                    if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+                        sidebar.classList.remove('show');
+                    }
+                });
+            }
+
+            // Chat Bubble
+            const chatBubble = document.getElementById('chat-bubble');
+            if (chatBubble) {
+                chatBubble.addEventListener('click', () => {
+                    alert('Chat feature coming soon!');
+                });
+            }
+
+            // Deposit Popup Logic
+            const depositPopup = document.getElementById('deposit-popup');
+            const depositButton = document.getElementById('popup-wallets');
+            const closeDepositPopup = document.getElementById('close-deposit-popup');
+            if (depositButton && depositPopup) {
+                depositButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    depositPopup.style.display = 'flex';
+                });
+            }
+            if (closeDepositPopup && depositPopup) {
+                closeDepositPopup.addEventListener('click', () => {
+                    depositPopup.style.display = 'none';
+                });
+                depositPopup.addEventListener('click', (e) => {
+                    if (e.target === depositPopup) {
+                        depositPopup.style.display = 'none';
+                    }
+                });
+            }
+
+            // Copy Wallet Address
             window.copyWallet = function(walletId, btn) {
                 const walletEl = document.getElementById(walletId);
                 const wallet = walletEl.textContent.trim();
-                navigator.clipboard.writeText(wallet).then(function() {
+                navigator.clipboard.writeText(wallet).then(() => {
                     btn.innerHTML = '<i class="fa-solid fa-check"></i>';
-                    setTimeout(function() {
+                    setTimeout(() => {
                         btn.innerHTML = '<i class="fa-regular fa-copy"></i>';
                     }, 1500);
                 });
-            }
-        </script>
-    </div>
-    <script type="module">
-        // Import Firebase modules
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
-        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js';
-        import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
+            };
 
-        // Your Firebase configuration
-        const firebaseConfig = {
-            apiKey:            "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
-            authDomain:        "investment-40343.firebaseapp.com",
-            projectId:         "investment-40343",
-            storageBucket:     "investment-40343.firebasestorage.app",
-            messagingSenderId: "126093031981",
-            appId:             "1:126093031981:web:fd4ae73c063044693b16a4",
-            measurementId:     "G-SXL6ZGL49W"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const database = getDatabase(app);
-
-        // Check auth state
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // User is logged in, update UI with balance
-                const userId = user.uid;
-                const userRef = ref(database, 'users/' + userId);
-                onValue(userRef, (snapshot) => {
-                    const data = snapshot.val() || {
-                        balance:     0,
-                        totalDeposit: 0,
-                        totalProfit: 0,
-                        totalBonus:  0,
-                        withdrawals: 0
-                    };
-                    document.getElementById('balance-value').textContent  = `$${data.balance.toFixed(2)}`;
-                    document.getElementById('total-deposit').textContent   = `$${data.totalDeposit.toFixed(2)}`;
-                    document.getElementById('total-profit').textContent    = `$${data.totalProfit.toFixed(2)}`;
-                    document.getElementById('total-bonus').textContent     = `$${data.totalBonus.toFixed(2)}`;
-                    document.getElementById('withdrawals').textContent     = `$${data.withdrawals.toFixed(2)}`;
-                });
-            } else {
-                // No user, redirect to index.html
-                window.location.href = 'index.html';
-            }
-        });
-
-        // Logout functionality
-        const logoutLink = document.getElementById('logout-link');
-        logoutLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            signOut(auth).then(() => {
-                window.location.href = 'index.html';
-            }).catch((error) => {
-                console.error('Logout failed:', error.message);
-                alert('Logout failed. Please try again.');
-            });
-        });
-
-        // Sidebar toggle
-        const sidebar = document.getElementById('sidebar');
-        const hamburger = document.querySelector('.hamburger');
-
-        hamburger.addEventListener('click', () => {
-            sidebar.classList.toggle('show');
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-                sidebar.classList.remove('show');
-            }
-        });
-        
-        // Optional: Update current price periodically
-        async function updateCurrentPrice() {
-            try {
-                const response = await fetch(
-                    'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=USD&apikey=[INSERT_YOUR_API_KEY_HERE]'
-                );
-                const data = await response.json();
-                if (data['Realtime Currency Exchange Rate'] && data['Realtime Currency Exchange Rate']['5. Exchange Rate']) {
-                    const price = data['Realtime Currency Exchange Rate']['5. Exchange Rate'];
-                    document.getElementById('current-price').textContent = `EUR/USD: ${parseFloat(price).toFixed(5)}`;
-                } else {
-                    document.getElementById('current-price').textContent = 'EUR/USD: N/A';
-                    console.warn('Unexpected API response structure or invalid API key:', data);
+            // Update Current Price
+            async function updateCurrentPrice() {
+                const apiKey = '[INSERT_YOUR_API_KEY_HERE]'; // TODO: Sign up for a free key at https://www.alphavantage.co/ and replace this
+                if (apiKey === '[INSERT_YOUR_API_KEY_HERE]') {
+                    console.warn('Alpha Vantage API key is missing. Please add a valid API key from https://www.alphavantage.co/.');
+                    document.getElementById('current-price').textContent = 'EUR/USD: API Key Missing';
+                    return;
                 }
-            } catch (error) {
-                console.error('Price update failed:', error);
-                document.getElementById('current-price').textContent = 'EUR/USD: Error';
+                try {
+                    const response = await fetch(
+                        `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=USD&apikey=${apiKey}`
+                    );
+                    const data = await response.json();
+                    if (data['Realtime Currency Exchange Rate'] && data['Realtime Currency Exchange Rate']['5. Exchange Rate']) {
+                        const price = data['Realtime Currency Exchange Rate']['5. Exchange Rate'];
+                        document.getElementById('current-price').textContent = `EUR/USD: ${parseFloat(price).toFixed(5)}`;
+                    } else {
+                        document.getElementById('current-price').textContent = 'EUR/USD: N/A';
+                    }
+                } catch (error) {
+                    console.error('Price update failed:', error);
+                    document.getElementById('current-price').textContent = 'EUR/USD: Error';
+                }
             }
-        }
-
-        setInterval(updateCurrentPrice, 10000);
-        updateCurrentPrice();
-        // Logout functionality
-        logout-link.addEventListener('click', (e) => {
-            e.preventDefault();
-            signOut(auth).then(() => {
-                window.location.href = 'index.html';
-            }).catch((error) => {
-                console.error('Logout failed:', error.message);
-                alert('Logout failed. Please try again.');
-            });
+            setInterval(updateCurrentPrice, 10000);
+            updateCurrentPrice();
         });
     </script>
 </body>
