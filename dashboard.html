@@ -235,10 +235,39 @@
                                 <div class="info-icon"><i class="fa-solid fa-coins"></i></div>
                             </div>
                         </div>
+        
                         <div class="balance-chart">
                             <div class="chart-box">
                                 <div class="tradingview-widget-container">
                                     <div id="tradingview_forex_chart" class="tradingview-widget-container__widget"></div>
+                                     <div class="market-widget" id="bitcoin-chart-widget">
+                <div class="market-widget-title">Bitcoin Candle Chart</div>
+                <div class="tradingview-widget-container">
+                    <div id="tradingview_bitcoin_chart" class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+                    <script type="text/javascript">
+                        new TradingView.widget({
+                            "autosize": true,
+                            "symbol": "BINANCE:BTCUSDT",
+                            "interval": "D",
+                            "timezone": "Etc/UTC",
+                            "theme": "dark",
+                            "style": "1",
+                            "locale": "en",
+                            "toolbar_bg": "#f1f3f6",
+                            "enable_publishing": false,
+                            "allow_symbol_change": true,
+                            "container_id": "tradingview_bitcoin_chart",
+                            "studies": ["MASimple@tv-basicstudies"],
+                            "hide_top_toolbar": false,
+                            "hide_legend": false,
+                            "save_image": false,
+                            "hide_volume": false,
+                            "support_host": "https://www.tradingview.com"
+                        });
+                    </script>
+                </div>
+            </div>
                                     <div class="tradingview-widget-copyright">
                                         <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
                                             <span class="blue-text">Track all markets on TradingView</span>
@@ -274,87 +303,6 @@
                     </div>
                 </div>
             </section>
-            <div class="market-widgets-row">
-                <div class="market-widget" id="market-overview-widget">
-                    <div class="market-widget-title">Market Overview</div>
-                    <div class="tradingview-widget-container">
-                        <div class="tradingview-widget-container__widget"></div>
-                        <script type="application/json" id="market-overview-config">
-{
-    "title": "Market Overview",
-    "tabs": [
-        {
-            "title": "Crypto",
-            "symbols": [
-                {"s": "BINANCE:BTCUSDT", "d": "Bitcoin / TetherUS"},
-                {"s": "BINANCE:ETHUSDT", "d": "Ethereum / TetherUS"},
-                {"s": "CRYPTOCAP:USDT.D", "d": "Market Cap USDT Dominance, %"},
-                {"s": "BINANCE:BNBUSDT", "d": "Binance Coin / TetherUS"},
-                {"s": "CRYPTOCAP:USDC", "d": "Market Cap USDC, $"},
-                {"s": "BINANCE:XRPUSDT", "d": "XRP / TetherUS"}
-            ]
-        }
-    ],
-    "width": "100%",
-    "height": "400",
-    "locale": "en",
-    "showSymbolLogo": true,
-    "colorTheme": "dark"
-}
-                        </script>
-                        <script src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async></script>
-                    </div>
-                </div>
-                <div class="market-widget" id="market-news-widget">
-                    <div class="tradingview-widget-container">
-                        <div class="tradingview-widget-container__widget"></div>
-                        <script type="application/json" id="market-news-config">
-{
-    "feedMode": "market",
-    "market": "crypto",
-    "width": "100%",
-    "height": "400",
-    "locale": "en",
-    "colorTheme": "dark",
-    "symbols": [
-        {"proName": "OANDA:SPX500USD"},
-        {"proName": "BITSTAMP:BTCUSD"},
-        {"proName": "BITSTAMP:ETHUSD"}
-    ]
-}
-                        </script>
-                        <script src="https://s3.tradingview.com/external-embedding/embed-widget-news.js" async></script>
-                    </div>
-                </div>
-            </div>
-            <div class="market-widget" id="bitcoin-chart-widget">
-                <div class="market-widget-title">Bitcoin Candle Chart</div>
-                <div class="tradingview-widget-container">
-                    <div id="tradingview_bitcoin_chart" class="tradingview-widget-container__widget"></div>
-                    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-                    <script type="text/javascript">
-                        new TradingView.widget({
-                            "autosize": true,
-                            "symbol": "BINANCE:BTCUSDT",
-                            "interval": "D",
-                            "timezone": "Etc/UTC",
-                            "theme": "dark",
-                            "style": "1",
-                            "locale": "en",
-                            "toolbar_bg": "#f1f3f6",
-                            "enable_publishing": false,
-                            "allow_symbol_change": true,
-                            "container_id": "tradingview_bitcoin_chart",
-                            "studies": ["MASimple@tv-basicstudies"],
-                            "hide_top_toolbar": false,
-                            "hide_legend": false,
-                            "save_image": false,
-                            "hide_volume": false,
-                            "support_host": "https://www.tradingview.com"
-                        });
-                    </script>
-                </div>
-            </div>
             <div class="market-widget" id="bitcoin-news-widget">
                 <div class="market-widget-title">Recent Bitcoin News</div>
                 <div class="custom-news">
@@ -372,6 +320,60 @@
                     .custom-news a:hover { text-decoration: underline; }
                 </style>
             </div>
+            <div class="market-widgets-row">
+                <div class="market-widget" id="market-overview-widget">
+                    <div class="market-widget-title">Market Overview</div>
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="application/json" id="market-overview-config">
+                            {
+                                "title": "Market Overview",
+                                "tabs": [
+                                    {
+                                        "title": "Crypto",
+                                        "symbols": [
+                                            {"s": "BINANCE:BTCUSDT", "d": "Bitcoin / TetherUS"},
+                                            {"s": "BINANCE:ETHUSDT", "d": "Ethereum / TetherUS"},
+                                            {"s": "CRYPTOCAP:USDT.D", "d": "Market Cap USDT Dominance, %"},
+                                            {"s": "BINANCE:BNBUSDT", "d": "Binance Coin / TetherUS"},
+                                            {"s": "CRYPTOCAP:USDC", "d": "Market Cap USDC, $"},
+                                            {"s": "BINANCE:XRPUSDT", "d": "XRP / TetherUS"}
+                                        ]
+                                    }
+                                ],
+                                "width": "100%",
+                                "height": "400",
+                                "locale": "en",
+                                "showSymbolLogo": true,
+                                "colorTheme": "dark"
+                            }
+                                                    </script>
+                                                    <script src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async></script>
+                                                </div>
+                                            </div>
+                                            <div class="market-widget" id="market-news-widget">
+                                                <div class="tradingview-widget-container">
+                                                    <div class="tradingview-widget-container__widget"></div>
+                                                    <script type="application/json" id="market-news-config">
+                            {
+                                "feedMode": "market",
+                                "market": "crypto",
+                                "width": "100%",
+                                "height": "400",
+                                "locale": "en",
+                                "colorTheme": "dark",
+                                "symbols": [
+                                    {"proName": "OANDA:SPX500USD"},
+                                    {"proName": "BITSTAMP:BTCUSD"},
+                                    {"proName": "BITSTAMP:ETHUSD"}
+                                ]
+                            }
+                        </script>
+                        <script src="https://s3.tradingview.com/external-embedding/embed-widget-news.js" async></script>
+                    </div>
+                </div>
+            </div>
+            
         </main>
     </div>
     <script type="module">
