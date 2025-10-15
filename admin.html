@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Equity Hubs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: #0c1018;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            height: 95vh;
+            background: #1e293b;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+            position: relative;
+            margin: 10px 0;
+        }
+        .sidebar {
+            width: 250px;
+            background: #111827;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar nav ul {
+            list-style-type: none;
+        }
+        .sidebar nav ul li {
+            padding: 15px 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+        .sidebar nav ul li.active a,
+        .sidebar nav ul li:hover a {
+            background-color: #00ffff;
+            padding: 18px;
+            border-radius: 15px;
+            color: #000;
+            text-decoration: none;
+        }
+        .sidebar nav ul li a {
+            display: flex;
+            align-items: center;
+            color: inherit;
+            text-decoration: none;
+            width: 100%;
+        }
+        .sidebar nav ul li .icon {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 30px 40px;
+            overflow-y: auto;
+            position: relative;
+        }
+        .welcome {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        .admin-section {
+            background: #0c1018;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
+        }
+        .admin-section h2 {
+            font-size: 20px;
+            color: #00ffff;
+            margin-bottom: 20px;
+        }
+        .user-list, .deposit-requests {
+            margin-bottom: 40px;
+        }
+        .user-table, .request-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #111827;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .user-table th, .user-table td,
+        .request-table th, .request-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #2d3748;
+        }
+        .user-table th, .request-table th {
+            background: #1e293b;
+            color: #00ffff;
+            font-weight: 600;
+        }
+        .editable-field {
+            cursor: pointer;
+            color: #00ffff;
+        }
+        .editable-field:hover {
+            text-decoration: underline;
+        }
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .approve-btn {
+            background: #00ff00;
+            color: #000;
+        }
+        .reject-btn {
+            background: #ff0000;
+            color: #fff;
+        }
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+        .hamburger {
+            display: none;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            color: #00ffff;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .auth-section {
+            background: #111827;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .auth-section h1 {
+            font-size: 28px;
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+        .auth-section p {
+            font-size: 16px;
+            color: #a0aec0;
+            margin-bottom: 20px;
+        }
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        .auth-btn {
+            padding: 12px 24px;
+            background: #00ffff;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+        .auth-btn:hover {
+            background: #00e5e5;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .popup-content {
+            background: #111827;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            border: 1px solid #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+        .popup-content h2 {
+            color: #00ffff;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .popup-content input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            background: #1e293b;
+            color: #fff;
+            font-size: 16px;
+        }
+        .popup-content input:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+        .popup-content button {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            background: #00ffff;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+        .popup-content button:hover {
+            background: #00e5e5;
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+        .close-btn:hover {
+            background: #00ffff;
+            color: #000;
+        }
+        .popup-content a {
+            color: #00ffff;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .popup-content a:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                transform: translateX(-100%);
+                z-index: 999;
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .hamburger {
+                display: block;
+            }
+            .main-content {
+                padding: 20px;
+            }
+            .auth-section {
+                padding: 20px;
+            }
+            .auth-section h1 {
+                font-size: 24px;
+            }
+            .auth-section p {
+                font-size: 14px;
+            }
+            .auth-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            .popup-content {
+                padding: 20px;
+                max-width: 90%;
+            }
+            .popup-content h2 {
+                font-size: 20px;
+            }
+            .popup-content input,
+            .popup-content button {
+                font-size: 14px;
+                padding: 10px;
+            }
+            .close-btn {
+                font-size: 20px;
+                width: 28px;
+                height: 28px;
+            }
+            .user-table, .request-table {
+                display: block;
+                overflow-x: auto;
+            }
+            .user-table th, .user-table td,
+            .request-table th, .request-table td {
+                font-size: 12px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="hamburger" aria-label="Toggle Sidebar">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="sidebar" id="sidebar">
+            <nav>
+                <ul>
+                    <li class="active">
+                        <a href="admin.html">
+                            <span class="icon"><i class="fa-solid fa-user-shield"></i></span>
+                            <span class="text">Admin Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="accounts.html">
+                            <span class="icon"><i class="fa-solid fa-house"></i></span>
+                            <span class="text">Edit Bank</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="logout-link">
+                            <span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+                            <span class="text">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <main class="main-content" id="main-content">
+            <div id="auth-section" class="auth-section" style="display: none;">
+                <h1>Admin Authentication</h1>
+                <p>Manage with Confidence</p>
+                <div class="auth-buttons">
+                    <button class="auth-btn" id="login-btn">Login</button>
+                    <button class="auth-btn" id="register-btn">Create Account</button>
+                </div>
+            </div>
+            <div id="admin-content" style="display: none;">
+                <h1 class="welcome" id="welcome-message">Welcome, Admin!</h1>
+                <section class="admin-section">
+                    <h2>User Management</h2>
+                    <div class="user-list">
+                        <table class="user-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Total Deposit</th>
+                                    <th>Total Profit</th>
+                                    <th>Total Bonus</th>
+                                    <th>Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user-table-body"></tbody>
+                        </table>
+                    </div>
+                    <h2>Deposit Requests</h2>
+                    <div class="deposit-requests">
+                        <table class="request-table">
+                            <thead>
+                                <tr>
+                                    <th>User Email</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="request-table-body"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+            <div id="login-popup" class="popup">
+                <div class="popup-content">
+                    <span class="close-btn">&times;</span>
+                    <h2>Admin Login</h2>
+                    <input type="email" id="login-email" placeholder="Email" required>
+                    <input type="password" id="login-password" placeholder="Password" required>
+                    <p id="login-error" class="error-message"></p>
+                    <button id="login-submit">Login</button>
+                    <a href="#" id="switch-to-register">Don't have an admin account? Create one</a>
+                </div>
+            </div>
+            <div id="register-popup" class="popup">
+                <div class="popup-content">
+                    <span class="close-btn">&times;</span>
+                    <h2>Create Admin Account</h2>
+                    <input type="text" id="register-name" placeholder="Name" required>
+                    <input type="email" id="register-email" placeholder="Email" required>
+                    <input type="password" id="register-password" placeholder="Password" required>
+                    <p id="register-error" class="error-message"></p>
+                    <button id="register-submit">Create Account</button>
+                    <a href="#" id="switch-to-login">Already have an admin account? Login</a>
+                </div>
+            </div>
+            <div id="edit-popup" class="popup">
+                <div class="popup-content">
+                    <span class="close-btn">&times;</span>
+                    <h2 id="edit-popup-title">Edit Field</h2>
+                    <input type="number" id="edit-input" placeholder="Enter amount" min="0" step="0.01" required>
+                    <p id="edit-error" class="error-message"></p>
+                    <button id="edit-submit">Save</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+        import { getFirestore, collection, onSnapshot, doc, getDoc, setDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
+            authDomain: "investment-40343.firebaseapp.com",
+            projectId: "investment-40343",
+            storageBucket: "investment-40343.firebasestorage.app",
+            messagingSenderId: "126093031981",
+            appId: "1:126093031981:web:fd4ae73c063044693b16a4",
+            measurementId: "G-SXL6ZGL49W"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM Elements
+        const loginPopup = document.getElementById('login-popup');
+        const registerPopup = document.getElementById('register-popup');
+        const editPopup = document.getElementById('edit-popup');
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const closeButtons = document.querySelectorAll('.close-btn');
+        const switchToRegister = document.getElementById('switch-to-register');
+        const switchToLogin = document.getElementById('switch-to-login');
+        const authSection = document.getElementById('auth-section');
+        const adminContent = document.getElementById('admin-content');
+        const loginError = document.getElementById('login-error');
+        const registerError = document.getElementById('register-error');
+        const editError = document.getElementById('edit-error');
+        const editSubmit = document.getElementById('edit-submit');
+        const editInput = document.getElementById('edit-input');
+        const editPopupTitle = document.getElementById('edit-popup-title');
+
+        // Popup Functions
+        function showPopup(popup) {
+            if (popup) {
+                popup.style.display = 'flex';
+                const closeBtn = popup.querySelector('.close-btn');
+                if (closeBtn) closeBtn.style.display = 'flex';
+                console.log(`Showing popup: ${popup.id}`);
+            }
+        }
+
+        function hidePopup(popup) {
+            if (popup) {
+                popup.style.display = 'none';
+                popup.querySelectorAll('input').forEach(input => input.value = '');
+                const errorMessage = popup.querySelector('.error-message');
+                if (errorMessage) errorMessage.style.display = 'none';
+                console.log(`Hiding popup: ${popup.id}`);
+            }
+        }
+
+        // Close Button Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log(`Found ${closeButtons.length} close buttons`);
+            closeButtons.forEach((btn, index) => {
+                const computedStyle = window.getComputedStyle(btn);
+                console.log(`Close button ${index} (in ${btn.closest('.popup')?.id || 'no popup'}): display=${computedStyle.display}, visibility=${computedStyle.visibility}, opacity=${computedStyle.opacity}`);
+                btn.addEventListener('click', () => {
+                    const popup = btn.closest('.popup');
+                    if (popup) {
+                        hidePopup(popup);
+                        console.log(`Close button ${index} clicked for popup: ${popup.id}`);
+                    } else {
+                        console.error(`No parent popup found for close button ${index}`);
+                    }
+                });
+            });
+        });
+
+        // Auth Button Listeners
+        if (loginBtn) loginBtn.addEventListener('click', () => showPopup(loginPopup));
+        if (registerBtn) registerBtn.addEventListener('click', () => showPopup(registerPopup));
+        if (switchToRegister) {
+            switchToRegister.addEventListener('click', () => {
+                hidePopup(loginPopup);
+                showPopup(registerPopup);
+            });
+        }
+        if (switchToLogin) {
+            switchToLogin.addEventListener('click', () => {
+                hidePopup(registerPopup);
+                showPopup(loginPopup);
+            });
+        }
+
+        // Login Handler
+        if (document.getElementById('login-submit')) {
+            document.getElementById('login-submit').addEventListener('click', () => {
+                const email = document.getElementById('login-email')?.value;
+                const password = document.getElementById('login-password')?.value;
+                if (!email || !password) {
+                    if (loginError) {
+                        loginError.textContent = 'Please enter both email and password';
+                        loginError.style.display = 'block';
+                    }
+                    return;
+                }
+                signInWithEmailAndPassword(auth, email, password)
+                    .then(() => hidePopup(loginPopup))
+                    .catch(error => {
+                        if (loginError) {
+                            loginError.textContent = 'Login failed: Invalid credentials';
+                            loginError.style.display = 'block';
+                            console.error('Login error:', error.message);
+                        }
+                    });
+            });
+        }
+
+        // Register Handler
+        if (document.getElementById('register-submit')) {
+            document.getElementById('register-submit').addEventListener('click', async () => {
+                const name = document.getElementById('register-name')?.value;
+                const email = document.getElementById('register-email')?.value;
+                const password = document.getElementById('register-password')?.value;
+
+                if (!name || !email || !password) {
+                    if (registerError) {
+                        registerError.textContent = 'Please fill in all fields';
+                        registerError.style.display = 'block';
+                    }
+                    return;
+                }
+
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+                    await updateProfile(user, { displayName: name });
+                    await setDoc(doc(db, 'users', user.uid), {
+                        displayName: name,
+                        email: email,
+                        totalDeposit: 0,
+                        totalProfit: 0,
+                        totalBonus: 0,
+                        balance: 0,
+                        withdrawals: 0,
+                        createdAt: new Date().toISOString()
+                    });
+                    await setDoc(doc(db, 'admins', user.uid), { isAdmin: true }, { merge: true });
+                    hidePopup(registerPopup);
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    if (registerError) {
+                        registerError.textContent = 'Registration failed: ' + error.message;
+                        registerError.style.display = 'block';
+                    }
+                }
+            });
+        }
+
+        // Authentication State Handler
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const adminRef = doc(db, 'admins', user.uid);
+                try {
+                    const adminSnap = await getDoc(adminRef);
+                    if (!adminSnap.exists() || !adminSnap.data().isAdmin) {
+                        alert('Access denied: You are not an admin.');
+                        await signOut(auth);
+                        window.location.href = 'index.html';
+                        return;
+                    }
+                    if (authSection) authSection.style.display = 'none';
+                    if (adminContent) adminContent.style.display = 'block';
+                    if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'block';
+                    if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'block';
+                    if (document.getElementById('welcome-message')) {
+                        document.getElementById('welcome-message').textContent = `Welcome, ${user.displayName || 'Admin'}!`;
+                    }
+                    await loadUsers();
+                    await loadDepositRequests();
+                } catch (error) {
+                    console.error('Error checking admin status:', error);
+                    alert('Error loading admin dashboard. Please try again.');
+                    await signOut(auth);
+                    window.location.href = 'index.html';
+                }
+            } else {
+                if (authSection) authSection.style.display = 'block';
+                if (adminContent) adminContent.style.display = 'none';
+                if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'none';
+                if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'none';
+                showPopup(loginPopup);
+            }
+        });
+
+        // Load Users
+        async function loadUsers() {
+            const userTableBody = document.getElementById('user-table-body');
+            if (!userTableBody) {
+                console.error('User table body element not found');
+                return;
+            }
+            userTableBody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+
+            try {
+                onSnapshot(collection(db, 'users'), (usersSnapshot) => {
+                    userTableBody.innerHTML = '';
+                    if (usersSnapshot.empty) {
+                        userTableBody.innerHTML = '<tr><td colspan="6">No users found</td></tr>';
+                        return;
+                    }
+
+                    usersSnapshot.forEach(doc => {
+                        const userData = doc.data();
+                        const userId = doc.id;
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${userData.displayName || 'N/A'}</td>
+                            <td>${userData.email || 'N/A'}</td>
+                            <td>
+                                <span class="editable-field" data-field="totalDeposit" data-user="${userId}">
+                                    $${parseFloat(userData.totalDeposit || 0).toFixed(2)}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="editable-field" data-field="totalProfit" data-user="${userId}">
+                                    $${parseFloat(userData.totalProfit || 0).toFixed(2)}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="editable-field" data-field="totalBonus" data-user="${userId}">
+                                    $${parseFloat(userData.totalBonus || 0).toFixed(2)}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="editable-field" data-field="balance" data-user="${userId}">
+                                    $${parseFloat(userData.balance || 0).toFixed(2)}
+                                </span>
+                            </td>
+                        `;
+                        userTableBody.appendChild(row);
+                    });
+
+                    // Add click listeners for editable fields
+                    document.querySelectorAll('.editable-field').forEach(fieldElement => {
+                        fieldElement.addEventListener('click', () => {
+                            const field = fieldElement.getAttribute('data-field');
+                            const userId = fieldElement.getAttribute('data-user');
+                            const currentValue = parseFloat(fieldElement.textContent.replace('$', '')) || 0;
+                            editPopupTitle.textContent = `Edit ${field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}`;
+                            editInput.value = currentValue.toFixed(2);
+                            editPopup.setAttribute('data-user', userId);
+                            editPopup.setAttribute('data-field', field);
+                            showPopup(editPopup);
+                            editInput.focus();
+                        });
+                    });
+                }, (error) => {
+                    console.error('Error listening for users:', error);
+                    userTableBody.innerHTML = '<tr><td colspan="6">Failed to load users: ${error.message}</td></tr>';
+                });
+            } catch (error) {
+                console.error('Error initializing users:', error);
+                userTableBody.innerHTML = '<tr><td colspan="6">Failed to load users: ${error.message}</td></tr>';
+            }
+        }
+
+        // Edit Popup Submit Handler
+        if (editSubmit) {
+            editSubmit.addEventListener('click', async () => {
+                const userId = editPopup.getAttribute('data-user');
+                const field = editPopup.getAttribute('data-field');
+                const newValue = parseFloat(editInput.value);
+                if (isNaN(newValue) || newValue < 0 || editInput.value === '') {
+                    if (editError) {
+                        editError.textContent = 'Please enter a valid positive number (e.g., 100.00)';
+                        editError.style.display = 'block';
+                    }
+                    return;
+                }
+
+                editSubmit.classList.add('loading');
+                try {
+                    const userRef = doc(db, 'users', userId);
+                    await updateDoc(userRef, { [field]: newValue });
+                    const userSnap = await getDoc(userRef);
+                    const userData = userSnap.data();
+                    const newWithdrawals = (userData.totalDeposit || 0) + (userData.totalProfit || 0) + (userData.totalBonus || 0) - (userData.balance || 0);
+                    await updateDoc(userRef, { withdrawals: newWithdrawals });
+                    alert(`${field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())} updated successfully!`);
+                    hidePopup(editPopup);
+                } catch (error) {
+                    console.error(`Error updating ${field}:`, error);
+                    if (editError) {
+                        editError.textContent = `Failed to update ${field}: ${error.message}`;
+                        editError.style.display = 'block';
+                    }
+                } finally {
+                    editSubmit.classList.remove('loading');
+                }
+            });
+        }
+
+        // Load Deposit Requests
+        async function loadDepositRequests() {
+            const requestTableBody = document.getElementById('request-table-body');
+            if (!requestTableBody) {
+                console.error('Request table body element not found');
+                return;
+            }
+            requestTableBody.innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
+
+            try {
+                onSnapshot(collection(db, 'depositRequests'), (requestsSnapshot) => {
+                    requestTableBody.innerHTML = '';
+                    if (requestsSnapshot.empty) {
+                        requestTableBody.innerHTML = '<tr><td colspan="4">No pending requests</td></tr>';
+                        return;
+                    }
+
+                    requestsSnapshot.forEach(doc => {
+                        const requestData = doc.data();
+                        const requestId = doc.id;
+                        if (requestData.status === 'pending') {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${requestData.userEmail}</td>
+                                <td>$${parseFloat(requestData.amount || 0).toFixed(2)}</td>
+                                <td>${requestData.status}</td>
+                                <td>
+                                    <button class="action-btn approve-btn" data-request="${requestId}" data-user="${requestData.userId}" data-amount="${requestData.amount}">Approve</button>
+                                    <button class="action-btn reject-btn" data-request="${requestId}">Reject</button>
+                                </td>
+                            `;
+                            requestTableBody.appendChild(row);
+                        }
+                    });
+
+                    document.querySelectorAll('.approve-btn').forEach(btn => {
+                        btn.addEventListener('click', async () => {
+                            const requestId = btn.getAttribute('data-request');
+                            const userId = btn.getAttribute('data-user');
+                            const amount = parseFloat(btn.getAttribute('data-amount'));
+
+                            btn.classList.add('loading');
+                            try {
+                                const userRef = doc(db, 'users', userId);
+                                const userSnap = await getDoc(userRef);
+                                const userData = userSnap.exists() ? userSnap.data() : { totalDeposit: 0, totalProfit: 0, totalBonus: 0, balance: 0, withdrawals: 0 };
+                                const newDeposit = (userData.totalDeposit || 0) + amount;
+                                const newBalance = newDeposit + (userData.totalProfit || 0) + (userData.totalBonus || 0) - (userData.withdrawals || 0);
+
+                                await updateDoc(userRef, {
+                                    totalDeposit: newDeposit,
+                                    balance: newBalance
+                                });
+                                await updateDoc(doc(db, 'depositRequests', requestId), { status: 'approved' });
+                                alert('Deposit approved successfully!');
+                            } catch (error) {
+                                console.error('Error approving deposit:', error);
+                                alert(`Failed to approve deposit: ${error.message}`);
+                            } finally {
+                                btn.classList.remove('loading');
+                            }
+                        });
+                    });
+
+                    document.querySelectorAll('.reject-btn').forEach(btn => {
+                        btn.addEventListener('click', async () => {
+                            const requestId = btn.getAttribute('data-request');
+                            btn.classList.add('loading');
+                            try {
+                                await updateDoc(doc(db, 'depositRequests', requestId), { status: 'rejected' });
+                                alert('Deposit rejected successfully!');
+                            } catch (error) {
+                                console.error('Error rejecting deposit:', error);
+                                alert(`Failed to reject deposit: ${error.message}`);
+                            } finally {
+                                btn.classList.remove('loading');
+                            }
+                        });
+                    });
+                }, (error) => {
+                    console.error('Error listening for deposit requests:', error);
+                    requestTableBody.innerHTML = '<tr><td colspan="4">Failed to load requests: ${error.message}</td></tr>';
+                });
+            } catch (error) {
+                console.error('Error initializing deposit requests:', error);
+                requestTableBody.innerHTML = '<tr><td colspan="4">Failed to load requests: ${error.message}</td></tr>';
+            }
+        }
+
+        // Logout Handler
+        const logoutLink = document.getElementById('logout-link');
+        if (logoutLink) {
+            logoutLink.addEventListener('click', async (e) => {
+                e.preventDefault();
+                try {
+                    await signOut(auth);
+                    if (authSection) authSection.style.display = 'block';
+                    if (adminContent) adminContent.style.display = 'none';
+                    if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'none';
+                    if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'none';
+                    showPopup(loginPopup);
+                } catch (error) {
+                    console.error('Logout failed:', error);
+                    alert('Unable to log out. Please try again.');
+                }
+            });
+        } else {
+            console.error('Logout link element not found');
+        }
+
+        // Sidebar Hamburger Logic
+        const sidebar = document.getElementById('sidebar');
+        const hamburger = document.querySelector('.hamburger');
+        if (sidebar && hamburger) {
+            hamburger.addEventListener('click', () => {
+                sidebar.classList.toggle('show');
+            });
+            document.addEventListener('click', (e) => {
+                if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+                    sidebar.classList.remove('show');
+                }
+            });
+        } else {
+            console.error('Sidebar or hamburger element not found');
+        }
+    </script>
+</body>
+</html>
