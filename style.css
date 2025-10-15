@@ -288,7 +288,114 @@ img {
     position: relative;
     flex-shrink: 0;
 }
+/* Floating Telegram Chat Bubble Styles */
+.telegram-chat-bubble {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #0088cc 0%, #00aced 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
+    z-index: 9999;
+    transition: all 0.3s ease;
+    border: 3px solid white;
+}
 
+.telegram-chat-bubble:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 136, 204, 0.4);
+}
+
+.telegram-chat-bubble i {
+    font-size: 24px;
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.bubble-tooltip {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    background: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(50%);
+    transition: all 0.3s ease;
+    z-index: 10000;
+}
+
+.telegram-chat-bubble:hover .bubble-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(50%);
+}
+
+.bubble-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    right: 50%;
+    margin-right: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .telegram-chat-bubble {
+        width: 50px;
+        height: 50px;
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .telegram-chat-bubble i {
+        font-size: 20px;
+    }
+    
+    .bubble-tooltip {
+        font-size: 12px;
+        padding: 6px 10px;
+        bottom: 65px;
+    }
+}
+
+/* RTL Support for Arabic */
+html[dir="rtl"] .telegram-chat-bubble {
+    right: auto;
+    left: 20px;
+}
+
+html[dir="rtl"] .bubble-tooltip {
+    right: auto;
+    left: 0;
+    transform: translateX(-50%);
+}
+
+html[dir="rtl"] .bubble-tooltip::after {
+    right: auto;
+    left: 50%;
+    margin-right: 0;
+    margin-left: -5px;
+}
 .trading-mockup {
     width: 450px;
     max-width: 100%;

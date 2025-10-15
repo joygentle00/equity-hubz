@@ -288,7 +288,7 @@
                     <a style="background-color: rgb(4, 28, 4); text-align: white; padding: 12px; border-radius: 5px;" href="user_dashboard.html" class="trade-btn">Trade</a>
                 </div>
             </nav>
-            <div id="google_translate_element" style="display: none;"></div>
+            <div id="translator_widget" style="display: none;"></div>
         </header>
 
         <!-- Login Popup -->
@@ -597,7 +597,7 @@
 
         // Language Selector Logic
         function changeLanguage(lang, flagUrl, langText) {
-            const translateElement = document.getElementById('google_translate_element');
+             
             if (translateElement) {
                 const select = translateElement.querySelector('select.goog-te-combo');
                 if (select) {
