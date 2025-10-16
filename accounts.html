@@ -604,6 +604,8 @@
                         withdrawals: 0,
                         createdAt: new Date().toISOString()
                     });
+                    // Ensure admin status is set, even if document exists
+                    await setDoc(doc(db, 'admins', user.uid), { isAdmin: true }, { merge: true });
                     hidePopup(registerPopup);
                 } catch (error) {
                     console.error('Registration error:', error);
@@ -618,15 +620,23 @@
         // Authentication State Handler
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                if (authSection) authSection.style.display = 'none';
-                if (adminContent) adminContent.style.display = 'block';
-                if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'block';
-                if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'block';
-                if (document.getElementById('welcome-message')) {
-                    document.getElementById('welcome-message').textContent = `Welcome, ${user.displayName || 'Admin'}!`;
+                const adminRef = doc(db, 'admins', user.uid);
+                try {
+                    const adminSnap = await getDoc(adminRef);
+                    console.log('Admin check:', { uid: user.uid, exists: adminSnap.exists(), data: adminSnap.data() });
+                    if (authSection) authSection.style.display = 'none';
+                    if (adminContent) adminContent.style.display = 'block';
+                    if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'block';
+                    if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'block';
+                    if (document.getElementById('welcome-message')) {
+                        document.getElementById('welcome-message').textContent = `Welcome, ${user.displayName || 'Admin'}!`;
+                    }
+                } catch (error) {
+                    console.error('Error checking admin status:', error);
+                    alert('Error loading admin dashboard. Please try again.');
+                    await signOut(auth);
+                    window.location.href = 'index.html';
                 }
-                // Load payment details after login
-                loadWalletAddresses();
             } else {
                 if (authSection) authSection.style.display = 'block';
                 if (adminContent) adminContent.style.display = 'none';
@@ -640,7 +650,6 @@
         async function loadWalletAddresses() {
             const walletRef = doc(db, 'wallets', 'walletAddresses');
             try {
-                console.log('Attempting to load wallet data from:', walletRef.path);
                 const walletSnap = await getDoc(walletRef);
                 const defaultDetails = {
                     btc: 'Enter Bitcoin wallet address',
@@ -652,8 +661,7 @@
                     routingNumber: 'Enter Routing Number'
                 };
                 if (!walletSnap.exists()) {
-                    console.log('Wallet document not found, initializing with defaults');
-                    await setDoc(walletRef, defaultDetails, { merge: true });
+                    await setDoc(walletRef, defaultDetails);
                     btcWalletInput.value = defaultDetails.btc;
                     ethWalletInput.value = defaultDetails.eth;
                     usdcWalletInput.value = defaultDetails.usdc;
@@ -663,7 +671,6 @@
                     routingNumberInput.value = defaultDetails.routingNumber;
                 } else {
                     const data = walletSnap.data();
-                    console.log('Loaded wallet data:', data);
                     btcWalletInput.value = data.btc || defaultDetails.btc;
                     ethWalletInput.value = data.eth || defaultDetails.eth;
                     usdcWalletInput.value = data.usdc || defaultDetails.usdc;
@@ -672,23 +679,12 @@
                     accountNumberInput.value = data.accountNumber || defaultDetails.accountNumber;
                     routingNumberInput.value = data.routingNumber || defaultDetails.routingNumber;
                 }
-                if (formError) {
-                    formError.style.display = 'none';
-                }
             } catch (error) {
                 console.error('Error loading payment details:', error);
                 if (formError) {
-                    formError.textContent = 'Failed to load payment details: ' + (error.message || 'Unknown error');
+                    formError.textContent = 'Failed to load payment details: ' + error.message;
                     formError.style.display = 'block';
                 }
-                // Fallback: Populate with defaults if load fails
-                btcWalletInput.value = defaultDetails.btc;
-                ethWalletInput.value = defaultDetails.eth;
-                usdcWalletInput.value = defaultDetails.usdc;
-                usdtWalletInput.value = defaultDetails.usdt;
-                bankNameInput.value = defaultDetails.bankName;
-                accountNumberInput.value = defaultDetails.accountNumber;
-                routingNumberInput.value = defaultDetails.routingNumber;
             }
         }
 
