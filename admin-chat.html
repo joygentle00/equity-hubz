@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Deposit - Equity Hubs</title>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com 'unsafe-inline'; style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https://*.firebaseio.com;">
+    <title>Admin Chat - Equity Hubs</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com;">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         * {
@@ -18,7 +18,6 @@
             color: #fff;
             display: flex;
             justify-content: center;
-            align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -80,76 +79,78 @@
             font-size: 24px;
             margin-bottom: 30px;
         }
-        .admin-section {
+        .chat-section {
             background: #0c1018;
             padding: 20px;
             border-radius: 12px;
             box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
-        .admin-section h2 {
+        .chat-header {
+            padding: 15px;
+            background: #111827;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
             font-size: 20px;
             color: #00ffff;
             margin-bottom: 20px;
-            text-align: center;
         }
-        .wallet-form {
-            max-width: 600px;
-            margin: 0 auto;
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #0c1018;
+            margin-bottom: 20px;
         }
-        .wallet-form label {
-            display: block;
-            color: #00ffff;
-            margin-bottom: 8px;
-            font-weight: 600;
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 70%;
         }
-        .wallet-form input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 16px;
+        .message.admin {
+            background: #00ffff;
+            color: #000;
+            margin-left: auto;
+        }
+        .message.user {
+            background: #2d3748;
+            color: #fff;
+        }
+        .message .timestamp {
+            font-size: 12px;
+            color: #a0aec0;
+            margin-top: 5px;
+        }
+        .chat-input {
+            padding: 15px;
+            background: #111827;
+            border-radius: 0 0 12px 12px;
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input input {
+            flex-grow: 1;
+            padding: 10px;
             border: 1px solid #2d3748;
             border-radius: 8px;
-            background: #111827;
+            background: #1e293b;
             color: #fff;
             font-size: 16px;
-            font-family: monospace;
         }
-        .wallet-form input:focus {
-            outline: none;
-            border-color: #00ffff;
-            box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
-        }
-        .wallet-form button {
-            width: 100%;
-            padding: 12px;
+        .chat-input button {
+            padding: 10px 20px;
             background: #00ffff;
             color: #000;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
-            font-weight: 600;
-            transition: background 0.3s ease;
         }
-        .wallet-form button:hover {
+        .chat-input button:hover {
             background: #00e5e5;
-        }
-        .wallet-form button.loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-        .error-message {
-            color: #ff4444;
-            font-size: 14px;
-            margin-top: 10px;
-            text-align: center;
-            display: none;
-        }
-        .success-message {
-            color: #00ff00;
-            font-size: 14px;
-            margin-top: 10px;
-            text-align: center;
-            display: none;
         }
         .hamburger {
             display: none;
@@ -349,14 +350,6 @@
                 width: 28px;
                 height: 28px;
             }
-            .wallet-form input {
-                font-size: 14px;
-                padding: 10px;
-            }
-            .wallet-form button {
-                font-size: 14px;
-                padding: 10px;
-            }
         }
     </style>
 </head>
@@ -375,9 +368,15 @@
                         </a>
                     </li>
                     <li class="active">
-                        <a href="admin-deposit.html">
-                            <span class="icon"><i class="fa-regular fa-credit-card"></i></span>
-                            <span class="text">Edit Wallets</span>
+                        <a href="admin-chat.html">
+                            <span class="icon"><i class="fa-solid fa-comments"></i></span>
+                            <span class="text">Admin Chat</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="accounts.html">
+                            <span class="icon"><i class="fa-solid fa-house"></i></span>
+                            <span class="text">Edit Bank</span>
                         </a>
                     </li>
                     <li>
@@ -390,7 +389,7 @@
             </nav>
         </div>
         <main class="main-content" id="main-content">
-            <div id="auth-section" class="auth-section" style="display: none;">
+            <div id="auth-section" class="auth-section">
                 <h1>Admin Authentication</h1>
                 <p>Manage with Confidence</p>
                 <div class="auth-buttons">
@@ -398,28 +397,14 @@
                     <button class="auth-btn" id="register-btn">Create Account</button>
                 </div>
             </div>
-            <div id="admin-content" class="admin-section">
+            <div id="admin-content" class="chat-section">
                 <h1 class="welcome" id="welcome-message">Welcome, Admin!</h1>
-                <h2>Manage Payment Details</h2>
-                <form class="wallet-form" id="wallet-form">
-                    <label for="btc-wallet">Bitcoin (BTC) Address</label>
-                    <input type="text" id="btc-wallet" name="btc" placeholder="Enter Bitcoin wallet address" required>
-                    <label for="eth-wallet">Ethereum (ETH) Address</label>
-                    <input type="text" id="eth-wallet" name="eth" placeholder="Enter Ethereum wallet address" required>
-                    <label for="usdc-wallet">USDC Address</label>
-                    <input type="text" id="usdc-wallet" name="usdc" placeholder="Enter USDC wallet address" required>
-                    <label for="usdt-wallet">USDT Address</label>
-                    <input type="text" id="usdt-wallet" name="usdt" placeholder="Enter USDT wallet address" required>
-                    <label for="bank-name">Bank Name</label>
-                    <input type="text" id="bank-name" name="bankName" placeholder="Enter Bank Name" required>
-                    <label for="account-number">Account Number</label>
-                    <input type="text" id="account-number" name="accountNumber" placeholder="Enter Account Number" required>
-                    <label for="routing-number">Routing Number</label>
-                    <input type="text" id="routing-number" name="routingNumber" placeholder="Enter Routing Number" required>
-                    <button type="submit" id="save-wallets">Save Changes</button>
-                    <p id="form-error" class="error-message"></p>
-                    <p id="form-success" class="success-message"></p>
-                </form>
+                <div class="chat-header">Admin Chat</div>
+                <div class="chat-messages" id="chat-messages"></div>
+                <div class="chat-input">
+                    <input type="text" id="message-input" placeholder="Type a message..." required>
+                    <button id="send-message">Send</button>
+                </div>
             </div>
             <div id="login-popup" class="popup">
                 <div class="popup-content">
@@ -449,7 +434,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-        import { getFirestore, doc, getDoc, setDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
@@ -464,6 +449,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const messagesRef = collection(db, 'chat');
 
         // DOM Elements
         const loginPopup = document.getElementById('login-popup');
@@ -471,22 +457,15 @@
         const authSection = document.getElementById('auth-section');
         const adminContent = document.getElementById('admin-content');
         const loginBtn = document.getElementById('login-btn');
-        const registerBtn = document.getElementById('register-btn');
+        registerBtn = document.getElementById('register-btn');
         const closeButtons = document.querySelectorAll('.close-btn');
         const switchToRegister = document.getElementById('switch-to-register');
         const switchToLogin = document.getElementById('switch-to-login');
         const loginError = document.getElementById('login-error');
         const registerError = document.getElementById('register-error');
-        const walletForm = document.getElementById('wallet-form');
-        const formError = document.getElementById('form-error');
-        const formSuccess = document.getElementById('form-success');
-        const btcWalletInput = document.getElementById('btc-wallet');
-        const ethWalletInput = document.getElementById('eth-wallet');
-        const usdcWalletInput = document.getElementById('usdc-wallet');
-        const usdtWalletInput = document.getElementById('usdt-wallet');
-        const bankNameInput = document.getElementById('bank-name');
-        const accountNumberInput = document.getElementById('account-number');
-        const routingNumberInput = document.getElementById('routing-number');
+        const chatMessages = document.getElementById('chat-messages');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-message');
 
         // Popup Functions
         function showPopup(popup) {
@@ -530,9 +509,6 @@
                     }
                 });
             }
-
-            // Load Payment Details
-            loadWalletAddresses();
         });
 
         // Auth Button Listeners
@@ -604,6 +580,8 @@
                         withdrawals: 0,
                         createdAt: new Date().toISOString()
                     });
+                    await setDoc(doc(db, 'admins', user.uid), { isAdmin: true }, { merge: true });
+                    alert('Admin account created successfully!');
                     hidePopup(registerPopup);
                 } catch (error) {
                     console.error('Registration error:', error);
@@ -615,126 +593,72 @@
             });
         }
 
-        // Authentication State Handler
+        // Authentication State Handler with Admin Check
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                if (authSection) authSection.style.display = 'none';
-                if (adminContent) adminContent.style.display = 'block';
-                if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'block';
-                if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'block';
-                if (document.getElementById('welcome-message')) {
+                const adminRef = doc(db, 'admins', user.uid);
+                const adminSnap = await getDoc(adminRef);
+                if (adminSnap.exists()) {
+                    authSection.style.display = 'none';
+                    adminContent.style.display = 'block';
+                    document.getElementById('sidebar').style.display = 'block';
+                    document.querySelector('.hamburger').style.display = 'block';
                     document.getElementById('welcome-message').textContent = `Welcome, ${user.displayName || 'Admin'}!`;
+
+                    // Chat Functionality
+                    function addMessage(message, isAdmin) {
+                        const div = document.createElement('div');
+                        div.className = `message ${isAdmin ? 'admin' : 'user'}`;
+                        div.innerHTML = `<p>${message.text}</p><span class="timestamp">${new Date(message.timestamp?.toDate()).toLocaleTimeString()}</span>`;
+                        chatMessages.appendChild(div);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+
+                    sendButton.addEventListener('click', async () => {
+                        const messageText = messageInput.value.trim();
+                        if (messageText) {
+                            await addDoc(messagesRef, {
+                                text: messageText,
+                                uid: user.uid,
+                                displayName: user.displayName || 'Admin',
+                                timestamp: serverTimestamp(),
+                                isAdmin: true
+                            });
+                            messageInput.value = '';
+                        }
+                    });
+
+                    messageInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter' && messageInput.value.trim()) {
+                            sendButton.click();
+                        }
+                    });
+
+                    onSnapshot(messagesRef, (snapshot) => {
+                        chatMessages.innerHTML = '';
+                        snapshot.forEach(doc => {
+                            const data = doc.data();
+                            addMessage(data, data.isAdmin);
+                        });
+                    }, (error) => {
+                        console.error('Error fetching messages:', error);
+                    });
+                } else {
+                    authSection.style.display = 'block';
+                    adminContent.style.display = 'none';
+                    document.getElementById('sidebar').style.display = 'none';
+                    document.querySelector('.hamburger').style.display = 'none';
+                    showPopup(loginPopup);
+                    alert('Access denied. Only admins can use this chat.');
                 }
-                // Load payment details after login
-                loadWalletAddresses();
             } else {
-                if (authSection) authSection.style.display = 'block';
-                if (adminContent) adminContent.style.display = 'none';
-                if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'none';
-                if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'none';
+                authSection.style.display = 'block';
+                adminContent.style.display = 'none';
+                document.getElementById('sidebar').style.display = 'none';
+                document.querySelector('.hamburger').style.display = 'none';
                 showPopup(loginPopup);
             }
         });
-
-        // Load Payment Details
-        async function loadWalletAddresses() {
-            const walletRef = doc(db, 'wallets', 'walletAddresses');
-            try {
-                console.log('Attempting to load wallet data from:', walletRef.path);
-                const walletSnap = await getDoc(walletRef);
-                const defaultDetails = {
-                    btc: 'Enter Bitcoin wallet address',
-                    eth: 'Enter Ethereum wallet address',
-                    usdc: 'Enter USDC wallet address',
-                    usdt: 'Enter USDT wallet address',
-                    bankName: 'Enter Bank Name',
-                    accountNumber: 'Enter Account Number',
-                    routingNumber: 'Enter Routing Number'
-                };
-                if (!walletSnap.exists()) {
-                    console.log('Wallet document not found, initializing with defaults');
-                    await setDoc(walletRef, defaultDetails, { merge: true });
-                    btcWalletInput.value = defaultDetails.btc;
-                    ethWalletInput.value = defaultDetails.eth;
-                    usdcWalletInput.value = defaultDetails.usdc;
-                    usdtWalletInput.value = defaultDetails.usdt;
-                    bankNameInput.value = defaultDetails.bankName;
-                    accountNumberInput.value = defaultDetails.accountNumber;
-                    routingNumberInput.value = defaultDetails.routingNumber;
-                } else {
-                    const data = walletSnap.data();
-                    console.log('Loaded wallet data:', data);
-                    btcWalletInput.value = data.btc || defaultDetails.btc;
-                    ethWalletInput.value = data.eth || defaultDetails.eth;
-                    usdcWalletInput.value = data.usdc || defaultDetails.usdc;
-                    usdtWalletInput.value = data.usdt || defaultDetails.usdt;
-                    bankNameInput.value = data.bankName || defaultDetails.bankName;
-                    accountNumberInput.value = data.accountNumber || defaultDetails.accountNumber;
-                    routingNumberInput.value = data.routingNumber || defaultDetails.routingNumber;
-                }
-                if (formError) {
-                    formError.style.display = 'none';
-                }
-            } catch (error) {
-                console.error('Error loading payment details:', error);
-                if (formError) {
-                    formError.textContent = 'Failed to load payment details: ' + (error.message || 'Unknown error');
-                    formError.style.display = 'block';
-                }
-                // Fallback: Populate with defaults if load fails
-                btcWalletInput.value = defaultDetails.btc;
-                ethWalletInput.value = defaultDetails.eth;
-                usdcWalletInput.value = defaultDetails.usdc;
-                usdtWalletInput.value = defaultDetails.usdt;
-                bankNameInput.value = defaultDetails.bankName;
-                accountNumberInput.value = defaultDetails.accountNumber;
-                routingNumberInput.value = defaultDetails.routingNumber;
-            }
-        }
-
-        // Save Payment Details
-        if (walletForm) {
-            walletForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const btc = btcWalletInput.value.trim();
-                const eth = ethWalletInput.value.trim();
-                const usdc = usdcWalletInput.value.trim();
-                const usdt = usdtWalletInput.value.trim();
-                const bankName = bankNameInput.value.trim();
-                const accountNumber = accountNumberInput.value.trim();
-                const routingNumber = routingNumberInput.value.trim();
-
-                if (!btc || !eth || !usdc || !usdt || !bankName || !accountNumber || !routingNumber) {
-                    if (formError) {
-                        formError.textContent = 'Please fill in all payment details';
-                        formError.style.display = 'block';
-                        formSuccess.style.display = 'none';
-                    }
-                    return;
-                }
-
-                const saveButton = document.getElementById('save-wallets');
-                saveButton.classList.add('loading');
-                try {
-                    const walletRef = doc(db, 'wallets', 'walletAddresses');
-                    await updateDoc(walletRef, { btc, eth, usdc, usdt, bankName, accountNumber, routingNumber });
-                    formSuccess.textContent = 'Payment details updated successfully!';
-                    formSuccess.style.display = 'block';
-                    formError.style.display = 'none';
-                } catch (error) {
-                    console.error('Error saving payment details:', error);
-                    formError.textContent = 'Failed to save payment details: ' + error.message;
-                    formError.style.display = 'block';
-                    formSuccess.style.display = 'none';
-                } finally {
-                    saveButton.classList.remove('loading');
-                    setTimeout(() => {
-                        formSuccess.style.display = 'none';
-                        formError.style.display = 'none';
-                    }, 3000);
-                }
-            });
-        }
 
         // Logout Handler
         const logoutLink = document.getElementById('logout-link');
@@ -743,10 +667,10 @@
                 e.preventDefault();
                 try {
                     await signOut(auth);
-                    if (authSection) authSection.style.display = 'block';
-                    if (adminContent) adminContent.style.display = 'none';
-                    if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'none';
-                    if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'none';
+                    authSection.style.display = 'block';
+                    adminContent.style.display = 'none';
+                    document.getElementById('sidebar').style.display = 'none';
+                    document.querySelector('.hamburger').style.display = 'none';
                     showPopup(loginPopup);
                 } catch (error) {
                     console.error('Logout failed:', error);
@@ -755,5 +679,6 @@
             });
         }
     </script>
+</div>
 </body>
 </html>
