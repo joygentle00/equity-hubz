@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Equity Hubs</title>
+    <link rel="icon" type="image" href="">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
     <style>
         * {
@@ -598,6 +599,7 @@
                         createdAt: new Date().toISOString()
                     });
                     await setDoc(doc(db, 'admins', user.uid), { isAdmin: true }, { merge: true });
+                    alert('Admin account created successfully!');
                     hidePopup(registerPopup);
                 } catch (error) {
                     console.error('Registration error:', error);
@@ -612,30 +614,15 @@
         // Authentication State Handler
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const adminRef = doc(db, 'admins', user.uid);
-                try {
-                    const adminSnap = await getDoc(adminRef);
-                    if (!adminSnap.exists() || !adminSnap.data().isAdmin) {
-                        alert('Access denied: You are not an admin.');
-                        await signOut(auth);
-                        window.location.href = 'index.html';
-                        return;
-                    }
-                    if (authSection) authSection.style.display = 'none';
-                    if (adminContent) adminContent.style.display = 'block';
-                    if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'block';
-                    if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'block';
-                    if (document.getElementById('welcome-message')) {
-                        document.getElementById('welcome-message').textContent = `Welcome, ${user.displayName || 'Admin'}!`;
-                    }
-                    await loadUsers();
-                    await loadDepositRequests();
-                } catch (error) {
-                    console.error('Error checking admin status:', error);
-                    alert('Error loading admin dashboard. Please try again.');
-                    await signOut(auth);
-                    window.location.href = 'index.html';
+                if (authSection) authSection.style.display = 'none';
+                if (adminContent) adminContent.style.display = 'block';
+                if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'block';
+                if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'block';
+                if (document.getElementById('welcome-message')) {
+                    document.getElementById('welcome-message').textContent = `Welcome, ${user.displayName || 'Admin'}!`;
                 }
+                await loadUsers();
+                await loadDepositRequests();
             } else {
                 if (authSection) authSection.style.display = 'block';
                 if (adminContent) adminContent.style.display = 'none';
