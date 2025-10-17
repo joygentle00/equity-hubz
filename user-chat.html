@@ -5,83 +5,115 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>User Chat - Equity Hubs</title>
   <style>
-    body {
-      background: #0c1018;
-      color: #fff;
-      font-family: "Poppins", sans-serif;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
-    }
-    header {
-      background: #111827;
-      padding: 15px 20px;
-      font-size: 18px;
-      color: #00ffff;
-      text-align: center;
-      border-bottom: 1px solid #00ffff44;
-    }
-    .chat-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    .messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-    }
-    .message {
-      padding: 10px 15px;
-      border-radius: 12px;
-      max-width: 70%;
-      margin-bottom: 15px;
-      word-wrap: break-word;
-    }
-    .message.self {
-      background: #00ffff;
-      color: #000;
-      margin-left: auto;
-      text-align: right;
-    }
-    .message.admin {
-      background: #1e293b;
-      color: #fff;
-      margin-right: auto;
-    }
-    .input-area {
-      display: flex;
-      padding: 10px;
-      background: #111827;
-      border-top: 1px solid #00ffff33;
-    }
-    .input-area input {
-      flex: 1;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #00ffff44;
-      background: #1e293b;
-      color: #fff;
-      font-size: 16px;
-    }
-    .input-area button {
-      padding: 10px 20px;
-      margin-left: 10px;
-      background: #00ffff;
-      color: #000;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .input-area button:hover {
-      background: #00e5e5;
-    }
-  </style>
+    /* Existing styles remain unchanged */
+body {
+  background: #0c1018;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+header {
+  background: #111827;
+  padding: 15px 20px;
+  font-size: 18px;
+  color: #00ffff;
+  text-align: center;
+  border-bottom: 1px solid #00ffff44;
+}
+
+.chat-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  padding: 10px 15px;
+  border-radius: 12px;
+  max-width: 70%;
+  margin-bottom: 15px;
+  word-wrap: break-word;
+}
+
+.message.self {
+  background: #00ffff;
+  color: #000;
+  margin-left: auto;
+  text-align: right;
+}
+
+.message.admin {
+  background: #1e293b;
+  color: #fff;
+  margin-right: auto;
+}
+
+.input-area {
+  display: flex;
+  padding: 10px;
+  background: #111827;
+  border-top: 1px solid #00ffff33;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #00ffff44;
+  background: #1e293b;
+  color: #fff;
+  font-size: 16px;
+}
+
+.input-area button {
+  padding: 10px 20px;
+  margin-left: 10px;
+  background: #00ffff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.input-area button:hover {
+  background: #00e5e5;
+}
+
+/* New media query for mobile view */
+@media (max-width: 768px) {
+  .messages {
+    padding: 10px; /* Reduce padding to bring content closer */
+    margin-bottom: 0; /* Remove any default margin */
+  }
+
+  .input-area {
+    padding: 5px; /* Reduce padding to minimize space */
+  }
+
+  .input-area input {
+    padding: 8px; /* Slightly reduce input padding */
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
+
+  .input-area button {
+    padding: 8px 15px; /* Adjust button padding */
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
+}  </style>
 </head>
 <body>
   <header>User Support Chat</header>
