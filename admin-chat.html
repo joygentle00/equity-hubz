@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Chat - Equity Hubs</title>
+  <title>Admin Chat - Trust Market Finance</title>
   <style>
     body {
       background: #0c1018;
@@ -11,26 +11,66 @@
       font-family: 'Poppins', sans-serif;
       margin: 0;
       display: flex;
+      flex-direction: column;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
+    header {
+      background: #111827;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #00ffff33;
+    }
+
+    header span {
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    header img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    #langToggle {
+      background: #00ffff;
+      color: #000;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #langToggle:hover {
+      background: #00e5e5;
+    }
+
     .container {
       display: flex;
+      flex: 1;
       width: 100%;
-      flex-direction: column;
     }
 
     .sidebar {
-      width: 100%;
+      width: 30%;
       background: #111827;
       padding: 20px;
       overflow-y: auto;
-      max-height: 80vh;
+      border-right: 1px solid #00ffff33;
     }
 
     .sidebar h2 {
       margin-bottom: 15px;
+      font-size: 20px;
+      color: #00ffff;
     }
 
     .sidebar ul {
@@ -52,37 +92,16 @@
       color: #000;
     }
 
-    .chat-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .chat-modal.active {
-      display: flex;
-    }
-
-    .chat-content {
-      background: #1e293b;
-      border: 1px solid #00ffff33;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 500px;
-      height: 80vh;
+    .chat-section {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      position: relative;
+      background: #1e293b;
     }
 
     .chat-header {
-      padding: 10px 20px;
+      padding: 15px 20px;
       background: #111827;
       border-bottom: 1px solid #00ffff33;
       display: flex;
@@ -95,18 +114,11 @@
       font-size: 18px;
     }
 
-    .close-btn {
-      background: none;
-      border: none;
-      color: #00ffff;
-      font-size: 20px;
-      cursor: pointer;
-    }
-
     .messages {
       flex: 1;
       padding: 20px;
       overflow-y: auto;
+      background: #0c1018;
     }
 
     .message {
@@ -171,53 +183,42 @@
     }
 
     @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
       .sidebar {
-        padding: 15px;
+        width: 100%;
+        max-height: 200px;
       }
-
-      .chat-content {
-        width: 95%;
-        height: 85vh;
-      }
-
-      .messages {
-        padding: 10px;
-      }
-
-      .input-area {
-        padding: 5px;
-      }
-
-      .input-area input {
-        padding: 8px;
-        font-size: 14px;
-      }
-
-      .input-area button {
-        padding: 8px 15px;
-        font-size: 14px;
+      .chat-section {
+        height: calc(100vh - 250px);
       }
     }
   </style>
 </head>
 <body>
+  <header>
+    <span id="chatTitle">
+      <img src="/logo.jpg" alt="Logo"> Trust Market Finance - Admin
+    </span>
+    <button id="langToggle">عربي</button>
+  </header>
+
   <div class="container">
     <div class="sidebar">
       <h2>Users</h2>
       <div id="errorDiv" class="error" style="display: none;"></div>
       <ul id="userList"></ul>
     </div>
-    <div class="chat-modal" id="chatModal">
-      <div class="chat-content">
-        <div class="chat-header">
-          <h3 id="chatUserName">Chat with User</h3>
-          <button class="close-btn" id="closeBtn">&times;</button>
-        </div>
-        <div class="messages" id="messages"></div>
-        <div class="input-area">
-          <input type="text" id="messageInput" placeholder="Type a message..." />
-          <button id="sendBtn">Send</button>
-        </div>
+
+    <div class="chat-section">
+      <div class="chat-header">
+        <h3 id="chatUserName">Select a User to Chat</h3>
+      </div>
+      <div class="messages" id="messages"></div>
+      <div class="input-area">
+        <input type="text" id="messageInput" placeholder="Type a message..." />
+        <button id="sendBtn">Send</button>
       </div>
     </div>
   </div>
@@ -249,8 +250,6 @@
     const messageInput = document.getElementById("messageInput");
     const userList = document.getElementById("userList");
     const errorDiv = document.getElementById("errorDiv");
-    const chatModal = document.getElementById("chatModal");
-    const closeBtn = document.getElementById("closeBtn");
     const chatUserName = document.getElementById("chatUserName");
 
     let currentUser = null;
@@ -304,7 +303,6 @@
       document.querySelectorAll(".sidebar ul li").forEach(li => li.classList.remove("active"));
       element.classList.add("active");
       chatUserName.textContent = `Chat with ${userName}`;
-      chatModal.classList.add("active");
       loadMessages(uid);
     }
 
@@ -347,13 +345,6 @@
         console.error("Error sending message:", error);
         showError("Failed to send message: " + error.message);
       }
-    });
-
-    closeBtn.addEventListener("click", () => {
-      chatModal.classList.remove("active");
-      if (unsubscribeMessages) unsubscribeMessages();
-      selectedUserId = null;
-      messagesDiv.innerHTML = "";
     });
 
     messageInput.addEventListener("keypress", (e) => {
