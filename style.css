@@ -288,8 +288,9 @@ img {
     position: relative;
     flex-shrink: 0;
 }
+
 /* Floating Telegram Chat Bubble Styles */
-.telegram-chat-bubble {
+.chat-bubble {
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -307,7 +308,7 @@ img {
     border: 3px solid white;
 }
 
-.telegram-chat-bubble:hover {
+.chat-bubble:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 20px rgba(0, 136, 204, 0.4);
 }

@@ -100,159 +100,138 @@
     </div>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-    import { 
-      getFirestore, collection, addDoc, query, orderBy, onSnapshot,
-      getDoc, doc, getDocs, serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import { 
+    getFirestore, collection, addDoc, query, orderBy, onSnapshot,
+    getDocs, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
-      authDomain: "investment-40343.firebaseapp.com",
-      projectId: "investment-40343",
-      storageBucket: "investment-40343.firebasestorage.app",
-      messagingSenderId: "126093031981",
-      appId: "1:126093031981:web:fd4ae73c063044693b16a4",
-      measurementId: "G-SXL6ZGL49W"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
+    authDomain: "investment-40343.firebaseapp.com",
+    projectId: "investment-40343",
+    storageBucket: "investment-40343.firebasestorage.app",
+    messagingSenderId: "126093031981",
+    appId: "1:126093031981:web:fd4ae73c063044693b16a4",
+    measurementId: "G-SXL6ZGL49W"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-    const messagesDiv = document.getElementById("messages");
-    const sendBtn = document.getElementById("sendBtn");
-    const messageInput = document.getElementById("messageInput");
-    const userList = document.getElementById("userList");
-    const errorDiv = document.getElementById("errorDiv");
+  const messagesDiv = document.getElementById("messages");
+  const sendBtn = document.getElementById("sendBtn");
+  const messageInput = document.getElementById("messageInput");
+  const userList = document.getElementById("userList");
+  const errorDiv = document.getElementById("errorDiv");
 
-    let currentUser = null;
-    let selectedUserId = null;
-    let unsubscribeMessages = null;
+  let currentUser = null;
+  let selectedUserId = null;
+  let unsubscribeMessages = null;
 
-    function showError(message) {
-      errorDiv.textContent = message;
-      errorDiv.style.display = 'block';
-      setTimeout(() => {
-        errorDiv.style.display = 'none';
-      }, 4000);
+  function showError(message) {
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+    setTimeout(() => { errorDiv.style.display = 'none'; }, 4000);
+  }
+
+  // 🔹 Only check if user is logged in (not admin)
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      // not logged in, go back to admin login
+      window.location.href = "admin.html";
+      return;
     }
+    currentUser = user;
+    console.log("✅ Logged in as admin:", user.email);
+    loadUsers(); // always allow access
+  });
 
-    // Watch for login
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.href = "admin.html"; // redirect if not logged in
+  // 🔹 Load all users
+  async function loadUsers() {
+    try {
+      const querySnap = await getDocs(collection(db, "users"));
+      userList.innerHTML = "";
+
+      if (querySnap.empty) {
+        const li = document.createElement("li");
+        li.textContent = "No users found";
+        li.style.color = "#666";
+        userList.appendChild(li);
         return;
       }
 
-      currentUser = user;
-      const isAdmin = await checkAdminStatus(user.uid);
-
-      if (!isAdmin) {
-        showError("Access denied: You are not an admin.");
-        window.location.href = "admin.html"; // redirect non-admins
-        return;
-      }
-
-      console.log("✅ Admin verified:", user.email);
-      loadUsers();
-    });
-
-    // Verify if logged-in user is admin
-    async function checkAdminStatus(uid) {
-      try {
-        const adminDoc = await getDoc(doc(db, "admins", uid));
-        return adminDoc.exists() && adminDoc.data().isAdmin === true;
-      } catch (err) {
-        console.error("Error verifying admin:", err);
-        return false;
-      }
-    }
-
-    // Load all users for admin
-    async function loadUsers() {
-      try {
-        const querySnap = await getDocs(collection(db, "users"));
-        userList.innerHTML = "";
-
-        if (querySnap.empty) {
-          const li = document.createElement("li");
-          li.textContent = "No users found";
-          li.style.color = "#666";
-          userList.appendChild(li);
-          return;
-        }
-
-        querySnap.forEach((docSnap) => {
-          const userData = docSnap.data();
-          const li = document.createElement("li");
-          li.textContent = userData.name || userData.email || docSnap.id;
-          li.onclick = () => selectUser(docSnap.id, li);
-          userList.appendChild(li);
-        });
-      } catch (error) {
-        console.error("Error loading users:", error);
-        showError("Failed to load users: " + error.message);
-      }
-    }
-
-    function selectUser(uid, element) {
-      selectedUserId = uid;
-      document.querySelectorAll(".sidebar ul li").forEach(li => li.classList.remove("active"));
-      element.classList.add("active");
-      loadMessages(uid);
-    }
-
-    // Load messages from the selected user's chat
-    function loadMessages(uid) {
-      if (unsubscribeMessages) unsubscribeMessages();
-
-      const messagesRef = collection(db, "user_chats", uid, "messages");
-      const q = query(messagesRef, orderBy("timestamp", "asc"));
-
-      unsubscribeMessages = onSnapshot(q, (snapshot) => {
-        messagesDiv.innerHTML = "";
-        snapshot.forEach((doc) => {
-          const msg = doc.data();
-          const div = document.createElement("div");
-          div.classList.add("message");
-          div.classList.add(msg.sender === "admin" ? "self" : "other");
-          div.textContent = msg.text;
-          messagesDiv.appendChild(div);
-        });
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      querySnap.forEach((docSnap) => {
+        const userData = docSnap.data();
+        const li = document.createElement("li");
+        li.textContent = userData.name || userData.email || docSnap.id;
+        li.onclick = () => selectUser(docSnap.id, li);
+        userList.appendChild(li);
       });
+    } catch (error) {
+      console.error("Error loading users:", error);
+      showError("Failed to load users: " + error.message);
     }
+  }
 
-    // Send admin message
-    sendBtn.addEventListener("click", async () => {
-      if (!selectedUserId) {
-        alert("Select a user first.");
-        return;
-      }
-      const text = messageInput.value.trim();
-      if (!text) return;
+  // 🔹 Select user for chat
+  function selectUser(uid, element) {
+    selectedUserId = uid;
+    document.querySelectorAll(".sidebar ul li").forEach(li => li.classList.remove("active"));
+    element.classList.add("active");
+    loadMessages(uid);
+  }
 
-      try {
-        await addDoc(collection(db, "user_chats", selectedUserId, "messages"), {
-          text,
-          sender: "admin",
-          timestamp: serverTimestamp(),
-        });
-        messageInput.value = "";
-      } catch (error) {
-        console.error("Error sending message:", error);
-        showError("Failed to send message: " + error.message);
-      }
+  // 🔹 Load messages
+  function loadMessages(uid) {
+    if (unsubscribeMessages) unsubscribeMessages();
+
+    const messagesRef = collection(db, "user_chats", uid, "messages");
+    const q = query(messagesRef, orderBy("timestamp", "asc"));
+
+    unsubscribeMessages = onSnapshot(q, (snapshot) => {
+      messagesDiv.innerHTML = "";
+      snapshot.forEach((doc) => {
+        const msg = doc.data();
+        const div = document.createElement("div");
+        div.classList.add("message");
+        div.classList.add(msg.sender === "admin" ? "self" : "other");
+        div.textContent = msg.text;
+        messagesDiv.appendChild(div);
+      });
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
     });
+  }
 
-    messageInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter" && selectedUserId) {
-        sendBtn.click();
-      }
-    });
-  </script>
+  // 🔹 Send message
+  sendBtn.addEventListener("click", async () => {
+    if (!selectedUserId) {
+      alert("Select a user first.");
+      return;
+    }
+    const text = messageInput.value.trim();
+    if (!text) return;
+
+    try {
+      await addDoc(collection(db, "user_chats", selectedUserId, "messages"), {
+        text,
+        sender: "admin",
+        timestamp: serverTimestamp(),
+      });
+      messageInput.value = "";
+    } catch (error) {
+      console.error("Error sending message:", error);
+      showError("Failed to send message: " + error.message);
+    }
+  });
+
+  // Allow Enter key to send
+  messageInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter" && selectedUserId) sendBtn.click();
+  });
+</script>
 </body>
 </html>
