@@ -5,128 +5,200 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Chat - Equity Hubs</title>
   <style>
-    /* Existing styles remain unchanged */
-body {
-  background: #0c1018;
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-  display: flex;
-  overflow: hidden;
-}
+    body {
+      background: #0c1018;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-.container { display: flex; width: 100%; }
+    .container {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+    }
 
-.sidebar {
-  width: 250px;
-  background: #111827;
-  padding: 20px;
-  overflow-y: auto;
-}
+    .sidebar {
+      width: 100%;
+      background: #111827;
+      padding: 20px;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
 
-.sidebar h2 { margin-bottom: 15px; }
+    .sidebar h2 {
+      margin-bottom: 15px;
+    }
 
-.sidebar ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
 
-.sidebar ul li {
-  padding: 12px 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
+    .sidebar ul li {
+      padding: 12px 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
 
-.sidebar ul li:hover, .sidebar ul li.active {
-  background: #00ffff;
-  color: #000;
-}
+    .sidebar ul li:hover, .sidebar ul li.active {
+      background: #00ffff;
+      color: #000;
+    }
 
-.chat-area {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: #1e293b;
-  border-left: 1px solid #00ffff33;
-}
+    .chat-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
 
-.messages {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
-}
+    .chat-modal.active {
+      display: flex;
+    }
 
-.message {
-  margin-bottom: 15px;
-  padding: 10px 15px;
-  border-radius: 12px;
-  max-width: 70%;
-  word-wrap: break-word;
-}
+    .chat-content {
+      background: #1e293b;
+      border: 1px solid #00ffff33;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-.message.self { background: #00ffff; color: #000; margin-left: auto; text-align: right; }
+    .chat-header {
+      padding: 10px 20px;
+      background: #111827;
+      border-bottom: 1px solid #00ffff33;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-.message.other { background: #111827; color: #fff; margin-right: auto; }
+    .chat-header h3 {
+      margin: 0;
+      font-size: 18px;
+    }
 
-.input-area {
-  display: flex;
-  border-top: 1px solid #00ffff33;
-  padding: 10px;
-  background: #0c1018;
-}
+    .close-btn {
+      background: none;
+      border: none;
+      color: #00ffff;
+      font-size: 20px;
+      cursor: pointer;
+    }
 
-.input-area input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #00ffff44;
-  background: #1e293b;
-  color: #fff;
-  font-size: 16px;
-}
+    .messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
 
-.input-area button {
-  padding: 10px 20px;
-  margin-left: 10px;
-  background: #00ffff;
-  color: #000;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
+    .message {
+      margin-bottom: 15px;
+      padding: 10px 15px;
+      border-radius: 12px;
+      max-width: 70%;
+      word-wrap: break-word;
+    }
 
-.input-area button:hover { background: #00e5e5; }
+    .message.self {
+      background: #00ffff;
+      color: #000;
+      margin-left: auto;
+      text-align: right;
+    }
 
-.error { color: #ff6b6b; padding: 10px; background: #1a0000; border-radius: 8px; margin: 10px; }
+    .message.other {
+      background: #111827;
+      color: #fff;
+      margin-right: auto;
+    }
 
-/* New media query for mobile view */
-@media (max-width: 768px) {
-  .messages {
-    padding: 10px; /* Reduce padding to bring messages closer to input */
-    margin-bottom: 0; /* Remove any default margin */
-  }
+    .input-area {
+      display: flex;
+      border-top: 1px solid #00ffff33;
+      padding: 10px;
+      background: #0c1018;
+    }
 
-  .input-area {
-    padding: 5px; /* Reduce padding to minimize space above input */
-  }
+    .input-area input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #00ffff44;
+      background: #1e293b;
+      color: #fff;
+      font-size: 16px;
+    }
 
-  .input-area input {
-    padding: 8px; /* Slightly reduce input padding for mobile */
-    font-size: 14px; /* Adjust font size for smaller screens */
-  }
+    .input-area button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      background: #00ffff;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
 
-  .input-area button {
-    padding: 8px 15px; /* Adjust button padding for mobile */
-    font-size: 14px; /* Adjust font size for smaller screens */
-  }
+    .input-area button:hover {
+      background: #00e5e5;
+    }
 
-  /* Optional: Adjust sidebar behavior for mobile */
-  .sidebar {
-    width: 200px; /* Slightly reduce sidebar width on mobile */
-    padding: 15px; /* Reduce sidebar padding */
-  }
-}
-</style>
+    .error {
+      color: #ff6b6b;
+      padding: 10px;
+      background: #1a0000;
+      border-radius: 8px;
+      margin: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        padding: 15px;
+      }
+
+      .chat-content {
+        width: 95%;
+        height: 85vh;
+      }
+
+      .messages {
+        padding: 10px;
+      }
+
+      .input-area {
+        padding: 5px;
+      }
+
+      .input-area input {
+        padding: 8px;
+        font-size: 14px;
+      }
+
+      .input-area button {
+        padding: 8px 15px;
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -135,147 +207,158 @@ body {
       <div id="errorDiv" class="error" style="display: none;"></div>
       <ul id="userList"></ul>
     </div>
-    <div class="chat-area">
-      <div class="messages" id="messages"></div>
-      <div class="input-area">
-        <input type="text" id="messageInput" placeholder="Type a message..." />
-        <button id="sendBtn">Send</button>
+    <div class="chat-modal" id="chatModal">
+      <div class="chat-content">
+        <div class="chat-header">
+          <h3 id="chatUserName">Chat with User</h3>
+          <button class="close-btn" id="closeBtn">&times;</button>
+        </div>
+        <div class="messages" id="messages"></div>
+        <div class="input-area">
+          <input type="text" id="messageInput" placeholder="Type a message..." />
+          <button id="sendBtn">Send</button>
+        </div>
       </div>
     </div>
   </div>
 
- <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-  import { 
-    getFirestore, collection, addDoc, query, orderBy, onSnapshot,
-    getDocs, serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { 
+      getFirestore, collection, addDoc, query, orderBy, onSnapshot,
+      getDocs, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
-    authDomain: "investment-40343.firebaseapp.com",
-    projectId: "investment-40343",
-    storageBucket: "investment-40343.firebasestorage.app",
-    messagingSenderId: "126093031981",
-    appId: "1:126093031981:web:fd4ae73c063044693b16a4",
-    measurementId: "G-SXL6ZGL49W"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
+      authDomain: "investment-40343.firebaseapp.com",
+      projectId: "investment-40343",
+      storageBucket: "investment-40343.firebasestorage.app",
+      messagingSenderId: "126093031981",
+      appId: "1:126093031981:web:fd4ae73c063044693b16a4",
+      measurementId: "G-SXL6ZGL49W"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-  const messagesDiv = document.getElementById("messages");
-  const sendBtn = document.getElementById("sendBtn");
-  const messageInput = document.getElementById("messageInput");
-  const userList = document.getElementById("userList");
-  const errorDiv = document.getElementById("errorDiv");
+    const messagesDiv = document.getElementById("messages");
+    const sendBtn = document.getElementById("sendBtn");
+    const messageInput = document.getElementById("messageInput");
+    const userList = document.getElementById("userList");
+    const errorDiv = document.getElementById("errorDiv");
+    const chatModal = document.getElementById("chatModal");
+    const closeBtn = document.getElementById("closeBtn");
+    const chatUserName = document.getElementById("chatUserName");
 
-  let currentUser = null;
-  let selectedUserId = null;
-  let unsubscribeMessages = null;
+    let currentUser = null;
+    let selectedUserId = null;
+    let unsubscribeMessages = null;
 
-  function showError(message) {
-    errorDiv.textContent = message;
-    errorDiv.style.display = 'block';
-    setTimeout(() => { errorDiv.style.display = 'none'; }, 4000);
-  }
-
-  // 🔹 Only check if user is logged in (not admin)
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      // not logged in, go back to admin login
-      window.location.href = "admin.html";
-      return;
+    function showError(message) {
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+      setTimeout(() => { errorDiv.style.display = 'none'; }, 4000);
     }
-    currentUser = user;
-    console.log("✅ Logged in as admin:", user.email);
-    loadUsers(); // always allow access
-  });
 
-  // 🔹 Load all users
-  async function loadUsers() {
-    try {
-      const querySnap = await getDocs(collection(db, "users"));
-      userList.innerHTML = "";
-
-      if (querySnap.empty) {
-        const li = document.createElement("li");
-        li.textContent = "No users found";
-        li.style.color = "#666";
-        userList.appendChild(li);
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.href = "admin.html";
         return;
       }
-
-      querySnap.forEach((docSnap) => {
-        const userData = docSnap.data();
-        const li = document.createElement("li");
-        li.textContent = userData.name || userData.email || docSnap.id;
-        li.onclick = () => selectUser(docSnap.id, li);
-        userList.appendChild(li);
-      });
-    } catch (error) {
-      console.error("Error loading users:", error);
-      showError("Failed to load users: " + error.message);
-    }
-  }
-
-  // 🔹 Select user for chat
-  function selectUser(uid, element) {
-    selectedUserId = uid;
-    document.querySelectorAll(".sidebar ul li").forEach(li => li.classList.remove("active"));
-    element.classList.add("active");
-    loadMessages(uid);
-  }
-
-  // 🔹 Load messages
-  function loadMessages(uid) {
-    if (unsubscribeMessages) unsubscribeMessages();
-
-    const messagesRef = collection(db, "user_chats", uid, "messages");
-    const q = query(messagesRef, orderBy("timestamp", "asc"));
-
-    unsubscribeMessages = onSnapshot(q, (snapshot) => {
-      messagesDiv.innerHTML = "";
-      snapshot.forEach((doc) => {
-        const msg = doc.data();
-        const div = document.createElement("div");
-        div.classList.add("message");
-        div.classList.add(msg.sender === "admin" ? "self" : "other");
-        div.textContent = msg.text;
-        messagesDiv.appendChild(div);
-      });
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      currentUser = user;
+      console.log("✅ Logged in as admin:", user.email);
+      loadUsers();
     });
-  }
 
-  // 🔹 Send message
-  sendBtn.addEventListener("click", async () => {
-    if (!selectedUserId) {
-      alert("Select a user first.");
-      return;
+    async function loadUsers() {
+      try {
+        const querySnap = await getDocs(collection(db, "users"));
+        userList.innerHTML = "";
+
+        if (querySnap.empty) {
+          const li = document.createElement("li");
+          li.textContent = "No users found";
+          li.style.color = "#666";
+          userList.appendChild(li);
+          return;
+        }
+
+        querySnap.forEach((docSnap) => {
+          const userData = docSnap.data();
+          const li = document.createElement("li");
+          li.textContent = userData.name || userData.email || docSnap.id;
+          li.onclick = () => selectUser(docSnap.id, li, userData.name || userData.email || docSnap.id);
+          userList.appendChild(li);
+        });
+      } catch (error) {
+        console.error("Error loading users:", error);
+        showError("Failed to load users: " + error.message);
+      }
     }
-    const text = messageInput.value.trim();
-    if (!text) return;
 
-    try {
-      await addDoc(collection(db, "user_chats", selectedUserId, "messages"), {
-        text,
-        sender: "admin",
-        timestamp: serverTimestamp(),
+    function selectUser(uid, element, userName) {
+      selectedUserId = uid;
+      document.querySelectorAll(".sidebar ul li").forEach(li => li.classList.remove("active"));
+      element.classList.add("active");
+      chatUserName.textContent = `Chat with ${userName}`;
+      chatModal.classList.add("active");
+      loadMessages(uid);
+    }
+
+    function loadMessages(uid) {
+      if (unsubscribeMessages) unsubscribeMessages();
+
+      const messagesRef = collection(db, "user_chats", uid, "messages");
+      const q = query(messagesRef, orderBy("timestamp", "asc"));
+
+      unsubscribeMessages = onSnapshot(q, (snapshot) => {
+        messagesDiv.innerHTML = "";
+        snapshot.forEach((doc) => {
+          const msg = doc.data();
+          const div = document.createElement("div");
+          div.classList.add("message");
+          div.classList.add(msg.sender === "admin" ? "self" : "other");
+          div.textContent = msg.text;
+          messagesDiv.appendChild(div);
+        });
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
       });
-      messageInput.value = "";
-    } catch (error) {
-      console.error("Error sending message:", error);
-      showError("Failed to send message: " + error.message);
     }
-  });
 
-  // Allow Enter key to send
-  messageInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter" && selectedUserId) sendBtn.click();
-  });
-</script>
+    sendBtn.addEventListener("click", async () => {
+      if (!selectedUserId) {
+        alert("Select a user first.");
+        return;
+      }
+      const text = messageInput.value.trim();
+      if (!text) return;
+
+      try {
+        await addDoc(collection(db, "user_chats", selectedUserId, "messages"), {
+          text,
+          sender: "admin",
+          timestamp: serverTimestamp(),
+        });
+        messageInput.value = "";
+      } catch (error) {
+        console.error("Error sending message:", error);
+        showError("Failed to send message: " + error.message);
+      }
+    });
+
+    closeBtn.addEventListener("click", () => {
+      chatModal.classList.remove("active");
+      if (unsubscribeMessages) unsubscribeMessages();
+      selectedUserId = null;
+      messagesDiv.innerHTML = "";
+    });
+
+    messageInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter" && selectedUserId) sendBtn.click();
+    });
+  </script>
 </body>
 </html>
