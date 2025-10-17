@@ -2,20 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Prevent zooming and fix viewport on all devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>User Chat - Trust Market Finance</title>
   <style>
     * { box-sizing: border-box; }
 
-    body {
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
       font-family: "Poppins", sans-serif;
       background: #ffffff;
       color: #222;
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      transition: all 0.3s ease;
+      -webkit-text-size-adjust: 100%; /* Prevent auto zoom on iOS */
     }
 
     /* HEADER */
@@ -64,6 +65,9 @@
       flex: 1;
       display: flex;
       flex-direction: column;
+      height: calc(100vh - 60px);
+      background: #f4f4f4;
+      position: relative;
       overflow: hidden;
     }
 
@@ -71,9 +75,10 @@
       flex: 1;
       overflow-y: auto;
       padding: 15px;
-      background: #f4f4f4;
       display: flex;
       flex-direction: column;
+      scroll-behavior: smooth;
+      padding-bottom: 70px; /* Space for input area */
     }
 
     /* MESSAGE BUBBLES */
@@ -118,16 +123,21 @@
 
     /* INPUT AREA */
     .input-area {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
       display: flex;
       align-items: center;
-      padding: 10px;
+      padding: 10px env(safe-area-inset-left) 10px env(safe-area-inset-right);
       background: #fff;
       border-top: 1px solid #ddd;
+      z-index: 50;
     }
 
     .input-area input {
       flex: 1;
-      padding: 10px 12px;
+      padding: 12px 14px;
       border: 1px solid #ccc;
       border-radius: 20px;
       font-size: 15px;
@@ -170,13 +180,12 @@
       align-items: flex-end;
     }
 
-    body.rtl .timestamp {
-      text-align: left;
-    }
+    body.rtl .timestamp { text-align: left; }
 
     @media (max-width: 600px) {
       .message { font-size: 14px; }
       header { font-size: 16px; }
+      .input-area input { font-size: 14px; }
     }
   </style>
 </head>
@@ -191,10 +200,11 @@
 
   <div class="chat-container">
     <div id="messages" class="messages"></div>
-    <div class="input-area">
-      <input id="messageInput" type="text" placeholder="Type a message..." />
-      <button id="sendBtn">Send</button>
-    </div>
+  </div>
+
+  <div class="input-area">
+    <input id="messageInput" type="text" placeholder="Type a message..." />
+    <button id="sendBtn">Send</button>
   </div>
 
   <script type="module">
@@ -262,15 +272,13 @@
       switchLanguage(currentLang === "en" ? "ar" : "en");
     });
 
-    // Helper: format time
     function formatTime(timestamp) {
       if (!timestamp) return "";
       const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
       const hours = date.getHours();
       const minutes = date.getMinutes().toString().padStart(2, "0");
       const ampm = hours >= 12 ? "PM" : "AM";
-      const formatted = `${((hours + 11) % 12 + 1)}:${minutes} ${ampm}`;
-      return formatted;
+      return `${((hours + 11) % 12 + 1)}:${minutes} ${ampm}`;
     }
 
     onAuthStateChanged(auth, async (user) => {
@@ -282,6 +290,9 @@
       const chatId = user.uid;
       loadMessages(chatId);
       sendBtn.addEventListener("click", () => sendMessage(chatId));
+      messageInput.addEventListener("keypress", e => {
+        if (e.key === "Enter") sendMessage(chatId);
+      });
     });
 
     function loadMessages(chatId) {
