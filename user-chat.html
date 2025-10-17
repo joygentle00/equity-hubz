@@ -16,7 +16,7 @@
       font-family: "Poppins", sans-serif;
       background: #ffffff;
       color: #222;
-      -webkit-text-size-adjust: 100%; /* Prevent auto zoom on iOS */
+      -webkit-text-size-adjust: 100%;
     }
 
     /* HEADER */
@@ -78,7 +78,7 @@
       display: flex;
       flex-direction: column;
       scroll-behavior: smooth;
-      padding-bottom: 70px; /* Space for input area */
+      padding-bottom: 80px;
     }
 
     /* MESSAGE BUBBLES */
@@ -111,6 +111,13 @@
       align-items: flex-start;
     }
 
+    /* IMAGE IN CHAT */
+    .message img {
+      max-width: 100%;
+      border-radius: 12px;
+      margin-top: 5px;
+    }
+
     /* TIMESTAMP */
     .timestamp {
       font-size: 11px;
@@ -133,9 +140,10 @@
       background: #fff;
       border-top: 1px solid #ddd;
       z-index: 50;
+      gap: 8px;
     }
 
-    .input-area input {
+    .input-area input[type="text"] {
       flex: 1;
       padding: 12px 14px;
       border: 1px solid #ccc;
@@ -145,7 +153,6 @@
     }
 
     .input-area button {
-      margin-left: 10px;
       background: #0c1018;
       color: #fff;
       border: none;
@@ -157,6 +164,18 @@
     }
 
     .input-area button:hover { background: #1a2333; }
+
+    .upload-label {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #0c1018;
+      font-size: 22px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
 
     /* RTL MODE */
     body.rtl {
@@ -203,6 +222,8 @@
   </div>
 
   <div class="input-area">
+    <label for="imageInput" class="upload-label">📷</label>
+    <input type="file" id="imageInput" accept="image/*" />
     <input id="messageInput" type="text" placeholder="Type a message..." />
     <button id="sendBtn">Send</button>
   </div>
@@ -219,6 +240,12 @@
       onSnapshot,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import {
+      getStorage,
+      ref,
+      uploadBytes,
+      getDownloadURL
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
@@ -233,10 +260,12 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    const storage = getStorage(app);
 
     const messagesDiv = document.getElementById("messages");
     const messageInput = document.getElementById("messageInput");
     const sendBtn = document.getElementById("sendBtn");
+    const imageInput = document.getElementById("imageInput");
     const langToggle = document.getElementById("langToggle");
     const chatTitle = document.getElementById("chatTitle");
 
@@ -293,6 +322,7 @@
       messageInput.addEventListener("keypress", e => {
         if (e.key === "Enter") sendMessage(chatId);
       });
+      imageInput.addEventListener("change", e => handleImageUpload(e, chatId));
     });
 
     function loadMessages(chatId) {
@@ -303,10 +333,18 @@
           const msg = doc.data();
           const div = document.createElement("div");
           div.classList.add("message", msg.sender === "user" ? "self" : "admin");
-          div.innerHTML = `
-            <div>${msg.text}</div>
-            <div class="timestamp">${msg.timestamp ? formatTime(msg.timestamp) : ""}</div>
-          `;
+          if (msg.imageUrl) {
+            div.innerHTML = `
+              <img src="${msg.imageUrl}" alt="sent image" />
+              ${msg.text ? `<div>${msg.text}</div>` : ""}
+              <div class="timestamp">${msg.timestamp ? formatTime(msg.timestamp) : ""}</div>
+            `;
+          } else {
+            div.innerHTML = `
+              <div>${msg.text}</div>
+              <div class="timestamp">${msg.timestamp ? formatTime(msg.timestamp) : ""}</div>
+            `;
+          }
           messagesDiv.appendChild(div);
         });
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -323,6 +361,24 @@
         timestamp: serverTimestamp(),
       });
       messageInput.value = "";
+    }
+
+    async function handleImageUpload(e, chatId) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const fileRef = ref(storage, `chat_images/${chatId}/${Date.now()}_${file.name}`);
+      await uploadBytes(fileRef, file);
+      const imageUrl = await getDownloadURL(fileRef);
+
+      await addDoc(collection(db, "user_chats", chatId, "messages"), {
+        imageUrl,
+        sender: "user",
+        uid: currentUser.uid,
+        timestamp: serverTimestamp(),
+      });
+
+      imageInput.value = "";
     }
   </script>
 </body>
