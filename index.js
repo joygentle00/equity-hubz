@@ -175,38 +175,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- LANGUAGE TRANSLATION LOGIC ---
-    window.googleTranslateElementInit = function() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: 'en,es,fr,de,zh-CN',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            autoDisplay: false
-        }, 'google_translate_element');
+document.addEventListener("DOMContentLoaded", () => {
+  const dropdowns = document.querySelectorAll(".dropdown-option");
+  const tickerText = document.querySelector(".ticker-content");
+  if (!tickerText) return;
+  
+  const defaultText = tickerText.textContent.trim();
 
-        // Synchronize desktop and mobile selectors
-        const desktopSelect = document.getElementById('language-select-desktop');
-        const mobileSelect = document.getElementById('language-select-mobile');
-        if (desktopSelect && mobileSelect) {
-            desktopSelect.addEventListener('change', () => {
-                mobileSelect.value = desktopSelect.value;
-                changeLanguage();
-            });
-            mobileSelect.addEventListener('change', () => {
-                desktopSelect.value = mobileSelect.value;
-                changeLanguage();
-            });
-        }
-    };
+  dropdowns.forEach(option => {
+    option.addEventListener("click", async () => {
+      const selectedLang = option.getAttribute("data-value");
+      const flagUrl = option.getAttribute("data-flag");
+      const langAlt = option.querySelector("img").alt;
 
-    window.changeLanguage = function() {
-        const desktopSelect = document.getElementById('language-select-desktop');
-        const mobileSelect = document.getElementById('language-select-mobile');
-        const selectedLang = desktopSelect?.value || mobileSelect?.value;
-        const translateElement = document.querySelector('.goog-te-combo');
-        if (translateElement && selectedLang) {
-            translateElement.value = selectedLang;
-            translateElement.dispatchEvent(new Event('change'));
-        }
-    };
+      // Update flags and labels
+      const desktopTrigger = document.querySelector("#language-dropdown-desktop");
+      const mobileTrigger = document.querySelector("#language-dropdown-mobile");
+
+      if (desktopTrigger) {
+        desktopTrigger.querySelector(".dropdown-flag").style.backgroundImage = `url('${flagUrl}')`;
+        desktopTrigger.querySelector("span").textContent = langAlt;
+      }
+      if (mobileTrigger) {
+        mobileTrigger.querySelector(".dropdown-flag").style.backgroundImage = `url('${flagUrl}')`;
+        mobileTrigger.querySelector("span").textContent = langAlt;
+      }
+
+      // Reset to default text if English selected
+      if (selectedLang === "en") {
+        tickerText.textContent = defaultText;
+        return;
+      }
+
+      tickerText.textContent = "Translating...";
+
+      try {
+        const response = await fetch(
+          `https://api.mymemory.translated.net/get?q=${encodeURIComponent(defaultText)}&langpair=en|${selectedLang}`
+        );
+        const data = await response.json();
+        tickerText.textContent = data.responseData.translatedText || "⚠️ Translation unavailable.";
+      } catch (error) {
+        console.error("Translation error:", error);
+        tickerText.textContent = "⚠️ Error translating text.";
+      }
+    });
+  });
+});
+
 });
 

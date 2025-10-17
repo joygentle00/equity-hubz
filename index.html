@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Favicon to prevent 404 error -->
     <link rel="icon" type="logo.jpg" href="favicon.ico">
-    <!-- Google Translate API -->
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <style>
         /* Popup styles */
         .popup {
@@ -120,6 +118,7 @@
             left: 0;
             width: 150px;
             background: white;
+            color: black;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
@@ -138,6 +137,7 @@
         }
         .dropdown-option:hover {
             background: #f0f0f0;
+            color: black;
         }
         .dropdown-option img {
             width: 20px;
@@ -146,6 +146,7 @@
         }
         .language-selector-mobile .dropdown-trigger {
             padding: 5px;
+            color: black;
         }
         .language-selector-desktop .dropdown-menu {
             left: auto;
@@ -155,10 +156,10 @@
 </head>
 <body>
     <div class="container">
-        <header>
+       <header>
             <div class="alert-ticker-container">
                 <p class="ticker-content">
-                    ⚠️ BE AWARE OF FRAUD: Equityhubs will **NEVER** ask you to send money to a personal account. Always deposit funds through the secure, verified platform channels. Protect your investment. ⚠️ BE AWARE OF FRAUD: Equityhubs will **NEVER** ask you to send money to a personal account. Always deposit funds through the secure, verified platform channels. Protect your investment. ⚠️ BE AWARE OF FRAUD: Equityhubs will **NEVER** ask you to send money to a personal account. Always deposit funds through the secure, verified platform channels. Protect your investment.
+                    ⚠️ BE AWARE OF FRAUD: Equityhubs will **NEVER** ask you to send money to a personal account. Always deposit funds through the secure, verified platform channels. Protect your investment.
                 </p>
             </div>
             <nav>
@@ -171,25 +172,14 @@
                     <div class="language-selector language-selector-mobile">
                         <div class="dropdown-trigger" id="language-dropdown-mobile">
                             <i class="fas fa-globe"></i>
-                            <div class="dropdown-flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/640px-Flag_of_the_United_Kingdom_%283-5%29.svg.png')"></div>
                             <span>English</span>
                         </div>
                         <ul class="dropdown-menu" id="language-menu-mobile">
-                            <li class="dropdown-option" data-value="en" data-flag="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/640px-Flag_of_the_United_Kingdom_%283-5%29.svg.png">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/640px-Flag_of_the_United_Kingdom_%283-5%29.svg.png" alt="English">
-                            </li>
-                            <li class="dropdown-option" data-value="es" data-flag="https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg">
-                                <img src="https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg" alt="Spanish">
-                            </li>
-                            <li class="dropdown-option" data-value="fr" data-flag="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Flag_of_France_%281958%E2%80%931976%29.svg/640px-Flag_of_France_%281958%E2%80%931976%29.svg.png">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Flag_of_France_%281958%E2%80%931976%29.svg/640px-Flag_of_France_%281958%E2%80%931976%29.svg.png" alt="French">
-                            </li>
-                            <li class="dropdown-option" data-value="de" data-flag="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg">
-                                <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" alt="German">
-                            </li>
-                            <li class="dropdown-option" data-value="zh-CN" data-flag="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People%27s_Republic_of_China.svg">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People%27s_Republic_of_China.svg" alt="Chinese">
-                            </li>
+                            <li class="dropdown-option" data-value="en">English</li>
+                            <li class="dropdown-option" data-value="es">Spanish</li>
+                            <li class="dropdown-option" data-value="fr">French</li>
+                            <li class="dropdown-option" data-value="de">German</li>
+                            <li class="dropdown-option" data-value="zh-CN">Chinese</li>
                         </ul>
                     </div>
                     <a href="user-chat.html" class="chat-icon-mobile">
@@ -209,25 +199,14 @@
                     <div class="language-selector language-selector-desktop">
                         <div class="dropdown-trigger" id="language-dropdown-desktop">
                             <i class="fas fa-globe"></i>
-                            <div class="dropdown-flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_Kingdom.svg')"></div>
                             <span>English</span>
                         </div>
                         <ul class="dropdown-menu" id="language-menu-desktop">
-                            <li class="dropdown-option" data-value="en" data-flag="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/640px-Flag_of_the_United_Kingdom_%283-5%29.svg.png">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/640px-Flag_of_the_United_Kingdom_%283-5%29.svg.png" alt="English">
-                            </li>
-                            <li class="dropdown-option" data-value="es" data-flag="https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg">
-                                <img src="https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg" alt="Spanish">
-                            </li>
-                            <li class="dropdown-option" data-value="fr" data-flag="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg">
-                                <img src="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg" alt="French">
-                            </li>
-                            <li class="dropdown-option" data-value="de" data-flag="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg">
-                                <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" alt="German">
-                            </li>
-                            <li class="dropdown-option" data-value="zh-CN" data-flag="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People%27s_Republic_of_China.svg">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People%27s_Republic_of_China.svg" alt="Chinese">
-                            </li>
+                            <li class="dropdown-option" data-value="en">English</li>
+                            <li class="dropdown-option" data-value="es">Spanish</li>
+                            <li class="dropdown-option" data-value="fr">French</li>
+                            <li class="dropdown-option" data-value="de">German</li>
+                            <li class="dropdown-option" data-value="zh-CN">Chinese</li>
                         </ul>
                     </div>
                 </div>
@@ -239,9 +218,8 @@
                     <a style="background-color: rgb(4, 28, 4); text-align: white; padding: 12px; border-radius: 5px;" href="dashboard.html" class="trade-btn">Trade</a>
                 </div>
             </nav>
-            <div id="google_translate_element" style="display: none;"></div>
-        </header>
-        <!--TELEGRAM-->
+            <div id="google_translate_element"></div>
+        </header>        <!--TELEGRAM-->
          <a class="chat-bubble" href="user-chat.html">
             <i class="far fa-comment"></i>
          </a>
@@ -1086,61 +1064,74 @@
     });
 
     // Google Translate Initialization
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-    }
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,es,fr,de,zh-CN',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+}
 
-    // Language Selector Logic
-    function changeLanguage(lang, flagUrl, langText) {
-        const translateElement = document.getElementById('google_translate_element');
-        if (translateElement) {
-            const select = translateElement.querySelector('select.goog-te-combo');
-            if (select) {
-                select.value = lang;
-                select.dispatchEvent(new Event('change'));
-            }
+// Translation function
+function translateText(targetLang) {
+    const translateElement = document.getElementById('google_translate_element');
+    if (translateElement) {
+        const select = translateElement.querySelector('select.goog-te-combo');
+        if (select) {
+            select.value = targetLang;
+            select.dispatchEvent(new Event('change'));
         }
-        document.querySelectorAll('.dropdown-flag').forEach(flag => {
-            flag.style.backgroundImage = `url('${flagUrl}')`;
-        });
-        document.querySelectorAll('.dropdown-trigger span').forEach(span => {
-            span.textContent = langText;
-        });
     }
+}
 
-    // Dropdown toggle logic
-    function setupDropdown(triggerId, menuId) {
-        const trigger = document.getElementById(triggerId);
-        const menu = document.getElementById(menuId);
-        trigger.addEventListener('click', () => {
+// Language Selector Logic
+function changeLanguage(lang) {
+    translateText(lang);
+    // Update dropdown display
+    document.querySelectorAll('.dropdown-trigger span').forEach(span => {
+        span.textContent = lang === 'en' ? 'English' :
+            lang === 'es' ? 'Spanish' :
+            lang === 'fr' ? 'French' :
+            lang === 'de' ? 'German' :
+            lang === 'zh-CN' ? 'Chinese' : 'English';
+    });
+}
+
+// Dropdown toggle logic
+function setupDropdown(triggerId, menuId) {
+    const trigger = document.getElementById(triggerId);
+    const menu = document.getElementById(menuId);
+    if (trigger && menu) {
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
             menu.classList.toggle('active');
         });
 
-        // Handle option selection
         menu.querySelectorAll('.dropdown-option').forEach(option => {
             option.addEventListener('click', () => {
                 const value = option.getAttribute('data-value');
-                const flagUrl = option.getAttribute('data-flag');
-                const text = option.textContent.trim();
-                changeLanguage(value, flagUrl, text);
-                menu.classList.remove('active'); // Close dropdown after selection
+                changeLanguage(value);
+                menu.classList.remove('active');
             });
         });
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!trigger.contains(e.target) && !menu.contains(e.target)) {
                 menu.classList.remove('active');
             }
         });
     }
+}
 
-    // Initialize dropdowns
-    setupDropdown('language-dropdown-mobile', 'language-menu-mobile');
-    setupDropdown('language-dropdown-desktop', 'language-menu-desktop');
+// Initialize dropdowns
+setupDropdown('language-dropdown-mobile', 'language-menu-mobile');
+setupDropdown('language-dropdown-desktop', 'language-menu-desktop');
 
-    // Initialize with default language (English)
-    changeLanguage('en', 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/640px-Flag_of_the_United_Kingdom_%283-5%29.svg.png', 'English');
+// Initialize with default language (English)
+window.addEventListener('load', () => {
+    googleTranslateElementInit(); // Ensure this runs after page load
+    changeLanguage('en');
+});
 </script>
 </body>
 </html>
