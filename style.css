@@ -21,6 +21,20 @@ body {
     min-height: 100vh;
     padding: 0 8%;
     position: relative;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-name: colorChanger;
+    animation-delay: 2s;
+    
+}
+
+@keyframes colorChanger{
+    from { background: radial-gradient(circle at top right, rgba(0, 0, 0, 0.4), transparent 40%), 
+                radial-gradient(circle at center left, rgba(0, 0, 0, 0.712), transparent 60%),
+                #05285c;}
+    to {background: radial-gradient(circle at top right, rgba(103, 4, 4, 0.687), transparent 40%), 
+                radial-gradient(circle at center left, rgba(3, 91, 34, 0.712), transparent 60%),
+                #05285c;}
 }
 a {
     text-decoration: none;
@@ -261,6 +275,15 @@ img {
     height: 100%;
     display: block;
     border-radius: 60px;
+    animation-name: imageMove;
+    animation-duration: 4s;
+    animation-delay: 2s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes imageMove{
+    from {transform: translateY(20%);}
+    to {transform: translateY(0);}
 }
 .asset-icons {
     display: flex;
