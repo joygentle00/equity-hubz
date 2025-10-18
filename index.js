@@ -174,54 +174,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- LANGUAGE TRANSLATION LOGIC ---
-document.addEventListener("DOMContentLoaded", () => {
-  const dropdowns = document.querySelectorAll(".dropdown-option");
-  const tickerText = document.querySelector(".ticker-content");
-  if (!tickerText) return;
-  
-  const defaultText = tickerText.textContent.trim();
+});
 
-  dropdowns.forEach(option => {
-    option.addEventListener("click", async () => {
-      const selectedLang = option.getAttribute("data-value");
-      const flagUrl = option.getAttribute("data-flag");
-      const langAlt = option.querySelector("img").alt;
+// js/i18n.js
 
-      // Update flags and labels
-      const desktopTrigger = document.querySelector("#language-dropdown-desktop");
-      const mobileTrigger = document.querySelector("#language-dropdown-mobile");
+// Function to load translations
+function loadLanguage(lang) {
+  fetch(`/lang/${lang}.json`)
+    .then(response => response.json())
+    .then(data => {
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (data[key]) {
+          el.textContent = data[key];
+        }
+      });
+    })
+    .catch(err => console.error("Language file missing or invalid:", err));
+}
 
-      if (desktopTrigger) {
-        desktopTrigger.querySelector(".dropdown-flag").style.backgroundImage = `url('${flagUrl}')`;
-        desktopTrigger.querySelector("span").textContent = langAlt;
-      }
-      if (mobileTrigger) {
-        mobileTrigger.querySelector(".dropdown-flag").style.backgroundImage = `url('${flagUrl}')`;
-        mobileTrigger.querySelector("span").textContent = langAlt;
-      }
+// Get saved language or default to English
+const savedLang = localStorage.getItem("lang") || "en";
+loadLanguage(savedLang);
 
-      // Reset to default text if English selected
-      if (selectedLang === "en") {
-        tickerText.textContent = defaultText;
-        return;
-      }
+// Set dropdown to saved language
+const switcher = document.getElementById("languageSwitcher");
+if (switcher) switcher.value = savedLang;
 
-      tickerText.textContent = "Translating...";
-
-      try {
-        const response = await fetch(
-          `https://api.mymemory.translated.net/get?q=${encodeURIComponent(defaultText)}&langpair=en|${selectedLang}`
-        );
-        const data = await response.json();
-        tickerText.textContent = data.responseData.translatedText || "⚠️ Translation unavailable.";
-      } catch (error) {
-        console.error("Translation error:", error);
-        tickerText.textContent = "⚠️ Error translating text.";
-      }
-    });
+// Listen for language change
+if (switcher) {
+  switcher.addEventListener("change", (e) => {
+    const selectedLang = e.target.value;
+    localStorage.setItem("lang", selectedLang);
+    loadLanguage(selectedLang);
   });
-});
+}
 
-});
 

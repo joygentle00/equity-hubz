@@ -5,10 +5,9 @@
     <title>User Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-
     <style>
         * {
-            margin:  0;
+            margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
@@ -16,33 +15,33 @@
 
         body {
             background: #0c1018;
-            color:     #fff;
-            display:   flex;
+            color: #fff;
+            display: flex;
             justify-content: center;
-            align-items:    center;
+            align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
         .container {
-            display:   flex;
-            width:     100%;
+            display: flex;
+            width: 100%;
             max-width: 1200px;
-            height:    95vh;
-            background:    #1e293b;
+            height: 95vh;
+            background: #1e293b;
             border-radius: 12px;
-            box-shadow:    0 0 20px rgba(0, 255, 255, 0.1);
-            position:      relative;
-            margin:        10px 0;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+            position: relative;
+            margin: 10px 0;
         }
 
         .sidebar {
-            width:          250px;
-            background:     #111827;
-            padding:        20px;
-            display:        flex;
+            width: 250px;
+            background: #111827;
+            padding: 20px;
+            display: flex;
             flex-direction: column;
-            transition:     transform 0.3s ease-in-out;
+            transition: transform 0.3s ease-in-out;
         }
 
         .sidebar nav ul {
@@ -50,11 +49,11 @@
         }
 
         .sidebar nav ul li {
-            padding:          15px 10px;
-            border-radius:    8px;
-            margin-bottom:    10px;
-            cursor:           pointer;
-            transition:       background-color 0.3s ease-in-out;
+            padding: 15px 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
         }
 
         .sidebar nav ul li.active a,
@@ -62,40 +61,55 @@
             background-color: #00ffff;
             padding: 18px;
             border-radius: 15px;
-            color:            #000;
-            text-decoration:  none;
+            color: #000;
+            text-decoration: none;
         }
 
         .sidebar nav ul li a {
-            display:          flex;
-            align-items:      center;
-            color:            inherit;
-            text-decoration:  none;
-            width:            100%;
+            display: flex;
+            align-items: center;
+            color: inherit;
+            text-decoration: none;
+            width: 100%;
         }
 
         .sidebar nav ul li .icon {
             margin-right: 10px;
-            font-size:    18px;
+            font-size: 18px;
+        }
+
+        .language-selector {
+            margin-top: 20px;
+        }
+
+        .language-selector select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background: #222;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
         }
 
         .main-content {
-            flex-grow:   1;
-            padding:     30px 40px;
-            overflow-y:  auto;
-            position:    relative;
+            flex-grow: 1;
+            padding: 30px 40px;
+            overflow-y: auto;
+            position: relative;
         }
 
         .welcome {
-            font-size:    24px;
+            font-size: 24px;
             margin-bottom: 30px;
         }
 
         .balance-section {
-            background:    #0c1018;
-            padding:       20px;
+            background: #0c1018;
+            padding: 20px;
             border-radius: 12px;
-            box-shadow:    inset 0 0 20px rgba(0, 255, 255, 0.05);
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
         }
 
         .balance-card {
@@ -103,79 +117,79 @@
         }
 
         .balance-header {
-            font-size:      14px;
-            color:          #00ffff;
-            margin-bottom:  10px;
+            font-size: 14px;
+            color: #00ffff;
+            margin-bottom: 10px;
             letter-spacing: 1px;
-            font-weight:    600;
+            font-weight: 600;
         }
 
         .balance-value {
-            font-size:    36px;
-            font-weight:  bold;
+            font-size: 36px;
+            font-weight: bold;
             margin-bottom: 10px;
         }
 
         .balance-growth {
-            font-size:    14px;
+            font-size: 14px;
             margin-bottom: 20px;
         }
 
         .balance-growth .up {
-            color:        #00ff00;
-            font-weight:  600;
+            color: #00ff00;
+            font-weight: 600;
         }
 
         .balance-growth .green {
-            color:        #00ff00;
-            font-weight:  600;
+            color: #00ff00;
+            font-weight: 600;
         }
 
         .balance-details {
-            display:          flex;
-            flex-wrap:        wrap;
-            gap:              30px;
-            justify-content:  space-between;
-            margin-top:       20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: space-between;
+            margin-top: 20px;
         }
 
         .balance-chart {
-            flex:             1 1 45%;
-            min-width:        300px;
-            height:           300px;
-            background:       #111827;
-            border-radius:    12px;
-            box-shadow:       inset 0 0 20px rgba(0, 255, 255, 0.05);
-            display:          flex;
-            justify-content:  center;
-            align-items:      center;
+            flex: 1 1 45%;
+            min-width: 300px;
+            height: 300px;
+            background: #111827;
+            border-radius: 12px;
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .chart-box {
-            position:      relative;
-            width:         100%;
-            height:        100%;
-            background:    linear-gradient(to bottom, #0c1018, #111827);
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #0c1018, #111827);
             border-radius: 12px;
-            overflow:      hidden;
-            box-shadow:    inset 0 0 20px rgba(0, 255, 255, 0.05);
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
         }
 
         .balance-info-grid {
-            flex:       1 1 50%;
-            min-width:  350px;
-            display:    grid;
+            flex: 1 1 50%;
+            min-width: 350px;
+            display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap:        20px;
+            gap: 20px;
         }
 
         .info-card {
-            background:    #111827;
-            padding:       15px;
+            background: #111827;
+            padding: 15px;
             border-radius: 12px;
-            text-align:    center;
-            box-shadow:    inset 0 0 20px rgba(0, 255, 255, 0.05);
-            position:      relative;
+            text-align: center;
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
+            position: relative;
         }
 
         .info-card.light-black {
@@ -183,41 +197,41 @@
         }
 
         .info-value {
-            font-size:    24px;
-            font-weight:  bold;
+            font-size: 24px;
+            font-weight: bold;
             margin-bottom: 5px;
         }
 
         .info-label {
-            font-size:      12px;
-            color:          #00ffff;
-            margin-bottom:  10px;
+            font-size: 12px;
+            color: #00ffff;
+            margin-bottom: 10px;
             letter-spacing: 1px;
-            font-weight:    600;
+            font-weight: 600;
         }
 
         .info-icon {
-            position:  absolute;
-            top:       10px;
-            right:     10px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
             font-size: 20px;
-            color:     #00ffff;
+            color: #00ffff;
         }
 
         .chat-bubble {
-            position:      fixed;
-            bottom:        40px;
-            right:         40px;
-            background:    #00ffff;
-            color:         #000;
-            padding:       12px 20px;
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: #00ffff;
+            color: #000;
+            padding: 12px 20px;
             border-radius: 30px;
-            box-shadow:    0 0 12px rgba(0, 255, 255, 0.3);
-            display:       flex;
-            align-items:   center;
-            cursor:        pointer;
-            transition:    background-color 0.3s ease-in-out;
-            z-index:       1000;
+            box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            z-index: 1000;
         }
 
         .chat-bubble:hover {
@@ -226,7 +240,7 @@
 
         .chat-bubble .bubble-text {
             margin-right: 10px;
-            font-weight:  600;
+            font-weight: 600;
         }
 
         .chat-bubble .bubble-icon {
@@ -234,31 +248,31 @@
         }
 
         .chat-bubble .bubble-status {
-            width:      10px;
-            height:     10px;
+            width: 10px;
+            height: 10px;
             background: #00ff00;
             border-radius: 50%;
             margin-left: 10px;
-            animation:  pulse 2s infinite;
+            animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0% { transform: scale(1);   opacity: 1; }
+            0% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.2); opacity: 0.7; }
-            100% { transform: scale(1);   opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         .hamburger {
-            display:   none;
-            position:  absolute;
-            top:       20px;
-            left:      20px;
+            display: none;
+            position: absolute;
+            top: 20px;
+            left: 20px;
             background: none;
-            border:    none;
-            color:     #00ffff;
+            border: none;
+            color: #00ffff;
             font-size: 24px;
-            cursor:    pointer;
-            z-index:   1000;
+            cursor: pointer;
+            z-index: 1000;
         }
 
         @media (max-width: 768px) {
@@ -267,12 +281,12 @@
                 height: auto;
             }
             .sidebar {
-                position:  fixed;
-                top:       0;
-                left:      0;
-                height:    100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
                 transform: translateX(-100%);
-                z-index:   999;
+                z-index: 999;
             }
             .sidebar.show {
                 transform: translateX(0);
@@ -303,31 +317,31 @@
         }
 
         .tradingview-widget-container {
-            width:  100% !important;
+            width: 100% !important;
             height: 100% !important;
         }
 
         .current-price {
-            position:      absolute;
-            top:           10px;
-            right:         10px;
-            background:    rgba(0, 0, 0, 0.7);
-            color:         #00ff88;
-            padding:       5px 10px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #00ff88;
+            padding: 5px 10px;
             border-radius: 4px;
-            font-size:     14px;
-            z-index:       10;
+            font-size: 14px;
+            z-index: 10;
             pointer-events: none;
         }
 
         .time-line {
-            position:      absolute;
-            bottom:        0;
-            left:          0;
-            width:         100%;
-            height:        20px;
-            background:    linear-gradient(to right, #333, #555);
-            z-index:       5;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(to right, #333, #555);
+            z-index: 5;
             pointer-events: none;
         }
 
@@ -364,18 +378,18 @@
             }
         }
         .payment-method {
-            background:    #111827;
-            padding:       20px;
+            background: #111827;
+            padding: 20px;
             border-radius: 12px;
-            box-shadow:    inset 0 0 20px rgba(0, 255, 255, 0.05);
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
             margin-bottom: 30px;
-            width:         100%;
+            width: 100%;
         }
         .payment-method h2 {
-            color:          #00ffff;
-            margin-bottom:  20px;
-            text-align:     center;
-            font-weight:    600;
+            color: #00ffff;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
             letter-spacing: 1px;
         }
         @media (max-width: 768px) {
@@ -387,8 +401,10 @@
         #deposit-popup {
             display: none;
             position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             background: rgba(0,0,0,0.5);
             z-index: 2000;
             justify-content: center;
@@ -450,6 +466,39 @@
                 padding: 8px;
             }
         }
+        /* Withdraw Form Styles */
+        .withdraw-form {
+            background: #111827;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
+            margin-bottom: 30px;
+            width: 100%;
+        }
+        .withdraw-form input[type="number"],
+        .withdraw-form input[type="text"],
+        .withdraw-form select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background: #222;
+            color: #fff;
+            font-size: 14px;
+        }
+        .withdraw-form button {
+            background: #00ffff;
+            color: #000;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .withdraw-form button:hover {
+            background: #00e5e5;
+        }
     </style>
 </head>
 <body>
@@ -459,80 +508,77 @@
         </button>
 
         <div class="sidebar" id="sidebar">
-            <!-- Sidebar Nav (unchanged) -->
             <nav>
                 <ul>
                     <li class="active">
                         <a href="dashboard.html">
                             <span class="icon"><i class="fa-solid fa-house"></i></span>
-                            <span class="text">Home</span>
+                            <span class="text" data-i18n="nav_home">Home</span>
                         </a>
                     </li>
                     <li>
                         <a href="investment.html">
                             <span class="icon"><i class="fa-solid fa-boxes-stacked"></i></span>
-                            <span class="text">Packages</span>
+                            <span class="text" data-i18n="nav_packages">Packages</span>
                         </a>
                     </li>
                     <li>
                         <a href="deposit.html">
                             <span class="icon"><i class="fa-regular fa-credit-card"></i></span>
-                            <span class="text">Deposit</span>
+                            <span class="text" data-i18n="nav_deposit">Deposit</span>
                         </a>
                     </li>
                     <li>
                         <a href="withdraw.html">
                             <span class="icon"><i class="fa-regular fa-briefcase"></i></span>
-                            <span class="text">Withdraw</span>
+                            <span class="text" data-i18n="nav_withdraw">Withdraw</span>
                         </a>
-                    </li>
-                    
-                    <li>
-                          
                     </li>
                     <li>
                         <a href="profile.html">
                             <span class="icon"><i class="fa-regular fa-address-card"></i></span>
-                            <span class="text">Profile</span>
+                            <span class="text" data-i18n="nav_profile">Profile</span>
                         </a>
                     </li>
                     <li>
                         <a href="logout.html" id="logout-link">
                             <span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span>
-                            <span class="text">Logout</span>
+                            <span class="text" data-i18n="nav_logout">Logout</span>
                         </a>
                     </li>
                 </ul>
+                <div class="language-selector">
+                    <select id="languageSwitcher">
+                        <option value="en">English</option>
+                        <option value="fr">Français</option>
+                        <option value="es">Español</option>
+                    </select>
+                </div>
             </nav>
         </div>
-       <div class="withdraw-form">
-        <h2 style="color:#00ffff; text-align:center; margin-bottom:18px;">Withdraw Funds</h2>
-        <form id="withdrawal-form" style="display:flex; flex-direction:column; gap:15px; max-width:400px; margin:0 auto;">
-            <label for="withdraw-amount" style="color:#00ffff;">Amount to Withdraw:</label>
-            <input type="number" id="withdraw-amount" name="withdraw-amount" min="10" step="0.01" placeholder="Enter amount (min $10)" required style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; background:#222; color:#fff;">
-            
-            <label for="withdraw-method" style="color:#00ffff;">Select Withdrawal Method:</label>
-            <select id="withdraw-method" name="withdraw-method" required style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; background:#222; color:#fff;">
-                <option value="" disabled selected>Select method</option>
-                <option value="bitcoin">Bitcoin</option>
-                <option value="ethereum">Ethereum</option>
-                <option value="usdc">USDC</option>
-                <option value="usdt">USDT</option>
-                <option value="bank">Bank Transfer</option>
-            </select>
-
-            <label for="wallet-address" style="color:#00ffff;">Wallet Address / Bank Details:</label>
-            <input type="text" id="wallet-address" name="wallet-address" placeholder="Enter your wallet address or bank details" required style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; background:#222; color:#fff;">
-            
-            <button type="submit" style="background:#00ffff; color:#000; padding:12px; border:none; border-radius:8px; font-weight:600; cursor:pointer; transition:background-color 0.3s;">Submit Withdrawal</button>
-        </form>
-       </div>
-       
-            <!-- Market Widgets Row BELOW BALANCE SECTION -->
+        <div class="main-content">
+            <div class="withdraw-form">
+                <h2 data-i18n="withdraw_funds">Withdraw Funds</h2>
+                <form id="withdrawal-form">
+                    <label for="withdraw-amount" data-i18n="withdraw_amount">Amount to Withdraw:</label>
+                    <input type="number" id="withdraw-amount" name="withdraw-amount" min="10" step="0.01" placeholder="Enter amount (min $10)" required>
+                    <label for="withdraw-method" data-i18n="withdraw_method">Select Withdrawal Method:</label>
+                    <select id="withdraw-method" name="withdraw-method" required>
+                        <option value="" disabled selected data-i18n="select_method">Select method</option>
+                        <option value="bitcoin">Bitcoin</option>
+                        <option value="ethereum">Ethereum</option>
+                        <option value="usdc">USDC</option>
+                        <option value="usdt">USDT</option>
+                        <option value="bank">Bank Transfer</option>
+                    </select>
+                    <label for="wallet-address" data-i18n="wallet_address">Wallet Address / Bank Details:</label>
+                    <input type="text" id="wallet-address" name="wallet-address" placeholder="Enter your wallet address or bank details" required>
+                    <button type="submit" data-i18n="submit_withdrawal">Submit Withdrawal</button>
+                </form>
+            </div>
             <div class="market-widgets-row">
-                <!-- Market Overview Widget -->
                 <div class="market-widget" id="market-overview-widget">
-                    <div class="market-widget-title">Market Overview</div>
+                    <div class="market-widget-title" data-i18n="market_overview">Market Overview</div>
                     <div class="tradingview-widget-container">
                         <div class="tradingview-widget-container__widget"></div>
                         <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async></script>
@@ -561,9 +607,8 @@
                         </script>
                     </div>
                 </div>
-                <!-- Market News Widget -->
                 <div class="market-widget" id="market-news-widget">
-                    <div class="market-widget-title">Market News</div>
+                    <div class="market-widget-title" data-i18n="market_news">Market News</div>
                     <div class="tradingview-widget-container">
                         <div class="tradingview-widget-container__widget"></div>
                         <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-news.js" async>
@@ -583,25 +628,23 @@
                     </div>
                 </div>
             </div>
-            <!-- End Market Widgets Row -->
         </div>
     </div>
-    <a style="text-decoration: none; color: white;" class="chat-bubble " href="user-chat.html">
-        <i class="far fa-comment"></i> <!-- Regular chat icon -->
+    <a style="text-decoration: none; color: white;" class="chat-bubble" href="user-chat.html">
+        <i class="far fa-comment"></i>
     </a>
-    <!-- Deposit Popup Modal (wallets copiable, modal scrollable) -->
     <div class="popup-wallets">
         <div id="deposit-popup">
             <div class="deposit-modal-content">
                 <button id="close-deposit-popup" style="position:absolute; top:16px; right:16px; background:none; border:none; color:#00ffff; font-size:22px; cursor:pointer;">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
-                <h2 style="color:#00ffff; text-align:center; margin-bottom:18px;">Deposit Funds</h2>
-                <p style="color:#fff; text-align:center; margin-bottom:18px;">Select your payment method:</p>
+                <h2 data-i18n="deposit_funds">Deposit Funds</h2>
+                <p data-i18n="select_payment_method">Select your payment method:</p>
                 <div style="display:flex; flex-direction:column; gap:12px;">
                     <div class="wallet-row">
                         <i class="fa-brands fa-bitcoin"></i>
-                        Bitcoin:
+                        <span data-i18n="bitcoin">Bitcoin:</span>
                         <span class="wallet-address" id="btc-wallet">AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w</span>
                         <button class="copy-btn" onclick="copyWallet('btc-wallet', this)" title="Copy">
                             <i class="fa-regular fa-copy"></i>
@@ -609,7 +652,7 @@
                     </div>
                     <div class="wallet-row">
                         <i class="fa-brands fa-ethereum"></i>
-                        Ethereum:
+                        <span data-i18n="ethereum">Ethereum:</span>
                         <span class="wallet-address" id="eth-wallet">AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w</span>
                         <button class="copy-btn" onclick="copyWallet('eth-wallet', this)" title="Copy">
                             <i class="fa-regular fa-copy"></i>
@@ -617,7 +660,7 @@
                     </div>
                     <div class="wallet-row">
                         <i class="fa-brands fa-usd-coin"></i>
-                        USDC:
+                        <span data-i18n="usdc">USDC:</span>
                         <span class="wallet-address" id="usdc-wallet">AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w</span>
                         <button class="copy-btn" onclick="copyWallet('usdc-wallet', this)" title="Copy">
                             <i class="fa-regular fa-copy"></i>
@@ -625,63 +668,36 @@
                     </div>
                     <div class="wallet-row">
                         <i class="fa-brands fa-tether"></i>
-                        USDT:
+                        <span data-i18n="usdt">USDT:</span>
                         <span class="wallet-address" id="usdt-wallet">AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w</span>
                         <button class="copy-btn" onclick="copyWallet('usdt-wallet', this)" title="Copy">
                             <i class="fa-regular fa-copy"></i>
                         </button>
                     </div>
                     <div class="pload-payment-reciept">
-                        <label for="payment-receipt" style="color:#00ffff; margin-bottom:8px; display:block;">Upload Payment Receipt:</label>
+                        <label for="payment-receipt" data-i18n="upload_payment_receipt">Upload Payment Receipt:</label>
                         <input type="file" id="payment-receipt" name="payment-receipt" accept="image/*,application/pdf" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; background:#222; color:#fff;">
                     </div>
                 </div>
             </div>
         </div>
-        <script>
-            // Show popup when Deposit button is clicked
-            document.getElementById('popup-wallets').addEventListener('click', function(e) {
-                e.preventDefault();
-                document.getElementById('deposit-popup').style.display = 'flex';
-            });
-            // Close popup
-            document.getElementById('close-deposit-popup').addEventListener('click', function() {
-                document.getElementById('deposit-popup').style.display = 'none';
-            });
-            // Close popup when clicking outside modal
-            document.getElementById('deposit-popup').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    this.style.display = 'none';
-                }
-            });
-            // Copiable wallet address
-            window.copyWallet = function(walletId, btn) {
-                const walletEl = document.getElementById(walletId);
-                const wallet = walletEl.textContent.trim();
-                navigator.clipboard.writeText(wallet).then(function() {
-                    btn.innerHTML = '<i class="fa-solid fa-check"></i>';
-                    setTimeout(function() {
-                        btn.innerHTML = '<i class="fa-regular fa-copy"></i>';
-                    }, 1500);
-                });
-            }
-        </script>
     </div>
+    <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
     <script type="module">
         // Import Firebase modules
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
         import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js';
-        import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
+        import { getDatabase, ref, onValue, push, update } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
 
-        // Your Firebase configuration
+        // Firebase Configuration
         const firebaseConfig = {
-            apiKey:            "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
-            authDomain:        "investment-40343.firebaseapp.com",
-            projectId:         "investment-40343",
-            storageBucket:     "investment-40343.firebasestorage.app",
+            apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
+            authDomain: "investment-40343.firebaseapp.com",
+            projectId: "investment-40343",
+            storageBucket: "investment-40343.firebasestorage.app",
             messagingSenderId: "126093031981",
-            appId:             "1:126093031981:web:fd4ae73c063044693b16a4",
-            measurementId:     "G-SXL6ZGL49W"
+            appId: "1:126093031981:web:fd4ae73c063044693b16a4",
+            measurementId: "G-SXL6ZGL49W"
         };
 
         // Initialize Firebase
@@ -692,25 +708,23 @@
         // Check auth state
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // User is logged in, update UI with balance
                 const userId = user.uid;
                 const userRef = ref(database, 'users/' + userId);
                 onValue(userRef, (snapshot) => {
                     const data = snapshot.val() || {
-                        balance:     0,
+                        balance: 0,
                         totalDeposit: 0,
                         totalProfit: 0,
-                        totalBonus:  0,
+                        totalBonus: 0,
                         withdrawals: 0
                     };
-                    document.getElementById('balance-value').textContent  = `$${data.balance.toFixed(2)}`;
-                    document.getElementById('total-deposit').textContent   = `$${data.totalDeposit.toFixed(2)}`;
-                    document.getElementById('total-profit').textContent    = `$${data.totalProfit.toFixed(2)}`;
-                    document.getElementById('total-bonus').textContent     = `$${data.totalBonus.toFixed(2)}`;
-                    document.getElementById('withdrawals').textContent     = `$${data.withdrawals.toFixed(2)}`;
+                    document.getElementById('balance-value').textContent = `$${data.balance.toFixed(2)}`;
+                    document.getElementById('total-deposit').textContent = `$${data.totalDeposit.toFixed(2)}`;
+                    document.getElementById('total-profit').textContent = `$${data.totalProfit.toFixed(2)}`;
+                    document.getElementById('total-bonus').textContent = `$${data.totalBonus.toFixed(2)}`;
+                    document.getElementById('withdrawals').textContent = `$${data.withdrawals.toFixed(2)}`;
                 });
             } else {
-                // No user, redirect to index.html
                 window.location.href = 'index.html';
             }
         });
@@ -740,8 +754,89 @@
                 sidebar.classList.remove('show');
             }
         });
-        
-        // Optional: Update current price periodically
+
+        // Deposit popup logic
+        document.querySelector('a[href="deposit.html"]').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('deposit-popup').style.display = 'flex';
+        });
+
+        document.getElementById('close-deposit-popup').addEventListener('click', function() {
+            document.getElementById('deposit-popup').style.display = 'none';
+        });
+
+        document.getElementById('deposit-popup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        window.copyWallet = function(walletId, btn) {
+            const walletEl = document.getElementById(walletId);
+            const wallet = walletEl.textContent.trim();
+            navigator.clipboard.writeText(wallet).then(function() {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                setTimeout(function() {
+                    btn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+                }, 1500);
+            });
+        };
+
+        // Withdrawal form submission
+        const withdrawalForm = document.getElementById('withdrawal-form');
+        withdrawalForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const user = auth.currentUser;
+            if (!user) {
+                alert('You must be logged in to submit a withdrawal.');
+                return;
+            }
+
+            const amount = parseFloat(document.getElementById('withdraw-amount').value);
+            const method = document.getElementById('withdraw-method').value;
+            const walletAddress = document.getElementById('wallet-address').value;
+            const userId = user.uid;
+
+            if (amount < 10) {
+                alert('Minimum withdrawal amount is $10.');
+                return;
+            }
+
+            try {
+                const userRef = ref(database, 'users/' + userId);
+                const snapshot = await new Promise((resolve) => {
+                    onValue(userRef, resolve, { onlyOnce: true });
+                });
+                const userData = snapshot.val() || { balance: 0, withdrawals: 0 };
+
+                if (amount > userData.balance) {
+                    alert('Insufficient balance for this withdrawal.');
+                    return;
+                }
+
+                const withdrawalRef = ref(database, 'withdrawals/' + userId);
+                await push(withdrawalRef, {
+                    amount: amount,
+                    method: method,
+                    walletAddress: walletAddress,
+                    status: 'pending',
+                    timestamp: Date.now()
+                });
+
+                await update(userRef, {
+                    balance: userData.balance - amount,
+                    withdrawals: userData.withdrawals + amount
+                });
+
+                alert('Withdrawal request submitted successfully!');
+                withdrawalForm.reset();
+            } catch (error) {
+                console.error('Withdrawal submission failed:', error.message);
+                alert('Failed to submit withdrawal. Please try again.');
+            }
+        });
+
+        // Update current price periodically
         async function updateCurrentPrice() {
             try {
                 const response = await fetch(
@@ -763,6 +858,121 @@
 
         setInterval(updateCurrentPrice, 10000);
         updateCurrentPrice();
+
+        // i18next Initialization
+        const translations = {
+            en: {
+                nav_home: "Home",
+                nav_packages: "Packages",
+                nav_deposit: "Deposit",
+                nav_withdraw: "Withdraw",
+                nav_profile: "Profile",
+                nav_logout: "Logout",
+                welcome: "Welcome to Your Dashboard",
+                balance_header: "Account Balance",
+                growth_label: "Growth:",
+                total_deposit: "Total Deposit",
+                total_profit: "Total Profit",
+                total_bonus: "Total Bonus",
+                withdrawals: "Withdrawals",
+                withdraw_funds: "Withdraw Funds",
+                withdraw_amount: "Amount to Withdraw:",
+                withdraw_method: "Select Withdrawal Method:",
+                select_method: "Select method",
+                wallet_address: "Wallet Address / Bank Details:",
+                submit_withdrawal: "Submit Withdrawal",
+                market_overview: "Market Overview",
+                market_news: "Market News",
+                deposit_funds: "Deposit Funds",
+                select_payment_method: "Select your payment method:",
+                bitcoin: "Bitcoin",
+                ethereum: "Ethereum",
+                usdc: "USDC",
+                usdt: "USDT",
+                upload_payment_receipt: "Upload Payment Receipt:"
+            },
+            fr: {
+                nav_home: "Accueil",
+                nav_packages: "Forfaits",
+                nav_deposit: "Dépôt",
+                nav_withdraw: "Retrait",
+                nav_profile: "Profil",
+                nav_logout: "Déconnexion",
+                welcome: "Bienvenue sur votre tableau de bord",
+                balance_header: "Solde du compte",
+                growth_label: "Croissance :",
+                total_deposit: "Dépôt total",
+                total_profit: "Profit total",
+                total_bonus: "Bonus total",
+                withdrawals: "Retraits",
+                withdraw_funds: "Retirer des fonds",
+                withdraw_amount: "Montant à retirer :",
+                withdraw_method: "Sélectionner la méthode de retrait :",
+                select_method: "Sélectionner une méthode",
+                wallet_address: "Adresse du portefeuille / Détails bancaires :",
+                submit_withdrawal: "Soumettre le retrait",
+                market_overview: "Aperçu du marché",
+                market_news: "Actualités du marché",
+                deposit_funds: "Déposer des fonds",
+                select_payment_method: "Sélectionnez votre méthode de paiement :",
+                bitcoin: "Bitcoin",
+                ethereum: "Ethereum",
+                usdc: "USDC",
+                usdt: "USDT",
+                upload_payment_receipt: "Télécharger le reçu de paiement :"
+            },
+            es: {
+                nav_home: "Inicio",
+                nav_packages: "Paquetes",
+                nav_deposit: "Depósito",
+                nav_withdraw: "Retiro",
+                nav_profile: "Perfil",
+                nav_logout: "Cerrar sesión",
+                welcome: "Bienvenido a tu panel de control",
+                balance_header: "Saldo de la cuenta",
+                growth_label: "Crecimiento:",
+                total_deposit: "Depósito total",
+                total_profit: "Ganancia total",
+                total_bonus: "Bono total",
+                withdrawals: "Retiros",
+                withdraw_funds: "Retirar fondos",
+                withdraw_amount: "Monto a retirar:",
+                withdraw_method: "Seleccionar método de retiro:",
+                select_method: "Seleccionar método",
+                wallet_address: "Dirección de billetera / Detalles bancarios:",
+                submit_withdrawal: "Enviar retiro",
+                market_overview: "Resumen del mercado",
+                market_news: "Noticias del mercado",
+                deposit_funds: "Depositar fondos",
+                select_payment_method: "Selecciona tu método de pago:",
+                bitcoin: "Bitcoin",
+                ethereum: "Ethereum",
+                usdc: "USDC",
+                usdt: "USDT",
+                upload_payment_receipt: "Subir recibo de pago:"
+            }
+        };
+
+        i18next.init({
+            lng: 'en',
+            resources: {
+                en: { translation: translations.en },
+                fr: { translation: translations.fr },
+                es: { translation: translations.es }
+            }
+        }, function(err, t) {
+            updateContent();
+        });
+
+        function updateContent() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                el.textContent = i18next.t(el.getAttribute('data-i18n'));
+            });
+        }
+
+        document.getElementById('languageSwitcher').addEventListener('change', (e) => {
+            i18next.changeLanguage(e.target.value, updateContent);
+        });
     </script>
 </body>
 </html>

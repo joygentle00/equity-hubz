@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- Prevent zooming and fix viewport on all devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>User Chat - Trust Market Finance</title>
+  <title data-i18n="title">User Chat - Equity Hubz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
   <style>
     * { box-sizing: border-box; }
 
@@ -47,7 +47,7 @@
       gap: 6px;
     }
 
-    #langToggle {
+    #languageSwitcher {
       background: #fff;
       color: #0c1018;
       border: none;
@@ -58,7 +58,7 @@
       transition: background 0.3s, color 0.3s;
     }
 
-    #langToggle:hover { background: #e0e0e0; }
+    #languageSwitcher:hover { background: #e0e0e0; }
 
     /* CHAT AREA */
     .chat-container {
@@ -150,6 +150,8 @@
       border-radius: 20px;
       font-size: 15px;
       outline: none;
+      background: #fff;
+      color: #222;
     }
 
     .input-area button {
@@ -212,9 +214,13 @@
   <header>
     <span id="chatTitle">
       <img src="/logo.jpg" alt="logo" />
-      Equity Hubz - Chat
+      <span data-i18n="chat_title">Equity Hubz - Chat</span>
     </span>
-    <button id="langToggle">عربي</button>
+    <select id="languageSwitcher">
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+      <option value="es">Español</option>
+    </select>
   </header>
 
   <div class="chat-container">
@@ -222,12 +228,13 @@
   </div>
 
   <div class="input-area">
-    <label for="imageInput" class="upload-label">📷</label>
+    <label for="imageInput" class="upload-label"><i class="fa-solid fa-camera"></i></label>
     <input type="file" id="imageInput" accept="image/*" />
-    <input id="messageInput" type="text" placeholder="Type a message..." />
-    <button id="sendBtn">Send</button>
+    <input id="messageInput" type="text" data-i18n-placeholder="placeholder" placeholder="Type a message..." />
+    <button id="sendBtn" data-i18n="send">Send</button>
   </div>
 
+  <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
@@ -266,39 +273,94 @@
     const messageInput = document.getElementById("messageInput");
     const sendBtn = document.getElementById("sendBtn");
     const imageInput = document.getElementById("imageInput");
-    const langToggle = document.getElementById("langToggle");
-    const chatTitle = document.getElementById("chatTitle");
+    const languageSwitcher = document.getElementById("languageSwitcher");
 
     let currentUser;
     let currentLang = "en";
 
     const translations = {
       en: {
-        title: "Trust Market Finance - Chat",
+        title: "User Chat - Equity Hubz",
+        chat_title: "Equity Hubz - Chat",
         placeholder: "Type a message...",
         send: "Send",
-        toggle: "عربي",
+        login_prompt: "Please log in to use chat",
+        welcome_user: "Welcome, how can we assist you today?",
+        welcome_admin: "Admin: How can I help you today?",
+        am: "AM",
+        pm: "PM"
       },
-      ar: {
-        title: "الدردشة - تمويل السوق الموثوق",
-        placeholder: "اكتب رسالة...",
-        send: "إرسال",
-        toggle: "English",
+      fr: {
+        title: "Chat Utilisateur - Equity Hubz",
+        chat_title: "Equity Hubz - Chat",
+        placeholder: "Tapez un message...",
+        send: "Envoyer",
+        login_prompt: "Veuillez vous connecter pour utiliser le chat",
+        welcome_user: "Bienvenue, comment pouvons-nous vous aider aujourd'hui ?",
+        welcome_admin: "Admin : Comment puis-je vous aider aujourd'hui ?",
+        am: "h",
+        pm: "h"
       },
+      es: {
+        title: "Chat de Usuario - Equity Hubz",
+        chat_title: "Equity Hubz - Chat",
+        placeholder: "Escribe un mensaje...",
+        send: "Enviar",
+        login_prompt: "Por favor, inicia sesión para usar el chat",
+        welcome_user: "Bienvenido, ¿cómo podemos ayudarte hoy?",
+        welcome_admin: "Admin: ¿Cómo puedo ayudarte hoy?",
+        am: "a.m.",
+        pm: "p.m."
+      }
     };
 
-    function switchLanguage(lang) {
-      const t = translations[lang];
-      chatTitle.innerHTML = `<img src="/logo.jpg" alt="logo" /> ${t.title}`;
-      messageInput.placeholder = t.placeholder;
-      sendBtn.textContent = t.send;
-      langToggle.textContent = t.toggle;
-      document.body.classList.toggle("rtl", lang === "ar");
-      currentLang = lang;
+    i18next.init({
+      lng: 'en',
+      resources: {
+        en: { translation: translations.en },
+        fr: { translation: translations.fr },
+        es: { translation: translations.es }
+      }
+    }, function(err, t) {
+      updateContent();
+    });
+
+    async function translateText(text, targetLang) {
+      try {
+        const response = await fetch('https://libretranslate.de/translate', {
+          method: 'POST',
+          body: JSON.stringify({
+            q: text,
+            source: 'auto',
+            target: targetLang,
+            format: 'text'
+          }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        return data.translatedText || text;
+      } catch (error) {
+        console.error('Translation failed:', error);
+        return text; // Fallback to original text
+      }
     }
 
-    langToggle.addEventListener("click", () => {
-      switchLanguage(currentLang === "en" ? "ar" : "en");
+    function updateContent() {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        el.textContent = i18next.t(el.getAttribute('data-i18n'));
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        el.placeholder = i18next.t(el.getAttribute('data-i18n-placeholder'));
+      });
+      document.title = i18next.t('title');
+      if (currentUser) {
+        loadMessages(currentUser.uid);
+      }
+    }
+
+    languageSwitcher.addEventListener('change', async (e) => {
+      currentLang = e.target.value;
+      i18next.changeLanguage(currentLang, updateContent);
     });
 
     function formatTime(timestamp) {
@@ -306,13 +368,13 @@
       const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
       const hours = date.getHours();
       const minutes = date.getMinutes().toString().padStart(2, "0");
-      const ampm = hours >= 12 ? "PM" : "AM";
+      const ampm = hours >= 12 ? i18next.t('pm') : i18next.t('am');
       return `${((hours + 11) % 12 + 1)}:${minutes} ${ampm}`;
     }
 
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        document.body.innerHTML = "<h2 style='color:red;text-align:center;margin-top:20%;'>Please log in to use chat</h2>";
+        document.body.innerHTML = `<h2 style='color:red;text-align:center;margin-top:20%;' data-i18n="login_prompt">${i18next.t('login_prompt')}</h2>`;
         return;
       }
       currentUser = user;
@@ -325,28 +387,37 @@
       imageInput.addEventListener("change", e => handleImageUpload(e, chatId));
     });
 
-    function loadMessages(chatId) {
+    async function loadMessages(chatId) {
       const q = query(collection(db, "user_chats", chatId, "messages"), orderBy("timestamp", "asc"));
-      onSnapshot(q, (snapshot) => {
+      onSnapshot(q, async (snapshot) => {
         messagesDiv.innerHTML = "";
-        snapshot.forEach((doc) => {
+        for (const doc of snapshot.docs) {
           const msg = doc.data();
           const div = document.createElement("div");
           div.classList.add("message", msg.sender === "user" ? "self" : "admin");
+          
+          // Check if message is predefined and translatable
+          let text = msg.text ? i18next.t(msg.text, { defaultValue: msg.text }) : "";
+          
+          // If not predefined, translate dynamically
+          if (text === msg.text && msg.text) {
+            text = await translateText(msg.text, currentLang);
+          }
+
           if (msg.imageUrl) {
             div.innerHTML = `
               <img src="${msg.imageUrl}" alt="sent image" />
-              ${msg.text ? `<div>${msg.text}</div>` : ""}
+              ${text ? `<div>${text}</div>` : ""}
               <div class="timestamp">${msg.timestamp ? formatTime(msg.timestamp) : ""}</div>
             `;
           } else {
             div.innerHTML = `
-              <div>${msg.text}</div>
+              <div>${text}</div>
               <div class="timestamp">${msg.timestamp ? formatTime(msg.timestamp) : ""}</div>
             `;
           }
           messagesDiv.appendChild(div);
-        });
+        }
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
       });
     }
@@ -354,6 +425,7 @@
     async function sendMessage(chatId) {
       const text = messageInput.value.trim();
       if (!text) return;
+      // Store the original English text (or detected language) in Firestore
       await addDoc(collection(db, "user_chats", chatId, "messages"), {
         text,
         sender: "user",

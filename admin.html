@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Equity Hubs</title>
+    <title data-i18n="admin_title">Admin Dashboard - Equity Hubs</title>
     <link rel="icon" type="image" href="">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -287,6 +288,16 @@
             opacity: 0.6;
             pointer-events: none;
         }
+        .language-selector {
+            margin: 10px 0;
+        }
+        .language-selector select {
+            padding: 8px;
+            border-radius: 4px;
+            background: #1e293b;
+            color: #fff;
+            border: 1px solid #2d3748;
+        }
         @media (max-width: 768px) {
             .sidebar {
                 position: fixed;
@@ -349,7 +360,7 @@
 </head>
 <body>
     <div class="container">
-        <button class="hamburger" aria-label="Toggle Sidebar">
+        <button class="hamburger" aria-label="Toggle Sidebar" data-i18n="[aria-label]toggle_sidebar">
             <i class="fa-solid fa-bars"></i>
         </button>
         <div class="sidebar" id="sidebar">
@@ -358,67 +369,75 @@
                     <li class="active">
                         <a href="admin.html">
                             <span class="icon"><i class="fa-solid fa-user-shield"></i></span>
-                            <span class="text">Admin Dashboard</span>
+                            <span class="text" data-i18n="admin_dashboard">Admin Dashboard</span>
                         </a>
                     </li>
                     <li>
                         <a href="accounts.html">
                             <span class="icon"><i class="fa-solid fa-house"></i></span>
-                            <span class="text">Edit Bank</span>
+                            <span class="text" data-i18n="edit_bank">Edit Bank</span>
                         </a>
                     </li>
                     <li>
-                       <a href="admin-chat.html">
+                        <a href="admin-chat.html">
                             <span class="icon"><i class="fa-solid fa-house"></i></span>
-                            <span class="text">Chat</span>
+                            <span class="text" data-i18n="chat">Chat</span>
                         </a>
                     </li>
                     <li>
                         <a href="#" id="logout-link">
                             <span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span>
-                            <span class="text">Logout</span>
+                            <span class="text" data-i18n="logout">Logout</span>
                         </a>
                     </li>
                 </ul>
             </nav>
+            <div class="language-selector">
+                <select id="languageSwitcher">
+                    <option value="en" data-i18n="english">English</option>
+                    <option value="fr" data-i18n="french">Français</option>
+                    <option value="es" data-i18n="spanish">Español</option>
+                </select>
+            </div>
         </div>
         <main class="main-content" id="main-content">
             <div id="auth-section" class="auth-section" style="display: none;">
-                <h1>Admin Authentication</h1>
-                <p>Manage with Confidence</p>
+                <h1 data-i18n="admin_auth">Admin Authentication</h1>
+                <p data-i18n="manage_confidence">Manage with Confidence</p>
                 <div class="auth-buttons">
-                    <button class="auth-btn" id="login-btn">Login</button>
-                    <button class="auth-btn" id="register-btn">Create Account</button>
+                    <button class="auth-btn" id="login-btn" data-i18n="login">Login</button>
+                    <button class="auth-btn" id="register-btn" data-i18n="create_account">Create Account</button>
                 </div>
             </div>
             <div id="admin-content" style="display: none;">
-                <h1 class="welcome" id="welcome-message">Welcome, Admin!</h1>
+                <h1 class="welcome" id="welcome-message" data-i18n="welcome_admin">Welcome, Admin!</h1>
                 <section class="admin-section">
-                    <h2>User Management</h2>
+                    <h2 data-i18n="user_management">User Management</h2>
                     <div class="user-list">
                         <table class="user-table">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Total Deposit</th>
-                                    <th>Total Profit</th>
-                                    <th>Total Bonus</th>
-                                    <th>Balance</th>
+                                    <th data-i18n="name">Name</th>
+                                    <th data-i18n="email">Email</th>
+                                    <th data-i18n="total_deposit">Total Deposit</th>
+                                    <th data-i18n="total_profit">Total Profit</th>
+                                    <th data-i18n="total_bonus">Total Bonus</th>
+                                    <th data-i18n="withdrawals">Withdrawals</th>
+                                    <th data-i18n="balance">Balance</th>
                                 </tr>
                             </thead>
                             <tbody id="user-table-body"></tbody>
                         </table>
                     </div>
-                    <h2>Deposit Requests</h2>
+                    <h2 data-i18n="deposit_requests">Deposit Requests</h2>
                     <div class="deposit-requests">
                         <table class="request-table">
                             <thead>
                                 <tr>
-                                    <th>User Email</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
+                                    <th data-i18n="user_email">User Email</th>
+                                    <th data-i18n="amount">Amount</th>
+                                    <th data-i18n="status">Status</th>
+                                    <th data-i18n="actions">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="request-table-body"></tbody>
@@ -429,33 +448,33 @@
             <div id="login-popup" class="popup">
                 <div class="popup-content">
                     <span class="close-btn">&times;</span>
-                    <h2>Admin Login</h2>
-                    <input type="email" id="login-email" placeholder="Email" required>
-                    <input type="password" id="login-password" placeholder="Password" required>
+                    <h2 data-i18n="admin_login">Admin Login</h2>
+                    <input type="email" id="login-email" placeholder="Email" required data-i18n="[placeholder]email">
+                    <input type="password" id="login-password" placeholder="Password" required data-i18n="[placeholder]password">
                     <p id="login-error" class="error-message"></p>
-                    <button id="login-submit">Login</button>
-                    <a href="#" id="switch-to-register">Don't have an admin account? Create one</a>
+                    <button id="login-submit" data-i18n="login">Login</button>
+                    <a href="#" id="switch-to-register" data-i18n="no_admin_account">Don't have an admin account? Create one</a>
                 </div>
             </div>
             <div id="register-popup" class="popup">
                 <div class="popup-content">
                     <span class="close-btn">&times;</span>
-                    <h2>Create Admin Account</h2>
-                    <input type="text" id="register-name" placeholder="Name" required>
-                    <input type="email" id="register-email" placeholder="Email" required>
-                    <input type="password" id="register-password" placeholder="Password" required>
+                    <h2 data-i18n="create_admin_account">Create Admin Account</h2>
+                    <input type="text" id="register-name" placeholder="Name" required data-i18n="[placeholder]name">
+                    <input type="email" id="register-email" placeholder="Email" required data-i18n="[placeholder]email">
+                    <input type="password" id="register-password" placeholder="Password" required data-i18n="[placeholder]password">
                     <p id="register-error" class="error-message"></p>
-                    <button id="register-submit">Create Account</button>
-                    <a href="#" id="switch-to-login">Already have an admin account? Login</a>
+                    <button id="register-submit" data-i18n="create_account">Create Account</button>
+                    <a href="#" id="switch-to-login" data-i18n="already_admin_account">Already have an admin account? Login</a>
                 </div>
             </div>
             <div id="edit-popup" class="popup">
                 <div class="popup-content">
                     <span class="close-btn">&times;</span>
-                    <h2 id="edit-popup-title">Edit Field</h2>
-                    <input type="number" id="edit-input" placeholder="Enter amount" min="0" step="0.01" required>
+                    <h2 id="edit-popup-title" data-i18n="edit_field">Edit Field</h2>
+                    <input type="number" id="edit-input" placeholder="Enter amount" min="0" step="0.01" required data-i18n="[placeholder]enter_amount">
                     <p id="edit-error" class="error-message"></p>
-                    <button id="edit-submit">Save</button>
+                    <button id="edit-submit" data-i18n="save">Save</button>
                 </div>
             </div>
         </main>
@@ -478,6 +497,150 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+
+        // Translation resources
+        const translations = {
+            en: {
+                admin_title: "Admin Dashboard - Equity Hubs",
+                toggle_sidebar: "Toggle Sidebar",
+                admin_dashboard: "Admin Dashboard",
+                edit_bank: "Edit Bank",
+                chat: "Chat",
+                logout: "Logout",
+                admin_auth: "Admin Authentication",
+                manage_confidence: "Manage with Confidence",
+                login: "Login",
+                create_account: "Create Account",
+                welcome_admin: "Welcome, Admin!",
+                user_management: "User Management",
+                name: "Name",
+                email: "Email",
+                total_deposit: "Total Deposit",
+                total_profit: "Total Profit",
+                total_bonus: "Total Bonus",
+                withdrawals: "Withdrawals",
+                balance: "Balance",
+                deposit_requests: "Deposit Requests",
+                user_email: "User Email",
+                amount: "Amount",
+                status: "Status",
+                actions: "Actions",
+                admin_login: "Admin Login",
+                no_admin_account: "Don't have an admin account? Create one",
+                create_admin_account: "Create Admin Account",
+                already_admin_account: "Already have an admin account? Login",
+                edit_field: "Edit Field",
+                save: "Save",
+                enter_amount: "Enter amount",
+                english: "English",
+                french: "French",
+                spanish: "Spanish"
+            },
+            fr: {
+                admin_title: "Tableau de bord administrateur - Equity Hubs",
+                toggle_sidebar: "Basculer la barre latérale",
+                admin_dashboard: "Tableau de bord administrateur",
+                edit_bank: "Modifier la banque",
+                chat: "Chat",
+                logout: "Déconnexion",
+                admin_auth: "Authentification administrateur",
+                manage_confidence: "Gérez en toute confiance",
+                login: "Connexion",
+                create_account: "Créer un compte",
+                welcome_admin: "Bienvenue, Administrateur !",
+                user_management: "Gestion des utilisateurs",
+                name: "Nom",
+                email: "E-mail",
+                total_deposit: "Dépôt total",
+                total_profit: "Profit total",
+                total_bonus: "Bonus total",
+                withdrawals: "Retraits",
+                balance: "Solde",
+                deposit_requests: "Demandes de dépôt",
+                user_email: "E-mail de l'utilisateur",
+                amount: "Montant",
+                status: "Statut",
+                actions: "Actions",
+                admin_login: "Connexion administrateur",
+                no_admin_account: "Vous n'avez pas de compte administrateur ? Créez-en un",
+                create_admin_account: "Créer un compte administrateur",
+                already_admin_account: "Vous avez déjà un compte administrateur ? Connectez-vous",
+                edit_field: "Modifier le champ",
+                save: "Enregistrer",
+                enter_amount: "Entrer le montant",
+                english: "Anglais",
+                french: "Français",
+                spanish: "Espagnol"
+            },
+            es: {
+                admin_title: "Panel de administración - Equity Hubs",
+                toggle_sidebar: "Alternar barra lateral",
+                admin_dashboard: "Panel de administración",
+                edit_bank: "Editar banco",
+                chat: "Chat",
+                logout: "Cerrar sesión",
+                admin_auth: "Autenticación de administrador",
+                manage_confidence: "Administra con confianza",
+                login: "Iniciar sesión",
+                create_account: "Crear cuenta",
+                welcome_admin: "¡Bienvenido, Administrador!",
+                user_management: "Gestión de usuarios",
+                name: "Nombre",
+                email: "Correo electrónico",
+                total_deposit: "Depósito total",
+                total_profit: "Ganancia total",
+                total_bonus: "Bono total",
+                withdrawals: "Retiros",
+                balance: "Saldo",
+                deposit_requests: "Solicitudes de depósito",
+                user_email: "Correo electrónico del usuario",
+                amount: "Cantidad",
+                status: "Estado",
+                actions: "Acciones",
+                admin_login: "Inicio de sesión de administrador",
+                no_admin_account: "¿No tienes una cuenta de administrador? Crea una",
+                create_admin_account: "Crear cuenta de administrador",
+                already_admin_account: "¿Ya tienes una cuenta de administrador? Inicia sesión",
+                edit_field: "Editar campo",
+                save: "Guardar",
+                enter_amount: "Ingresar cantidad",
+                english: "Inglés",
+                french: "Francés",
+                spanish: "Español"
+            }
+        };
+
+        // Initialize i18next
+        i18next.init({
+            lng: 'en',
+            resources: {
+                en: { translation: translations.en },
+                fr: { translation: translations.fr },
+                es: { translation: translations.es }
+                
+            }
+        }, function(err, t) {
+            updateContent();
+        });
+
+        function updateContent() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (key.startsWith('[placeholder]')) {
+                    const actualKey = key.replace('[placeholder]', '');
+                    el.placeholder = i18next.t(actualKey);
+                } else if (key.startsWith('[aria-label]')) {
+                    const actualKey = key.replace('[aria-label]', '');
+                    el.setAttribute('aria-label', i18next.t(actualKey));
+                } else {
+                    el.textContent = i18next.t(key);
+                }
+            });
+        }
+
+        document.getElementById('languageSwitcher').addEventListener('change', (e) => {
+            i18next.changeLanguage(e.target.value, updateContent);
+        });
 
         // DOM Elements
         const loginPopup = document.getElementById('login-popup');
@@ -521,8 +684,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             console.log(`Found ${closeButtons.length} close buttons`);
             closeButtons.forEach((btn, index) => {
-                const computedStyle = window.getComputedStyle(btn);
-                console.log(`Close button ${index} (in ${btn.closest('.popup')?.id || 'no popup'}): display=${computedStyle.display}, visibility=${computedStyle.visibility}, opacity=${computedStyle.opacity}`);
                 btn.addEventListener('click', () => {
                     const popup = btn.closest('.popup');
                     if (popup) {
@@ -558,7 +719,7 @@
                 const password = document.getElementById('login-password')?.value;
                 if (!email || !password) {
                     if (loginError) {
-                        loginError.textContent = 'Please enter both email and password';
+                        loginError.textContent = i18next.t('enter_email_password');
                         loginError.style.display = 'block';
                     }
                     return;
@@ -567,7 +728,7 @@
                     .then(() => hidePopup(loginPopup))
                     .catch(error => {
                         if (loginError) {
-                            loginError.textContent = 'Login failed: Invalid credentials';
+                            loginError.textContent = i18next.t('login_failed');
                             loginError.style.display = 'block';
                             console.error('Login error:', error.message);
                         }
@@ -584,7 +745,7 @@
 
                 if (!name || !email || !password) {
                     if (registerError) {
-                        registerError.textContent = 'Please fill in all fields';
+                        registerError.textContent = i18next.t('fill_all_fields');
                         registerError.style.display = 'block';
                     }
                     return;
@@ -600,17 +761,17 @@
                         totalDeposit: 0,
                         totalProfit: 0,
                         totalBonus: 0,
-                        balance: 0,
                         withdrawals: 0,
+                        balance: 0,
                         createdAt: new Date().toISOString()
                     });
                     await setDoc(doc(db, 'admins', user.uid), { isAdmin: true }, { merge: true });
-                    alert('Admin account created successfully!');
+                    alert(i18next.t('admin_account_created'));
                     hidePopup(registerPopup);
                 } catch (error) {
                     console.error('Registration error:', error);
                     if (registerError) {
-                        registerError.textContent = 'Registration failed: ' + error.message;
+                        registerError.textContent = i18next.t('registration_failed') + ': ' + error.message;
                         registerError.style.display = 'block';
                     }
                 }
@@ -620,12 +781,15 @@
         // Authentication State Handler
         onAuthStateChanged(auth, async (user) => {
             if (user) {
+                const idTokenResult = await user.getIdTokenResult();
+                const isAdmin = idTokenResult.claims.admin === true;
+                
                 if (authSection) authSection.style.display = 'none';
                 if (adminContent) adminContent.style.display = 'block';
                 if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'block';
                 if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'block';
                 if (document.getElementById('welcome-message')) {
-                    document.getElementById('welcome-message').textContent = `Welcome, ${user.displayName || 'Admin'}!`;
+                    document.getElementById('welcome-message').textContent = i18next.t('welcome_admin', { name: user.displayName || 'Admin' });
                 }
                 await loadUsers();
                 await loadDepositRequests();
@@ -645,19 +809,20 @@
                 console.error('User table body element not found');
                 return;
             }
-            userTableBody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+            userTableBody.innerHTML = `<tr><td colspan="7">${i18next.t('loading')}</td></tr>`;
 
             try {
                 onSnapshot(collection(db, 'users'), (usersSnapshot) => {
                     userTableBody.innerHTML = '';
                     if (usersSnapshot.empty) {
-                        userTableBody.innerHTML = '<tr><td colspan="6">No users found</td></tr>';
+                        userTableBody.innerHTML = `<tr><td colspan="7">${i18next.t('no_users_found')}</td></tr>`;
                         return;
                     }
 
                     usersSnapshot.forEach(doc => {
                         const userData = doc.data();
                         const userId = doc.id;
+                        const balance = (userData.totalDeposit || 0) + (userData.totalProfit || 0) + (userData.totalBonus || 0) - (userData.withdrawals || 0);
                         const row = document.createElement('tr');
                         row.innerHTML = `
                             <td>${userData.displayName || 'N/A'}</td>
@@ -678,10 +843,11 @@
                                 </span>
                             </td>
                             <td>
-                                <span class="editable-field" data-field="balance" data-user="${userId}">
-                                    $${parseFloat(userData.balance || 0).toFixed(2)}
+                                <span class="editable-field" data-field="withdrawals" data-user="${userId}">
+                                    $${parseFloat(userData.withdrawals || 0).toFixed(2)}
                                 </span>
                             </td>
+                            <td>$${parseFloat(balance).toFixed(2)}</td>
                         `;
                         userTableBody.appendChild(row);
                     });
@@ -692,7 +858,7 @@
                             const field = fieldElement.getAttribute('data-field');
                             const userId = fieldElement.getAttribute('data-user');
                             const currentValue = parseFloat(fieldElement.textContent.replace('$', '')) || 0;
-                            editPopupTitle.textContent = `Edit ${field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}`;
+                            editPopupTitle.textContent = i18next.t(`edit_${field}`);
                             editInput.value = currentValue.toFixed(2);
                             editPopup.setAttribute('data-user', userId);
                             editPopup.setAttribute('data-field', field);
@@ -702,11 +868,11 @@
                     });
                 }, (error) => {
                     console.error('Error listening for users:', error);
-                    userTableBody.innerHTML = '<tr><td colspan="6">Failed to load users: ${error.message}</td></tr>';
+                    userTableBody.innerHTML = `<tr><td colspan="7">${i18next.t('failed_load_users')}: ${error.message}</td></tr>`;
                 });
             } catch (error) {
                 console.error('Error initializing users:', error);
-                userTableBody.innerHTML = '<tr><td colspan="6">Failed to load users: ${error.message}</td></tr>';
+                userTableBody.innerHTML = `<tr><td colspan="7">${i18next.t('failed_load_users')}: ${error.message}</td></tr>`;
             }
         }
 
@@ -718,7 +884,7 @@
                 const newValue = parseFloat(editInput.value);
                 if (isNaN(newValue) || newValue < 0 || editInput.value === '') {
                     if (editError) {
-                        editError.textContent = 'Please enter a valid positive number (e.g., 100.00)';
+                        editError.textContent = i18next.t('enter_valid_number');
                         editError.style.display = 'block';
                     }
                     return;
@@ -727,17 +893,23 @@
                 editSubmit.classList.add('loading');
                 try {
                     const userRef = doc(db, 'users', userId);
-                    await updateDoc(userRef, { [field]: newValue });
                     const userSnap = await getDoc(userRef);
                     const userData = userSnap.data();
-                    const newWithdrawals = (userData.totalDeposit || 0) + (userData.totalProfit || 0) + (userData.totalBonus || 0) - (userData.balance || 0);
-                    await updateDoc(userRef, { withdrawals: newWithdrawals });
-                    alert(`${field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())} updated successfully!`);
+                    const updateData = { [field]: newValue };
+                    const updatedFields = { ...userData, [field]: newValue };
+                    const newBalance = (updatedFields.totalDeposit || 0) + 
+                                     (updatedFields.totalProfit || 0) + 
+                                     (updatedFields.totalBonus || 0) - 
+                                     (updatedFields.withdrawals || 0);
+                    updateData.balance = newBalance;
+
+                    await updateDoc(userRef, updateData);
+                    alert(i18next.t('field_updated', { field: field }));
                     hidePopup(editPopup);
                 } catch (error) {
                     console.error(`Error updating ${field}:`, error);
                     if (editError) {
-                        editError.textContent = `Failed to update ${field}: ${error.message}`;
+                        editError.textContent = i18next.t('failed_update_field', { field: field }) + ': ' + error.message;
                         editError.style.display = 'block';
                     }
                 } finally {
@@ -753,13 +925,13 @@
                 console.error('Request table body element not found');
                 return;
             }
-            requestTableBody.innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
+            requestTableBody.innerHTML = `<tr><td colspan="4">${i18next.t('loading')}</td></tr>`;
 
             try {
                 onSnapshot(collection(db, 'depositRequests'), (requestsSnapshot) => {
                     requestTableBody.innerHTML = '';
                     if (requestsSnapshot.empty) {
-                        requestTableBody.innerHTML = '<tr><td colspan="4">No pending requests</td></tr>';
+                        requestTableBody.innerHTML = `<tr><td colspan="4">${i18next.t('no_requests_found')}</td></tr>`;
                         return;
                     }
 
@@ -771,10 +943,10 @@
                             row.innerHTML = `
                                 <td>${requestData.userEmail}</td>
                                 <td>$${parseFloat(requestData.amount || 0).toFixed(2)}</td>
-                                <td>${requestData.status}</td>
+                                <td data-i18n="status_${requestData.status}">${i18next.t(`status_${requestData.status}`)}</td>
                                 <td>
-                                    <button class="action-btn approve-btn" data-request="${requestId}" data-user="${requestData.userId}" data-amount="${requestData.amount}">Approve</button>
-                                    <button class="action-btn reject-btn" data-request="${requestId}">Reject</button>
+                                    <button class="action-btn approve-btn" data-request="${requestId}" data-user="${requestData.userId}" data-amount="${requestData.amount}" data-i18n="approve">Approve</button>
+                                    <button class="action-btn reject-btn" data-request="${requestId}" data-i18n="reject">Reject</button>
                                 </td>
                             `;
                             requestTableBody.appendChild(row);
@@ -791,7 +963,7 @@
                             try {
                                 const userRef = doc(db, 'users', userId);
                                 const userSnap = await getDoc(userRef);
-                                const userData = userSnap.exists() ? userSnap.data() : { totalDeposit: 0, totalProfit: 0, totalBonus: 0, balance: 0, withdrawals: 0 };
+                                const userData = userSnap.exists() ? userSnap.data() : { totalDeposit: 0, totalProfit: 0, totalBonus: 0, withdrawals: 0, balance: 0 };
                                 const newDeposit = (userData.totalDeposit || 0) + amount;
                                 const newBalance = newDeposit + (userData.totalProfit || 0) + (userData.totalBonus || 0) - (userData.withdrawals || 0);
 
@@ -800,10 +972,10 @@
                                     balance: newBalance
                                 });
                                 await updateDoc(doc(db, 'depositRequests', requestId), { status: 'approved' });
-                                alert('Deposit approved successfully!');
+                                alert(i18next.t('deposit_approved'));
                             } catch (error) {
                                 console.error('Error approving deposit:', error);
-                                alert(`Failed to approve deposit: ${error.message}`);
+                                alert(i18next.t('failed_approve_deposit') + ': ' + error.message);
                             } finally {
                                 btn.classList.remove('loading');
                             }
@@ -816,22 +988,24 @@
                             btn.classList.add('loading');
                             try {
                                 await updateDoc(doc(db, 'depositRequests', requestId), { status: 'rejected' });
-                                alert('Deposit rejected successfully!');
+                                alert(i18next.t('deposit_rejected'));
                             } catch (error) {
                                 console.error('Error rejecting deposit:', error);
-                                alert(`Failed to reject deposit: ${error.message}`);
+                                alert(i18next.t('failed_reject_deposit') + ': ' + error.message);
                             } finally {
                                 btn.classList.remove('loading');
                             }
                         });
                     });
+
+                    updateContent(); // Re-apply translations after dynamic content is added
                 }, (error) => {
                     console.error('Error listening for deposit requests:', error);
-                    requestTableBody.innerHTML = '<tr><td colspan="4">Failed to load requests: ${error.message}</td></tr>';
+                    requestTableBody.innerHTML = `<tr><td colspan="4">${i18next.t('failed_load_requests')}: ${error.message}</td></tr>`;
                 });
             } catch (error) {
                 console.error('Error initializing deposit requests:', error);
-                requestTableBody.innerHTML = '<tr><td colspan="4">Failed to load requests: ${error.message}</td></tr>';
+                requestTableBody.innerHTML = `<tr><td colspan="4">${i18next.t('failed_load_requests')}: ${error.message}</td></tr>`;
             }
         }
 
@@ -849,7 +1023,7 @@
                     showPopup(loginPopup);
                 } catch (error) {
                     console.error('Logout failed:', error);
-                    alert('Unable to log out. Please try again.');
+                    alert(i18next.t('logout_failed'));
                 }
             });
         } else {
