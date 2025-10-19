@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Pixel Code - https://pushify.com/ -->
+    <script defer src="https://pushify.com/pixel/Sfk0cq792jRR5Lnr"></script>
+    <!-- END Pixel Code -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="admin_title">Admin Dashboard - Equity Hubs</title>
     <link rel="icon" type="image" href="">
@@ -298,6 +301,25 @@
             color: #fff;
             border: 1px solid #2d3748;
         }
+        .notification-btn {
+            padding: 8px;
+            border-radius: 4px;
+            background: #00ffff;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            margin-top: 10px;
+        }
+        .notification-btn:hover {
+            background: #00e5e5;
+        }
+        .notification-btn:disabled {
+            background: #2d3748;
+            cursor: not-allowed;
+        }
         @media (max-width: 768px) {
             .sidebar {
                 position: fixed;
@@ -355,6 +377,10 @@
                 font-size: 12px;
                 padding: 10px;
             }
+            .notification-btn {
+                font-size: 12px;
+                padding: 6px;
+            }
         }
     </style>
 </head>
@@ -398,6 +424,7 @@
                     <option value="fr" data-i18n="french">Français</option>
                     <option value="es" data-i18n="spanish">Español</option>
                 </select>
+                <button id="notificationBtn" class="notification-btn" data-i18n="enable_notifications">Enable Notifications</button>
             </div>
         </div>
         <main class="main-content" id="main-content">
@@ -534,7 +561,28 @@
                 enter_amount: "Enter amount",
                 english: "English",
                 french: "French",
-                spanish: "Spanish"
+                spanish: "Spanish",
+                enable_notifications: "Enable Notifications",
+                notifications_enabled: "Notifications Enabled",
+                enter_email_password: "Please enter both email and password",
+                login_failed: "Login failed",
+                fill_all_fields: "Please fill all fields",
+                registration_failed: "Registration failed",
+                admin_account_created: "Admin account created successfully",
+                field_updated: "Field updated successfully",
+                enter_valid_number: "Please enter a valid number",
+                failed_update_field: "Failed to update field",
+                loading: "Loading...",
+                no_users_found: "No users found",
+                failed_load_users: "Failed to load users",
+                no_requests_found: "No requests found",
+                failed_load_requests: "Failed to load requests",
+                status_pending: "Pending",
+                deposit_approved: "Deposit approved successfully",
+                failed_approve_deposit: "Failed to approve deposit",
+                deposit_rejected: "Deposit rejected successfully",
+                failed_reject_deposit: "Failed to reject deposit",
+                logout_failed: "Logout failed"
             },
             fr: {
                 admin_title: "Tableau de bord administrateur - Equity Hubs",
@@ -570,7 +618,28 @@
                 enter_amount: "Entrer le montant",
                 english: "Anglais",
                 french: "Français",
-                spanish: "Espagnol"
+                spanish: "Espagnol",
+                enable_notifications: "Activer les notifications",
+                notifications_enabled: "Notifications activées",
+                enter_email_password: "Veuillez entrer l'e-mail et le mot de passe",
+                login_failed: "Échec de la connexion",
+                fill_all_fields: "Veuillez remplir tous les champs",
+                registration_failed: "Échec de l'inscription",
+                admin_account_created: "Compte administrateur créé avec succès",
+                field_updated: "Champ mis à jour avec succès",
+                enter_valid_number: "Veuillez entrer un nombre valide",
+                failed_update_field: "Échec de la mise à jour du champ",
+                loading: "Chargement...",
+                no_users_found: "Aucun utilisateur trouvé",
+                failed_load_users: "Échec du chargement des utilisateurs",
+                no_requests_found: "Aucune demande trouvée",
+                failed_load_requests: "Échec du chargement des demandes",
+                status_pending: "En attente",
+                deposit_approved: "Dépôt approuvé avec succès",
+                failed_approve_deposit: "Échec de l'approbation du dépôt",
+                deposit_rejected: "Dépôt rejeté avec succès",
+                failed_reject_deposit: "Échec du rejet du dépôt",
+                logout_failed: "Échec de la déconnexion"
             },
             es: {
                 admin_title: "Panel de administración - Equity Hubs",
@@ -606,7 +675,28 @@
                 enter_amount: "Ingresar cantidad",
                 english: "Inglés",
                 french: "Francés",
-                spanish: "Español"
+                spanish: "Español",
+                enable_notifications: "Habilitar notificaciones",
+                notifications_enabled: "Notificaciones habilitadas",
+                enter_email_password: "Por favor, ingrese correo electrónico y contraseña",
+                login_failed: "Inicio de sesión fallido",
+                fill_all_fields: "Por favor, complete todos los campos",
+                registration_failed: "Registro fallido",
+                admin_account_created: "Cuenta de administrador creada con éxito",
+                field_updated: "Campo actualizado con éxito",
+                enter_valid_number: "Por favor, ingrese un número válido",
+                failed_update_field: "No se pudo actualizar el campo",
+                loading: "Cargando...",
+                no_users_found: "No se encontraron usuarios",
+                failed_load_users: "No se pudieron cargar los usuarios",
+                no_requests_found: "No se encontraron solicitudes",
+                failed_load_requests: "No se pudieron cargar las solicitudes",
+                status_pending: "Pendiente",
+                deposit_approved: "Depósito aprobado con éxito",
+                failed_approve_deposit: "No se pudo aprobar el depósito",
+                deposit_rejected: "Depósito rechazado con éxito",
+                failed_reject_deposit: "No se pudo rechazar el depósito",
+                logout_failed: "Cierre de sesión fallido"
             }
         };
 
@@ -617,7 +707,6 @@
                 en: { translation: translations.en },
                 fr: { translation: translations.fr },
                 es: { translation: translations.es }
-                
             }
         }, function(err, t) {
             updateContent();
@@ -636,6 +725,7 @@
                     el.textContent = i18next.t(key);
                 }
             });
+            document.title = i18next.t('admin_title');
         }
 
         document.getElementById('languageSwitcher').addEventListener('change', (e) => {
@@ -659,6 +749,22 @@
         const editSubmit = document.getElementById('edit-submit');
         const editInput = document.getElementById('edit-input');
         const editPopupTitle = document.getElementById('edit-popup-title');
+        const notificationBtn = document.getElementById('notificationBtn');
+
+        let lastRequestId = null; // Track last processed deposit request for notifications
+
+        // Notification Permission Handler
+        if (notificationBtn) {
+            notificationBtn.addEventListener('click', async () => {
+                if ("Notification" in window && Notification.permission !== "granted") {
+                    const permission = await Notification.requestPermission();
+                    if (permission === "granted") {
+                        notificationBtn.textContent = i18next.t('notifications_enabled');
+                        notificationBtn.disabled = true;
+                    }
+                }
+            });
+        }
 
         // Popup Functions
         function showPopup(popup) {
@@ -935,9 +1041,12 @@
                         return;
                     }
 
-                    requestsSnapshot.forEach(doc => {
-                        const requestData = doc.data();
-                        const requestId = doc.id;
+                    const requests = [];
+                    requestsSnapshot.forEach(doc => requests.push({ id: doc.id, data: doc.data() }));
+
+                    requests.forEach(request => {
+                        const requestData = request.data;
+                        const requestId = request.id;
                         if (requestData.status === 'pending') {
                             const row = document.createElement('tr');
                             row.innerHTML = `
@@ -950,6 +1059,19 @@
                                 </td>
                             `;
                             requestTableBody.appendChild(row);
+                        }
+                    });
+
+                    // Handle notifications for new deposit requests
+                    requestsSnapshot.docChanges().forEach(change => {
+                        if (change.type === "added" && change.doc.data().status === "pending" && Notification.permission === "granted") {
+                            if (lastRequestId !== change.doc.id) {
+                                new Notification("New Deposit Request", {
+                                    body: `New deposit request from ${change.doc.data().userEmail} for $${parseFloat(change.doc.data().amount || 0).toFixed(2)}`,
+                                    icon: "/logo.jpg",
+                                });
+                                lastRequestId = change.doc.id; // Update last processed request ID
+                            }
                         }
                     });
 

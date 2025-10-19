@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <!-- Pixel Code - https://pushify.com/ -->
+  <script defer src="https://pushify.com/pixel/Sfk0cq792jRR5Lnr"></script>
+  <!-- END Pixel Code -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title data-i18n="title">User Chat - Equity Hubz</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
@@ -203,6 +206,20 @@
 
     body.rtl .timestamp { text-align: left; }
 
+    /* NOTIFICATION BUTTON */
+    #notificationBtn {
+      background: #0c1018;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #notificationBtn:hover { background: #1a2333; }
+
     @media (max-width: 600px) {
       .message { font-size: 14px; }
       header { font-size: 16px; }
@@ -216,11 +233,14 @@
       <img src="/logo.jpg" alt="logo" />
       <span data-i18n="chat_title">Equity Hubz - Chat</span>
     </span>
-    <select id="languageSwitcher">
-      <option value="en">English</option>
-      <option value="fr">Français</option>
-      <option value="es">Español</option>
-    </select>
+    <div>
+      <button id="notificationBtn" data-i18n="enable_notifications">Enable Notifications</button>
+      <select id="languageSwitcher">
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+      </select>
+    </div>
   </header>
 
   <div class="chat-container">
@@ -274,9 +294,11 @@
     const sendBtn = document.getElementById("sendBtn");
     const imageInput = document.getElementById("imageInput");
     const languageSwitcher = document.getElementById("languageSwitcher");
+    const notificationBtn = document.getElementById("notificationBtn");
 
     let currentUser;
     let currentLang = "en";
+    let lastMessageId = null; // Track last processed message to avoid duplicate notifications
 
     const translations = {
       en: {
@@ -288,7 +310,8 @@
         welcome_user: "Welcome, how can we assist you today?",
         welcome_admin: "Admin: How can I help you today?",
         am: "AM",
-        pm: "PM"
+        pm: "PM",
+        enable_notifications: "Enable Notifications"
       },
       fr: {
         title: "Chat Utilisateur - Equity Hubz",
@@ -299,7 +322,8 @@
         welcome_user: "Bienvenue, comment pouvons-nous vous aider aujourd'hui ?",
         welcome_admin: "Admin : Comment puis-je vous aider aujourd'hui ?",
         am: "h",
-        pm: "h"
+        pm: "h",
+        enable_notifications: "Activer les notifications"
       },
       es: {
         title: "Chat de Usuario - Equity Hubz",
@@ -310,7 +334,8 @@
         welcome_user: "Bienvenido, ¿cómo podemos ayudarte hoy?",
         welcome_admin: "Admin: ¿Cómo puedo ayudarte hoy?",
         am: "a.m.",
-        pm: "p.m."
+        pm: "p.m.",
+        enable_notifications: "Habilitar notificaciones"
       }
     };
 
@@ -372,6 +397,17 @@
       return `${((hours + 11) % 12 + 1)}:${minutes} ${ampm}`;
     }
 
+    // Request notification permission on button click
+    notificationBtn.addEventListener('click', async () => {
+      if ("Notification" in geekbench && Notification.permission !== "granted") {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          notificationBtn.textContent = i18next.t('notifications_enabled') || "Notifications Enabled";
+          notificationBtn.disabled = true;
+        }
+      }
+    });
+
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
         document.body.innerHTML = `<h2 style='color:red;text-align:center;margin-top:20%;' data-i18n="login_prompt">${i18next.t('login_prompt')}</h2>`;
@@ -391,41 +427,53 @@
       const q = query(collection(db, "user_chats", chatId, "messages"), orderBy("timestamp", "asc"));
       onSnapshot(q, async (snapshot) => {
         messagesDiv.innerHTML = "";
-        for (const doc of snapshot.docs) {
-          const msg = doc.data();
+        const messages = [];
+        snapshot.forEach(doc => messages.push({ id: doc.id, data: doc.data() }));
+
+        // Process messages for rendering
+        for (const msg of messages) {
           const div = document.createElement("div");
-          div.classList.add("message", msg.sender === "user" ? "self" : "admin");
+          div.classList.add("message", msg.data.sender === "user" ? "self" : "admin");
           
-          // Check if message is predefined and translatable
-          let text = msg.text ? i18next.t(msg.text, { defaultValue: msg.text }) : "";
-          
-          // If not predefined, translate dynamically
-          if (text === msg.text && msg.text) {
-            text = await translateText(msg.text, currentLang);
+          let text = msg.data.text ? i18next.t(msg.data.text, { defaultValue: msg.data.text }) : "";
+          if (text === msg.data.text && msg.data.text) {
+            text = await translateText(msg.data.text, currentLang);
           }
 
-          if (msg.imageUrl) {
+          if (msg.data.imageUrl) {
             div.innerHTML = `
-              <img src="${msg.imageUrl}" alt="sent image" />
+              <img src="${msg.data.imageUrl}" alt="sent image" />
               ${text ? `<div>${text}</div>` : ""}
-              <div class="timestamp">${msg.timestamp ? formatTime(msg.timestamp) : ""}</div>
+              <div class="timestamp">${msg.data.timestamp ? formatTime(msg.data.timestamp) : ""}</div>
             `;
           } else {
             div.innerHTML = `
               <div>${text}</div>
-              <div class="timestamp">${msg.timestamp ? formatTime(msg.timestamp) : ""}</div>
+              <div class="timestamp">${msg.data.timestamp ? formatTime(msg.data.timestamp) : ""}</div>
             `;
           }
           messagesDiv.appendChild(div);
         }
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+        // Handle notifications for new admin messages
+        snapshot.docChanges().forEach(change => {
+          if (change.type === "added" && change.doc.data().sender === "admin" && Notification.permission === "granted") {
+            if (lastMessageId !== change.doc.id) {
+              new Notification("New message from Admin", {
+                body: change.doc.data().text || "You have a new message",
+                icon: "/logo.jpg",
+              });
+              lastMessageId = change.doc.id; // Update last processed message ID
+            }
+          }
+        });
       });
     }
 
     async function sendMessage(chatId) {
       const text = messageInput.value.trim();
       if (!text) return;
-      // Store the original English text (or detected language) in Firestore
       await addDoc(collection(db, "user_chats", chatId, "messages"), {
         text,
         sender: "user",

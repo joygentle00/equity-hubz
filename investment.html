@@ -3,294 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equity Hubs - Investment</title>
+    <title data-i18n="title">Equity Hubs - Investment</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="investment.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Favicon to prevent 404 error -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <!-- Google Translate API -->
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <style>
-        /* Note: Assumes style.css contains base styles for container, header, footer, etc. */
-        /* Hamburger menu styles */
-        .nav-left-mobile {
-            display: flex;
-            align-items: center;
-        }
-        .menu-icon {
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 30px;
-            height: 20px;
-            cursor: pointer;
-            margin-right: 15px;
-        }
-        .hamburger-lines {
-            width: 100%;
-            height: 3px;
-            background: white;
-            transition: all 0.3s ease;
-        }
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .nav-links.active {
-            display: flex;
-            flex-direction: column;
-            position: absolute;
-            top: 60px;
-            left: 0;
-            width: 100%;
-            background: #1e293b;
-            padding: 20px;
-            z-index: 999;
-        }
-        @media (max-width: 768px) {
-            .menu-icon {
-                display: flex;
-            }
-            .nav-links {
-                display: none;
-            }
-            .nav-links.active {
-                display: flex;
-            }
-        }
-        /* Popup styles */
-        .popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        .popup-content {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 400px;
-            position: relative;
-        }
-        .popup-content h2 {
-            margin-top: 0;
-            color: #333;
-        }
-        .popup-content input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .popup-content button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .popup-content button:hover {
-            background: #0056b3;
-        }
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        .popup-content a {
-            color: #007bff;
-            text-decoration: none;
-            display: block;
-            text-align: center;
-            margin-top: 10px;
-        }
-        .popup-content a:hover {
-            text-decoration: underline;
-        }
-        .error-message {
-            color: red;
-            font-size: 14px;
-            margin-top: 5px;
-            display: none;
-        }
-        /* Language selector styles */
-        .language-selector {
-            position: relative;
-            display: inline-block;
-        }
-        .dropdown-trigger {
-            display: flex;
-            align-items: center;
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background: white;
-            cursor: pointer;
-        }
-        .dropdown-trigger i {
-            margin-right: 8px;
-            color: #333;
-        }
-        .dropdown-flag {
-            width: 20px;
-            height: 20px;
-            background-size: cover;
-            margin-right: 8px;
-        }
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 150px;
-            background: white;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            z-index: 1000;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        .dropdown-menu.active {
-            display: block;
-        }
-        .dropdown-option {
-            display: flex;
-            align-items: center;
-            padding: 8px;
-            cursor: pointer;
-        }
-        .dropdown-option:hover {
-            background: #f0f0f0;
-        }
-        .dropdown-option img {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-        }
-        .language-selector-mobile .dropdown-trigger {
-            padding: 5px;
-        }
-        .language-selector-desktop .dropdown-menu {
-            left: auto;
-            right: 0;
-        }
-        /* Investment section styles */
-        .investment-section {
-            padding: 40px 20px;
-            text-align: center;
-        }
-        .investment-section h1 {
-            font-size: 32px;
-            margin-bottom: 20px;
-            color: white;
-        }
-        .investment-section p {
-            font-size: 18px;
-            margin-bottom: 40px;
-            color: #ccc;
-        }
-        .investment-plans {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-        .investment-plan {
-            background: #1e293b;
-            border-radius: 8px;
-            padding: 20px;
-            width: 300px;
-            color: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .investment-plan:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        }
-        .investment-plan h2 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        .investment-plan p {
-            font-size: 16px;
-            margin: 8px 0;
-        }
-        .invest-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .invest-btn:hover {
-            background: #0056b3;
-        }
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .investment-plans {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
+    <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
             <div class="alert-ticker-container">
-                <p class="ticker-content">
-                    ⚠️ BE AWARE OF FRAUD: Equityhubs will **NEVER** ask you to send money to a personal account. Always deposit funds through the secure, verified platform channels. Protect your investment. ⚠️ BE AWARE OF FRAUD: Equityhubs will **NEVER** ask you to send money to a personal account. Always deposit funds through the secure, verified platform channels. Protect your investment. ⚠️ BE AWARE OF FRAUD: Equityhubs will **NEVER** ask you to send money to a personal account. Always deposit funds through the secure, verified platform channels. Protect your investment.
+                <p class="ticker-content" data-i18n="alert">
+                    ⚠️ BE AWARE OF FRAUD: Equity Hubs will **NEVER** ask you to send money to a personal account. Always deposit funds through the secure, verified platform channels. Protect your investment.
                 </p>
             </div>
             <nav>
-                <div class="nav-left-mobile"> 
+                <div class="nav-left-mobile">
                     <div class="menu-icon" id="menu-toggle">
                         <div class="hamburger-lines"></div>
                         <div class="hamburger-lines"></div>
                         <div class="hamburger-lines"></div>
                     </div>
-                    <div class="language-selector language-selector-mobile">
-                        <div class="dropdown-trigger" id="language-dropdown-mobile">
-                            <i class="fas fa-globe"></i>
-                            <div class="dropdown-flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/640px-Flag_of_the_United_Kingdom_%283-5%29.svg.png')"></div>
-                            <span>English</span>
-                        </div>
-                        <ul class="dropdown-menu" id="language-menu-mobile">
-                            <li class="dropdown-option" data-value="en" data-flag="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/640px-Flag_of_the_United_Kingdom_%283-5%29.svg.png">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/640px-Flag_of_the_United_Kingdom_%283-5%29.svg.png" alt="English">
-                            </li>
-                            <li class="dropdown-option" data-value="es" data-flag="https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg">
-                                <img src="https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg" alt="Spanish">
-                            </li>
-                            <li class="dropdown-option" data-value="fr" data-flag="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Flag_of_France_%281958%E2%80%931976%29.svg/640px-Flag_of_France_%281958%E2%80%931976%29.svg.png">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Flag_of_France_%281958%E2%80%931976%29.svg/640px-Flag_of_France_%281958%E2%80%931976%29.svg.png" alt="French">
-                            </li>
-                            <li class="dropdown-option" data-value="de" data-flag="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg">
-                                <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" alt="German">
-                            </li>
-                            <li class="dropdown-option" data-value="zh-CN" data-flag="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People%27s_Republic_of_China.svg">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People%27s_Republic_of_China.svg" alt="Chinese">
-                            </li>
-                        </ul>
+                    <a href="user-chat.html" class="chat-icon-mobile">
+                        <i class="fa-solid fa-comment-dots"></i>
+                    </a>
+                    <div class="language-selector">
+                        <select id="languageSwitcher">
+                            <option value="en">English</option>
+                            <option value="fr">Français</option>
+                            <option value="es">Spanish</option>
+                        </select>
                     </div>
                 </div>
                 <div class="logo-desktop-only">
@@ -299,61 +42,37 @@
                     </svg>
                 </div>
                 <div class="nav-links" id="nav-links-menu">
-                    <a href="index.html">Home</a>
-                    <a href="about.html">About Us</a>
-                    <a href="contact.html">Contacts</a>
-                    <a href="investment.html">Investment</a>
-                    <div class="language-selector language-selector-desktop">
-                        <div class="dropdown-trigger" id="language-dropdown-desktop">
-                            <i class="fas fa-globe"></i>
-                            <div class="dropdown-flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_Kingdom.svg')"></div>
-                            <span>English</span>
-                        </div>
-                        <ul class="dropdown-menu" id="language-menu-desktop">
-                            <li class="dropdown-option" data-value="en" data-flag="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/640px-Flag_of_the_United_Kingdom_%283-5%29.svg.png">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/640px-Flag_of_the_United_Kingdom_%283-5%29.svg.png" alt="English">
-                            </li>
-                            <li class="dropdown-option" data-value="es" data-flag="https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg">
-                                <img src="https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg" alt="Spanish">
-                            </li>
-                            <li class="dropdown-option" data-value="fr" data-flag="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg">
-                                <img src="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg" alt="French">
-                            </li>
-                            <li class="dropdown-option" data-value="de" data-flag="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg">
-                                <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" alt="German">
-                            </li>
-                            <li class="dropdown-option" data-value="zh-CN" data-flag="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People%27s_Republic_of_China.svg">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People%27s_Republic_of_China.svg" alt="Chinese">
-                            </li>
-                        </ul>
-                    </div>
+                    <a href="index.html" data-i18n="nav_home">Home</a>
+                    <a href="about.html" data-i18n="nav_about">About Us</a>
+                    <a href="contact.html" data-i18n="nav_contacts">Contacts</a>
+                    <a href="investment.html" data-i18n="nav_investment">Investment</a>
                 </div>
                 <div class="nav-right-buttons auth-buttons">
-                    <a href="#" class="login-btn">Login</a>
-                    <a href="#" class="register-btn">Register <i class="fa-solid fa-angle-right"></i></a>
+                    <a href="#" class="login-btn" data-i18n="login">Login</a>
+                    <a href="#" class="register-btn" data-i18n="register">Register <i class="fa-solid fa-angle-right"></i></a>
                 </div>
                 <div class="nav-right-buttons trade-buttons" style="display: none;">
-                    <a style="background-color: rgb(4, 28, 4); text-align: center; padding: 12px; border-radius: 5px;" href="dashboard.html" class="trade-btn">Trade</a>
+                    <a href="dashboard.html" class="trade-btn" data-i18n="trade">Trade</a>
                 </div>
             </nav>
-            <div id="translator_widget" style="display: none;"></div>
         </header>
-        <!--TELEGRAM-->
-        <!-- Floating Telegram Chat Bubble -->
+
+        <!-- Floating Chat Bubble -->
         <a class="chat-bubble" href="user-chat.html">
             <i class="far fa-comment"></i>
-         </a>
+        </a>
+
         <!-- Login Popup -->
         <div id="login-popup" class="popup">
             <div class="popup-content">
                 <span class="close-btn">&times;</span>
-                <h2>Login</h2>
-                <input type="email" id="login-email" placeholder="Email" required>
-                <input type="password" id="login-password" placeholder="Password" required>
+                <h2 data-i18n="login_title">Login</h2>
+                <input type="email" id="login-email" data-i18n-placeholder="email_placeholder" placeholder="Email" required>
+                <input type="password" id="login-password" data-i18n-placeholder="password_placeholder" placeholder="Password" required>
                 <p id="login-error" class="error-message"></p>
-                <button id="login-submit">Login</button>
-                <a href="#" id="forgot-password-link">Forgot Password?</a>
-                <a href="#" id="switch-to-register">Don't have an account? Register</a>
+                <button id="login-submit" data-i18n="login_button">Login</button>
+                <a href="#" id="forgot-password-link" data-i18n="forgot_password">Forgot Password?</a>
+                <a href="#" id="switch-to-register" data-i18n="switch_to_register">Don't have an account? Register</a>
             </div>
         </div>
 
@@ -361,14 +80,14 @@
         <div id="register-popup" class="popup">
             <div class="popup-content">
                 <span class="close-btn">&times;</span>
-                <h2>Create Account</h2>
-                <input type="text" id="register-name" placeholder="Name" required>
-                <input type="email" id="register-email" placeholder="Email" required>
-                <input type="password" id="register-password" placeholder="Password" required>
-                <input type="password" id="register-confirm-password" placeholder="Confirm Password" required>
+                <h2 data-i18n="create_account">Create Account</h2>
+                <input type="text" id="register-name" data-i18n-placeholder="name_placeholder" placeholder="Name" required>
+                <input type="email" id="register-email" data-i18n-placeholder="email_placeholder" placeholder="Email" required>
+                <input type="password" id="register-password" data-i18n-placeholder="password_placeholder" placeholder="Password" required>
+                <input type="password" id="register-confirm-password" data-i18n-placeholder="confirm_password_placeholder" placeholder="Confirm Password" required>
                 <p id="register-error" class="error-message"></p>
-                <button id="register-submit">Register</button>
-                <a href="#" id="switch-to-login">Already have an account? Login</a>
+                <button id="register-submit" data-i18n="register_button">Register</button>
+                <a href="#" id="switch-to-login" data-i18n="switch_to_login">Already have an account? Login</a>
             </div>
         </div>
 
@@ -376,44 +95,44 @@
         <div id="forgot-password-popup" class="popup">
             <div class="popup-content">
                 <span class="close-btn">&times;</span>
-                <h2>Forgot Password</h2>
-                <input type="email" id="forgot-email" placeholder="Email" required>
+                <h2 data-i18n="forgot_password_title">Forgot Password</h2>
+                <input type="email" id="forgot-email" data-i18n-placeholder="email_placeholder" placeholder="Email" required>
                 <p id="forgot-error" class="error-message"></p>
-                <button id="forgot-submit">Send Reset Link</button>
-                <a href="#" id="switch-to-login-from-forgot">Back to Login</a>
+                <button id="forgot-submit" data-i18n="send_reset_link">Send Reset Link</button>
+                <a href="#" id="switch-to-login-from-forgot" data-i18n="back_to_login">Back to Login</a>
             </div>
         </div>
 
         <main>
             <section class="investment-section">
-                <h1>Investment Opportunities</h1>
-                <p>Explore our range of investment plans designed to help you grow your wealth. Choose a plan that suits your financial goals and start investing today!</p>
+                <h1 data-i18n="investment_opportunities">Investment Opportunities</h1>
+                <p data-i18n="investment_description">Explore our range of investment plans designed to help you grow your wealth. Choose a plan that suits your financial goals and start investing today!</p>
                 <div class="investment-plans">
                     <div class="investment-plan">
-                        <h2>Basic Plan</h2>
-                        <p>Minimum Investment: $100</p>
-                        <p>Return: 5% Monthly</p>
-                        <p>Duration: 6 Months</p>
-                        <button class="invest-btn" data-plan="Basic">Invest Now</button>
+                        <h2 data-i18n="basic_plan">Basic Plan</h2>
+                        <p data-i18n="basic_min_investment">Minimum Investment: $100</p>
+                        <p data-i18n="basic_return">Return: 5% Monthly</p>
+                        <p data-i18n="basic_duration">Duration: 6 Months</p>
+                        <button class="invest-btn" data-plan="Basic" data-i18n="invest_now">Invest Now</button>
                     </div>
                     <div class="investment-plan">
-                        <h2>Standard Plan</h2>
-                        <p>Minimum Investment: $500</p>
-                        <p>Return: 7% Monthly</p>
-                        <p>Duration: 12 Months</p>
-                        <button class="invest-btn" data-plan="Standard">Invest Now</button>
+                        <h2 data-i18n="standard_plan">Standard Plan</h2>
+                        <p data-i18n="standard_min_investment">Minimum Investment: $500</p>
+                        <p data-i18n="standard_return">Return: 7% Monthly</p>
+                        <p data-i18n="standard_duration">Duration: 12 Months</p>
+                        <button class="invest-btn" data-plan="Standard" data-i18n="invest_now">Invest Now</button>
                     </div>
                     <div class="investment-plan">
-                        <h2>Premium Plan</h2>
-                        <p>Minimum Investment: $1000</p>
-                        <p>Return: 10% Monthly</p>
-                        <p>Duration: 24 Months</p>
-                        <button class="invest-btn" data-plan="Premium">Invest Now</button>
+                        <h2 data-i18n="premium_plan">Premium Plan</h2>
+                        <p data-i18n="premium_min_investment">Minimum Investment: $1000</p>
+                        <p data-i18n="premium_return">Return: 10% Monthly</p>
+                        <p data-i18n="premium_duration">Duration: 24 Months</p>
+                        <button class="invest-btn" data-plan="Premium" data-i18n="invest_now">Invest Now</button>
                     </div>
                 </div>
             </section>
         </main>
-        
+
         <footer>
             <div class="footer-content">
                 <div class="footer-col disclaimer-col">
@@ -423,24 +142,24 @@
                         </svg>
                         Equity Hubs
                     </div>
-                    <p class="disclaimer-text">
+                    <p class="disclaimer-text" data-i18n="disclaimer">
                         The Company does not provide services to citizens and/or residents of Australia, Austria, Belarus, Belgium, Bulgaria, Canada, Croatia, Republic of Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Iceland, Iran, Ireland, Israel, Italy, Latvia, Liechtenstein, Lithuania, Luxembourg, Malta, Myanmar, Netherlands, New Zealand, North Korea, Norway, Poland, Portugal, Puerto Rico, Romania, Russia, Singapore, Slovakia, Slovenia, South Sudan, Spain, Sudan, Sweden, Switzerland, UK, Ukraine, the USA, Yemen.
                     </p>
                 </div>
                 <div class="footer-col link-group">
-                    <h4>Home</h4>
+                    <h4 data-i18n="home">Home</h4>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="contact.html">Contacts</a></li>
-                        <li><a href="investment.html">Investment</a></li>
+                        <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+                        <li><a href="about.html" data-i18n="nav_about">About Us</a></li>
+                        <li><a href="contact.html" data-i18n="nav_contacts">Contacts</a></li>
+                        <li><a href="investment.html" data-i18n="nav_investment">Investment</a></li>
                     </ul>
                 </div>
                 <div class="footer-col link-group">
-                    <h4>Contacts</h4>
-                    <p>Email: support@equityhub.org</p>
-                    <p>Phone: +16066020676</p>
-                    <p>Address: 123 Finance St, New York, NY</p>
+                    <h4 data-i18n="contacts">Contacts</h4>
+                    <p data-i18n="email">Email: support@equityhub.org</p>
+                    <p data-i18n="phone">Phone: +16066020676</p>
+                    <p data-i18n="address">Address: 123 Finance St, New York, NY</p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -450,16 +169,14 @@
                     <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                     <a href="#"><i class="fa-brands fa-instagram"></i></a>
                 </div>
-                <p style="justify-content: center; text-align: center;">&copy; 2010  Equity Hubs. All rights reserved.</p>
+                <p data-i18n="copyright">&copy; 2010 Equity Hubs. All rights reserved.</p>
             </div>
         </footer>
     </div>
     <script type="module">
-        // Import Firebase modules
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, updateProfile } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
             authDomain: "investment-40343.firebaseapp.com",
@@ -470,11 +187,9 @@
             measurementId: "G-SXL6ZGL49W"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Popup Elements
         const loginPopup = document.getElementById('login-popup');
         const registerPopup = document.getElementById('register-popup');
         const forgotPasswordPopup = document.getElementById('forgot-password-popup');
@@ -487,13 +202,220 @@
         const switchToLogin = document.getElementById('switch-to-login');
         const forgotPasswordLink = document.getElementById('forgot-password-link');
         const switchToLoginFromForgot = document.getElementById('switch-to-login-from-forgot');
-
-        // Error Messages
         const loginError = document.getElementById('login-error');
         const registerError = document.getElementById('register-error');
         const forgotError = document.getElementById('forgot-error');
+        const languageSwitcher = document.getElementById('languageSwitcher');
 
-        // Show/Hide Popups
+        let currentLang = 'en';
+
+        const translations = {
+            en: {
+                title: "Equity Hubs - Investment",
+                alert: "⚠️ BE AWARE OF FRAUD: Equity Hubs will **NEVER** ask you to send money to a personal account. Always deposit funds through the secure, verified platform channels. Protect your investment.",
+                nav_home: "Home",
+                nav_about: "About Us",
+                nav_contacts: "Contacts",
+                nav_investment: "Investment",
+                login: "Login",
+                register: "Register",
+                trade: "Trade",
+                login_title: "Login",
+                email_placeholder: "Email",
+                password_placeholder: "Password",
+                login_button: "Login",
+                forgot_password: "Forgot Password?",
+                switch_to_register: "Don't have an account? Register",
+                create_account: "Create Account",
+                name_placeholder: "Name",
+                confirm_password_placeholder: "Confirm Password",
+                register_button: "Register",
+                switch_to_login: "Already have an account? Login",
+                forgot_password_title: "Forgot Password",
+                send_reset_link: "Send Reset Link",
+                back_to_login: "Back to Login",
+                investment_opportunities: "Investment Opportunities",
+                investment_description: "Explore our range of investment plans designed to help you grow your wealth. Choose a plan that suits your financial goals and start investing today!",
+                basic_plan: "Basic Plan",
+                basic_min_investment: "Minimum Investment: $100",
+                basic_return: "Return: 5% Monthly",
+                basic_duration: "Duration: 6 Months",
+                standard_plan: "Standard Plan",
+                standard_min_investment: "Minimum Investment: $500",
+                standard_return: "Return: 7% Monthly",
+                standard_duration: "Duration: 12 Months",
+                premium_plan: "Premium Plan",
+                premium_min_investment: "Minimum Investment: $1000",
+                premium_return: "Return: 10% Monthly",
+                premium_duration: "Duration: 24 Months",
+                invest_now: "Invest Now",
+                disclaimer: "The Company does not provide services to citizens and/or residents of Australia, Austria, Belarus, Belgium, Bulgaria, Canada, Croatia, Republic of Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Iceland, Iran, Ireland, Israel, Italy, Latvia, Liechtenstein, Lithuania, Luxembourg, Malta, Myanmar, Netherlands, New Zealand, North Korea, Norway, Poland, Portugal, Puerto Rico, Romania, Russia, Singapore, Slovakia, Slovenia, South Sudan, Spain, Sudan, Sweden, Switzerland, UK, Ukraine, the USA, Yemen.",
+                home: "Home",
+                contacts: "Contacts",
+                email: "Email: support@equityhub.org",
+                phone: "Phone: +16066020676",
+                address: "Address: 123 Finance St, New York, NY",
+                copyright: "&copy; 2010 Equity Hubs. All rights reserved."
+            },
+            fr: {
+                title: "Equity Hubs - Investissement",
+                alert: "⚠️ ATTENTION AUX FRAUDES : Equity Hubs ne vous demandera **JAMAIS** d'envoyer de l'argent sur un compte personnel. Déposez toujours vos fonds via les canaux sécurisés et vérifiés de la plateforme. Protégez votre investissement.",
+                nav_home: "Accueil",
+                nav_about: "À propos de nous",
+                nav_contacts: "Contacts",
+                nav_investment: "Investissement",
+                login: "Connexion",
+                register: "Inscription",
+                trade: "Trader",
+                login_title: "Connexion",
+                email_placeholder: "Email",
+                password_placeholder: "Mot de passe",
+                login_button: "Connexion",
+                forgot_password: "Mot de passe oublié ?",
+                switch_to_register: "Vous n'avez pas de compte ? Inscrivez-vous",
+                create_account: "Créer un compte",
+                name_placeholder: "Nom",
+                confirm_password_placeholder: "Confirmer le mot de passe",
+                register_button: "Inscription",
+                switch_to_login: "Vous avez déjà un compte ? Connexion",
+                forgot_password_title: "Mot de passe oublié",
+                send_reset_link: "Envoyer le lien de réinitialisation",
+                back_to_login: "Retour à la connexion",
+                investment_opportunities: "Opportunités d'investissement",
+                investment_description: "Découvrez notre gamme de plans d'investissement conçus pour vous aider à accroître votre patrimoine. Choisissez un plan adapté à vos objectifs financiers et commencez à investir dès aujourd'hui !",
+                basic_plan: "Plan de base",
+                basic_min_investment: "Investissement minimum : 100 $",
+                basic_return: "Rendement : 5 % par mois",
+                basic_duration: "Durée : 6 mois",
+                standard_plan: "Plan standard",
+                standard_min_investment: "Investissement minimum : 500 $",
+                standard_return: "Rendement : 7 % par mois",
+                standard_duration: "Durée : 12 mois",
+                premium_plan: "Plan premium",
+                premium_min_investment: "Investissement minimum : 1000 $",
+                premium_return: "Rendement : 10 % par mois",
+                premium_duration: "Durée : 24 mois",
+                invest_now: "Investir maintenant",
+                disclaimer: "La société ne fournit pas de services aux citoyens et/ou résidents de l'Australie, l'Autriche, la Biélorussie, la Belgique, la Bulgarie, le Canada, la Croatie, la République de Chypre, la République tchèque, le Danemark, l'Estonie, la Finlande, la France, l'Allemagne, la Grèce, la Hongrie, l'Islande, l'Iran, l'Irlande, Israël, l'Italie, la Lettonie, le Liechtenstein, la Lituanie, le Luxembourg, Malte, le Myanmar, les Pays-Bas, la Nouvelle-Zélande, la Corée du Nord, la Norvège, la Pologne, le Portugal, Porto Rico, la Roumanie, la Russie, Singapour, la Slovaquie, la Slovénie, le Soudan du Sud, l'Espagne, le Soudan, la Suède, la Suisse, le Royaume-Uni, l'Ukraine, les États-Unis, le Yémen.",
+                home: "Accueil",
+                contacts: "Contacts",
+                email: "Email : support@equityhub.org",
+                phone: "Téléphone : +16066020676",
+                address: "Adresse : 123 Finance St, New York, NY",
+                copyright: "&copy; 2010 Equity Hubs. Tous droits réservés."
+            },
+            es: {
+                title: "Equity Hubs - Inversión",
+                alert: "⚠️ CUIDADO CON EL FRAUDE: Equity Hubs **NUNCA** te pedirá que envíes dinero a una cuenta personal. Siempre deposita fondos a través de los canales seguros y verificados de la plataforma. Protege tu inversión.",
+                nav_home: "Inicio",
+                nav_about: "Sobre nosotros",
+                nav_contacts: "Contactos",
+                nav_investment: "Inversión",
+                login: "Iniciar sesión",
+                register: "Registrarse",
+                trade: "Operar",
+                login_title: "Iniciar sesión",
+                email_placeholder: "Correo electrónico",
+                password_placeholder: "Contraseña",
+                login_button: "Iniciar sesión",
+                forgot_password: "¿Olvidaste tu contraseña?",
+                switch_to_register: "¿No tienes una cuenta? Regístrate",
+                create_account: "Crear cuenta",
+                name_placeholder: "Nombre",
+                confirm_password_placeholder: "Confirmar contraseña",
+                register_button: "Registrarse",
+                switch_to_login: "¿Ya tienes una cuenta? Inicia sesión",
+                forgot_password_title: "Olvidé mi contraseña",
+                send_reset_link: "Enviar enlace de restablecimiento",
+                back_to_login: "Volver al inicio de sesión",
+                investment_opportunities: "Oportunidades de inversión",
+                investment_description: "Explora nuestra gama de planes de inversión diseñados para ayudarte a aumentar tu patrimonio. ¡Elige un plan que se adapte a tus objetivos financieros y comienza a invertir hoy!",
+                basic_plan: "Plan Básico",
+                basic_min_investment: "Inversión mínima: $100",
+                basic_return: "Retorno: 5% mensual",
+                basic_duration: "Duración: 6 meses",
+                standard_plan: "Plan Estándar",
+                standard_min_investment: "Inversión mínima: $500",
+                standard_return: "Retorno: 7% mensual",
+                standard_duration: "Duración: 12 meses",
+                premium_plan: "Plan Premium",
+                premium_min_investment: "Inversión mínima: $1000",
+                premium_return: "Retorno: 10% mensual",
+                premium_duration: "Duración: 24 meses",
+                invest_now: "Invertir ahora",
+                disclaimer: "La compañía no proporciona servicios a ciudadanos y/o residentes de Australia, Austria, Bielorrusia, Bélgica, Bulgaria, Canadá, Croacia, República de Chipre, República Checa, Dinamarca, Estonia, Finlandia, Francia, Alemania, Grecia, Hungría, Islandia, Irán, Irlanda, Israel, Italia, Letonia, Liechtenstein, Lituania, Luxemburgo, Malta, Myanmar, Países Bajos, Nueva Zelanda, Corea del Norte, Noruega, Polonia, Portugal, Puerto Rico, Rumania, Rusia, Singapur, Eslovaquia, Eslovenia, Sudán del Sur, España, Sudán, Suecia, Suiza, Reino Unido, Ucrania, Estados Unidos, Yemen.",
+                home: "Inicio",
+                contacts: "Contactos",
+                email: "Correo electrónico: support@equityhub.org",
+                phone: "Teléfono: +16066020676",
+                address: "Dirección: 123 Finance St, New York, NY",
+                copyright: "&copy; 2010 Equity Hubs. Todos los derechos reservados."
+            }
+        };
+
+        i18next.init({
+            lng: 'en',
+            resources: {
+                en: { translation: translations.en },
+                fr: { translation: translations.fr },
+                es: { translation: translations.es }
+            }
+        }, function(err, t) {
+            updateContent();
+        });
+
+        async function translateText(text, targetLang) {
+            try {
+                const response = await fetch('https://libretranslate.de/translate', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        q: text,
+                        source: 'auto',
+                        target: targetLang,
+                        format: 'text'
+                    }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await response.json();
+                return data.translatedText || text;
+            } catch (error) {
+                console.error('Translation failed:', error);
+                return text;
+            }
+        }
+
+        async function updateContent() {
+            document.querySelectorAll('[data-i18n]').forEach(async el => {
+                const key = el.getAttribute('data-i18n');
+                let text = i18next.t(key);
+                if (text === key) {
+                    text = await translateText(key, currentLang);
+                }
+                el.textContent = text;
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(async el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                let text = i18next.t(key);
+                if (text === key) {
+                    text = await translateText(key, currentLang);
+                }
+                el.placeholder = text;
+            });
+            document.title = i18next.t('title');
+
+            const errorElements = [loginError, registerError, forgotError];
+            errorElements.forEach(async el => {
+                if (el.textContent && el.style.display !== 'none') {
+                    el.textContent = await translateText(el.textContent, currentLang);
+                }
+            });
+        }
+
+        languageSwitcher.addEventListener('change', async (e) => {
+            currentLang = e.target.value;
+            i18next.changeLanguage(currentLang, updateContent);
+        });
+
         function showPopup(popup) {
             popup.style.display = 'flex';
         }
@@ -504,7 +426,6 @@
             popup.querySelector('.error-message').style.display = 'none';
         }
 
-        // Event Listeners for Buttons
         loginBtn.addEventListener('click', () => showPopup(loginPopup));
         registerBtn.addEventListener('click', () => showPopup(registerPopup));
         forgotPasswordLink.addEventListener('click', () => {
@@ -530,70 +451,62 @@
             });
         });
 
-        // Firebase Authentication Handlers
-        document.getElementById('login-submit').addEventListener('click', () => {
+        document.getElementById('login-submit').addEventListener('click', async () => {
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
-            signInWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    hidePopup(loginPopup);
-                    window.location.href = 'deposit.html';
-                })
-                .catch(error => {
-                    loginError.textContent = error.message;
-                    loginError.style.display = 'block';
-                });
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                hidePopup(loginPopup);
+                window.location.href = 'deposit.html';
+            } catch (error) {
+                loginError.textContent = await translateText(error.message, currentLang);
+                loginError.style.display = 'block';
+            }
         });
 
-        document.getElementById('register-submit').addEventListener('click', () => {
+        document.getElementById('register-submit').addEventListener('click', async () => {
             const name = document.getElementById('register-name').value;
             const email = document.getElementById('register-email').value;
             const password = document.getElementById('register-password').value;
             const confirmPassword = document.getElementById('register-confirm-password').value;
-            
+
             if (!name) {
-                registerError.textContent = 'Name is required';
+                registerError.textContent = await translateText('Name is required', currentLang);
                 registerError.style.display = 'block';
                 return;
             }
 
             if (password !== confirmPassword) {
-                registerError.textContent = 'Passwords do not match';
+                registerError.textContent = await translateText('Passwords do not match', currentLang);
                 registerError.style.display = 'block';
                 return;
             }
 
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    return updateProfile(userCredential.user, {
-                        displayName: name
-                    }).then(() => {
-                        hidePopup(registerPopup);
-                        window.location.href = 'deposit.html';
-                    });
-                })
-                .catch(error => {
-                    registerError.textContent = error.message;
-                    registerError.style.display = 'block';
-                });
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(userCredential.user, { displayName: name });
+                hidePopup(registerPopup);
+                window.location.href = 'deposit.html';
+            } catch (error) {
+                registerError.textContent = await translateText(error.message, currentLang);
+                registerError.style.display = 'block';
+            }
         });
 
-        document.getElementById('forgot-submit').addEventListener('click', () => {
+        document.getElementById('forgot-submit').addEventListener('click', async () => {
             const email = document.getElementById('forgot-email').value;
-            sendPasswordResetEmail(auth, email)
-                .then(() => {
-                    forgotError.textContent = 'Password reset email sent!';
-                    forgotError.style.color = 'green';
-                    forgotError.style.display = 'block';
-                })
-                .catch(error => {
-                    forgotError.textContent = error.message;
-                    forgotError.style.color = 'red';
-                    forgotError.style.display = 'block';
-                });
+            try {
+                await sendPasswordResetEmail(auth, email);
+                forgotError.textContent = await translateText('Password reset email sent!', currentLang);
+                forgotError.style.color = 'green';
+                forgotError.style.display = 'block';
+            } catch (error) {
+                forgotError.textContent = await translateText(error.message, currentLang);
+                forgotError.style.color = 'red';
+                forgotError.style.display = 'block';
+            }
         });
 
-        // Authentication State Listener and Invest Button Handling
         onAuthStateChanged(auth, user => {
             if (user) {
                 authButtons.style.display = 'none';
@@ -603,7 +516,6 @@
                 tradeButtons.style.display = 'none';
             }
 
-            // Handle Invest Now buttons
             document.querySelectorAll('.invest-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     if (user) {
@@ -615,76 +527,17 @@
             });
         });
 
-        // Hamburger Menu Toggle
         const menuToggle = document.getElementById('menu-toggle');
         const navLinks = document.getElementById('nav-links-menu');
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
 
-        // Close menu when clicking outside
         document.addEventListener('click', (e) => {
             if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
                 navLinks.classList.remove('active');
             }
         });
-
-        // Google Translate Initialization
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-        }
-
-        // Language Selector Logic
-        function changeLanguage(lang, flagUrl, langText) {
-             
-            if (translateElement) {
-                const select = translateElement.querySelector('select.goog-te-combo');
-                if (select) {
-                    select.value = lang;
-                    select.dispatchEvent(new Event('change'));
-                }
-            }
-            document.querySelectorAll('.dropdown-flag').forEach(flag => {
-                flag.style.backgroundImage = `url('${flagUrl}')`;
-            });
-            document.querySelectorAll('.dropdown-trigger span').forEach(span => {
-                span.textContent = langText;
-            });
-        }
-
-        // Dropdown toggle logic
-        function setupDropdown(triggerId, menuId) {
-            const trigger = document.getElementById(triggerId);
-            const menu = document.getElementById(menuId);
-            trigger.addEventListener('click', () => {
-                menu.classList.toggle('active');
-            });
-
-            // Handle option selection
-            menu.querySelectorAll('.dropdown-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const value = option.getAttribute('data-value');
-                    const flagUrl = option.getAttribute('data-flag');
-                    const text = option.textContent.trim();
-                    changeLanguage(value, flagUrl, text);
-                    menu.classList.remove('active');
-                });
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!trigger.contains(e.target) && !menu.contains(e.target)) {
-                    menu.classList.remove('active');
-                }
-            });
-        }
-
-        // Initialize dropdowns
-        setupDropdown('language-dropdown-mobile', 'language-menu-mobile');
-        setupDropdown('language-dropdown-desktop', 'language-menu-desktop');
-
-        // Initialize with default language (English)
-        changeLanguage('en', 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/640px-Flag_of_the_United_Kingdom_%283-5%29.svg.png', 'English');
     </script>
 </body>
 </html>
