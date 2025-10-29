@@ -312,6 +312,13 @@ img {
     flex-shrink: 0;
 }
 
+.hero-image-container {
+    width: 400px;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 60px;
+}
+
 /* Floating Telegram Chat Bubble Styles */
 .chat-bubble {
     position: fixed;
