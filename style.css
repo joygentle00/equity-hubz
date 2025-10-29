@@ -92,7 +92,13 @@ nav {
     display: flex;
     gap: 25px;
     align-items: center;
+    border: white solid 1px;
+    padding: 16px 20px  ;
+    border-radius: 30px;
 }
+
+
+
 
 /* Ensure desktop logo is visible */
 .logo-desktop-only {
@@ -145,6 +151,9 @@ nav {
     nav {
         justify-content: space-between;
         padding: 15px 5%;
+         border: white solid 1px;
+    padding: 16px 20px  ;
+    border-radius: 30px;
     }
 
     .nav-left-mobile {
