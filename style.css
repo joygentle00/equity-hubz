@@ -13,29 +13,18 @@ body {
     overflow-x: hidden;
 }
 
-/* Container & Background */
+/* Container & Background 
 .container {
-    background: radial-gradient(circle at top right, rgba(0, 0, 0, 0.4), transparent 40%), 
-                radial-gradient(circle at center left, rgba(0, 0, 0, 0.712), transparent 60%),
-                #05285c;
+    background: radial-gradient(circle at top right, rgb(0, 0, 0), transparent 40%), 
+              /*  radial-gradient(circle at center left, rgb(104, 3, 3), transparent 60%),
+                hsl(216, 90%, 19%);
     min-height: 100vh;
     padding: 0 8%;
     position: relative;
-    animation-duration: 4s;
-    animation-iteration-count: infinite;
-    animation-name: colorChanger;
-    animation-delay: 2s;
     
-}
+    
+}*/
 
-@keyframes colorChanger{
-    from { background: radial-gradient(circle at top right, rgba(0, 0, 0, 0.4), transparent 40%), 
-                radial-gradient(circle at center left, rgba(0, 0, 0, 0.712), transparent 60%),
-                #05285c;}
-    to {background: radial-gradient(circle at top right, rgba(103, 4, 4, 0.687), transparent 40%), 
-                radial-gradient(circle at center left, rgba(3, 91, 34, 0.712), transparent 60%),
-                #05285c;}
-}
 a {
     text-decoration: none;
     color: inherit;
@@ -316,16 +305,26 @@ img {
     font-size: 0.9rem;
 }
 
-.hero-image-section {
-    position: relative;
-    flex-shrink: 0;
+.hero-image-container {
+  width: 100%;
+  max-width: 1200px;  /* set your preferred desktop max width */
+  margin: 0 auto;
+  overflow: hidden;
 }
 
-.hero-image-container {
-    width: 400px;
-    height: 400px;
-    overflow: hidden;
-    border-radius: 60px;
+.hero-image {
+  width: 100%;
+  height: auto;
+  max-height: 500px;  /* limit video height for desktop */
+  object-fit: cover;
+  display: block;
+}
+
+/* For mobile, let the video stay natural or set a smaller max height if needed */
+@media (max-width: 768px) {
+  .hero-image {
+    max-height: 220px; /* adjust as needed for mobile */
+  }
 }
 
 /* Floating Telegram Chat Bubble Styles */
