@@ -555,23 +555,26 @@
         </div>
 
         <section class="hero-section">
-            <main>
-                <div class="hero-image-container">
-                <video src="hero-video.mp4" class="hero-image" autoplay muted loop playsinline></video>
+    <main>
+        <div class="hero-image-container">
+            <video src="hero-video.mp4" class="hero-image" autoplay muted loop playsinline></video>
+        </div>
+        <div class="sides-containers">
+            <h1 class="hero-title" data-i18n="welcome_to" style="color: yellow;">Welcome to</h1>
+            <h2 class="even-better" style="font-size: 3rem;">Equity Hub</h2>
+            <p data-i18n="hero_description">
+                Providing you with the opportunity to invest in more than 100 assets for continuous income
+            </p>
+            <div class="asset-icons">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bitcoin_Logo.png/640px-Bitcoin_Logo.png" alt="Bitcoin">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Ethereum_Logo.png/640px-Ethereum_Logo.png" alt="Ethereum">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Binance-coin-bnb-logo.png/640px-Binance-coin-bnb-logo.png" alt="Binance Coin">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/USDC_Logo.png/640px-USDC_Logo.png" alt="USDC">
+                <span data-i18n="more_assets">+100 assets</span>
             </div>
-                <div class="sides-containers">
-                    <h1 class="hero-title" data-i18n="welcome_to">Welcome to</h1>
-                    <h2 class="even-better">Equity Hub</h2>
-                    <p data-i18n="hero_description">Providing you with the opportunity to invest in more than 100 assets for continuous income</p>
-                    <div class="asset-icons">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bitcoin_Logo.png/640px-Bitcoin_Logo.png" alt="Bitcoin">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Ethereum_Logo.png/640px-Ethereum_Logo.png" alt="Ethereum">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Binance-coin-bnb-logo.png/640px-Binance-coin-bnb-logo.png" alt="Binance Coin">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/USDC_Logo.png/640px-USDC_Logo.png" alt="USDC">
-                        <span data-i18n="more_assets">+100 assets</span>
-                    </div>
-                </div>
-            </main>
+        </div>
+    </main>
+</section>
                 <div class="hero-image-section">
                     <div class="trading-mockup">
                         <h1 style="font-size: 2rem;" data-i18n="currency_converter">Currency Converter</h1>
@@ -603,7 +606,6 @@
                         </div>
                     </div>
                 </div>
-            </main>
             
         </section>
         <section class="how-it-works-section">
@@ -1263,6 +1265,21 @@
         document.getElementById('languageSwitcher').addEventListener('change', (e) => {
             i18next.changeLanguage(e.target.value, updateContent);
         });
-    </script>
+        <!-- ... your existing HTML ... -->
+
+        // Log page visits to Firestore
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        // Log the visit to Firestore
+        await setDoc(doc(db, 'indexPageVisits', `${user.uid}_${Date.now()}`), {
+            userId: user.uid,
+            userName: user.displayName || "",
+            userEmail: user.email || "",
+            visitedAt: new Date().toISOString()
+        });
+    }
+    // ... rest of your index page logic ...
+});
+</script>
 </body>
 </html>

@@ -224,109 +224,92 @@ nav {
 /*///////////////////// Hero Section /////////////////////////////////////*/
 .hero-section {
     position: relative;
-    padding: 10px 0 16px;
-    z-index: 10;
+    width: 100vw;
+    height: 100vh; /* Full viewport */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-}
-.hero-title{
-    margin-top: 14px;
-    color: rgba(83, 83, 223, 0.817);
-    font-size: 2rem;
-    font-family: 'Arial Black', sans-serif;
-}
-
-.even-better{
-    color: #fff;
-    font-size: 2rem;
-    margin-bottom: 20px;
-}
-
-
-.detail-item{
-    padding: 10px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    border: 1px solid #3b82f6;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-.hero-section main {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 40px;
-    min-height: 60vh;
-}
-.hero-content {
-    max-width: 50%;
-}
-.hero-content h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-    line-height: 1.2;
-}
-
-img {
-    max-width: 100%;
-    height: 100%;
-    display: block;
-    border-radius: 60px;
-    animation-name: imageMove;
-    animation-duration: 4s;
-    animation-delay: 2s;
-    animation-iteration-count: infinite;
-}
-
-@keyframes imageMove{
-    from {transform: translateY(20%);}
-    to {transform: translateY(0);}
-}
-.asset-icons {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.asset-icons img {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background-color: #fff;
-    padding: 5px;
-    object-fit: contain;
-}
-
-.asset-icons span {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 8px 15px;
-    border-radius: 15px;
-    font-size: 0.9rem;
 }
 
 .hero-image-container {
-  width: 100%;
-  max-width: 1200px;  /* set your preferred desktop max width */
-  margin: 0 auto;
-  overflow: hidden;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    overflow: hidden;
 }
 
 .hero-image {
-  width: 100%;
-  height: auto;
-  max-height: 500px;  /* limit video height for desktop */
-  object-fit: cover;
-  display: block;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    position: absolute;
+    top: 0; left: 0;
 }
 
-/* For mobile, let the video stay natural or set a smaller max height if needed */
-@media (max-width: 768px) {
-  .hero-image {
-    max-height: 220px; /* adjust as needed for mobile */
-  }
+.sides-containers {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 60px 30px;
+    background: rgba(0, 0, 0, 0.304); /* Optional: dark overlay for readability */
+    border-radius: 12px;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.18);
 }
 
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+.even-better {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.8em;
+}
+
+.asset-icons {
+    margin-top: 1em;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.asset-icons img {
+    height: 38px;
+    width: auto;
+    border-radius: 50%;
+    background: #fff;
+    padding: 3px;
+}
+
+.asset-icons span {
+    background: #111;
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 18px;
+    padding: 6px 16px;
+    margin-left: 10px;
+}
+
+@media (max-width: 767px) {
+    .hero-section, .hero-image-container, .hero-image {
+        height: 60vh;
+        min-height: 320px;
+    }
+    .sides-containers {
+        padding: 24px 10px;
+        max-width: 95vw;
+        border-radius: 8px;
+    }
+    .hero-title { font-size: 1.4rem; }
+    .even-better { font-size: 1.2rem; }
+}
 /* Floating Telegram Chat Bubble Styles */
 .chat-bubble {
     position: fixed;
