@@ -834,192 +834,189 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Wait for DOM to be fully loaded
-    document.addEventListener('DOMContentLoaded', () => {
-        // Popup Elements
-        const loginPopup = document.getElementById('login-popup');
-        const registerPopup = document.getElementById('register-popup');
-        const forgotPasswordPopup = document.getElementById('forgot-password-popup');
-        const loginBtn = document.querySelector('.login-btn');
-        const registerBtn = document.querySelector('.register-btn');
-        const authButtons = document.querySelector('.auth-buttons');
-        const tradeButtons = document.querySelector('.trade-buttons');
-        const closeButtons = document.querySelectorAll('.close-btn');
-        const switchToRegister = document.getElementById('switch-to-register');
-        const switchToLogin = document.getElementById('switch-to-login');
-        const forgotPasswordLink = document.getElementById('forgot-password-link');
-        const switchToLoginFromForgot = document.getElementById('switch-to-login-from-forgot');
+    // Translation resources (same as admin)
+    const translations = {
+        en: { /* your full en object */ },
+        fr: { /* your full fr object */ },
+        es: { /* your full es object */ }
+    };
 
-        // Error Messages
-        const loginError = document.getElementById('login-error');
-        const registerError = document.getElementById('register-error');
-        const forgotError = document.getElementById('forgot-error');
-
-        // Show/Hide Popups
-        function showPopup(popup) {
-            popup.style.display = 'flex';
+    // Initialize i18next
+    i18next.init({
+        lng: 'en',
+        resources: {
+            en: { translation: translations.en },
+            fr: { translation: translations.fr },
+            es: { translation: translations.es }
         }
+    }, updateContent);
 
-        function hidePopup(popup) {
-            popup.style.display = 'none';
-            popup.querySelectorAll('input, select').forEach(input => input.value = '');
-            const errorMsg = popup.querySelector('.error-message');
-            if (errorMsg) errorMsg.style.display = 'none';
-        }
-
-        // Close buttons
-        closeButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const popup = btn.closest('.popup');
-                hidePopup(popup);
-            });
-        });
-
-        // Button clicks
-        if (loginBtn) loginBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            showPopup(loginPopup);
-        });
-
-        if (registerBtn) registerBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            showPopup(registerPopup);
-        });
-
-        if (forgotPasswordLink) forgotPasswordLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            hidePopup(loginPopup);
-            showPopup(forgotPasswordPopup);
-        });
-
-        if (switchToRegister) switchToRegister.addEventListener('click', (e) => {
-            e.preventDefault();
-            hidePopup(loginPopup);
-            showPopup(registerPopup);
-        });
-
-        if (switchToLogin) switchToLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            hidePopup(registerPopup);
-            showPopup(loginPopup);
-        });
-
-        if (switchToLoginFromForgot) switchToLoginFromForgot.addEventListener('click', (e) => {
-            e.preventDefault();
-            hidePopup(forgotPasswordPopup);
-            showPopup(loginPopup);
-        });
-
-        // Login Submit
-        document.getElementById('login-submit')?.addEventListener('click', () => {
-            const email = document.getElementById('login-email').value.trim();
-            const password = document.getElementById('login-password').value;
-
-            if (!email || !password) {
-                loginError.textContent = 'Please fill in all fields';
-                loginError.style.display = 'block';
-                return;
-            }
-
-            signInWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    hidePopup(loginPopup);
-                })
-                .catch(error => {
-                    loginError.textContent = error.message;
-                    loginError.style.display = 'block';
-                });
-        });
-
-        // Register Submit
-        document.getElementById('register-submit')?.addEventListener('click', () => {
-            const name = document.getElementById('register-name').value.trim();
-            const country = document.getElementById('register-country').value;
-            const phone = document.getElementById('register-phone').value.trim();
-            const referral = document.getElementById('register-referral').value.trim();
-            const email = document.getElementById('register-email').value.trim();
-            const password = document.getElementById('register-password').value;
-            const confirmPassword = document.getElementById('register-confirm-password').value;
-
-            if (!name || !country || !phone || !email || !password) {
-                registerError.textContent = 'All required fields must be filled';
-                registerError.style.display = 'block';
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                registerError.textContent = 'Passwords do not match';
-                registerError.style.display = 'block';
-                return;
-            }
-
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    return Promise.all([
-                        updateProfile(user, { displayName: name }),
-                        setDoc(doc(db, 'users', user.uid), {
-                            name, country, phone, referralCode: referral || null,
-                            email, createdAt: new Date().toISOString(),
-                            balance: 0, totalDeposit: 0, totalProfit: 0, totalBonus: 0, withdrawals: 0
-                        })
-                    ]);
-                })
-                .then(() => {
-                    hidePopup(registerPopup);
-                })
-                .catch(error => {
-                    registerError.textContent = error.message;
-                    registerError.style.display = 'block';
-                });
-        });
-
-        // Forgot Password
-        document.getElementById('forgot-submit')?.addEventListener('click', () => {
-            const email = document.getElementById('forgot-email').value.trim();
-            if (!email) {
-                forgotError.textContent = 'Please enter your email';
-                forgotError.style.display = 'block';
-                return;
-            }
-
-            sendPasswordResetEmail(auth, email)
-                .then(() => {
-                    forgotError.textContent = 'Password reset email sent!';
-                    forgotError.style.color = 'green';
-                    forgotError.style.display = 'block';
-                })
-                .catch(error => {
-                    forgotError.textContent = error.message;
-                    forgotError.style.color = 'red';
-                    forgotError.style.display = 'block';
-                });
-        });
-
-        // Auth State
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                authButtons.style.display = 'none';
-                tradeButtons.style.display = 'block';
+    function updateContent() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (key.startsWith('[placeholder]')) {
+                el.placeholder = i18next.t(key.replace('[placeholder]', ''));
             } else {
-                authButtons.style.display = 'block';
-                tradeButtons.style.display = 'none';
+                el.textContent = i18next.t(key);
             }
         });
+        document.title = i18next.t('page_title') || 'Equity Hubs';
+    }
 
-        // Log page visit
+    document.getElementById('languageSwitcher')?.addEventListener('change', (e) => {
+        i18next.changeLanguage(e.target.value, updateContent);
+    });
+
+    // DOM Elements
+    const loginPopup = document.getElementById('login-popup');
+    const registerPopup = document.getElementById('register-popup');
+    const forgotPasswordPopup = document.getElementById('forgot-password-popup');
+    const loginBtn = document.querySelector('.login-btn');
+    const registerBtn = document.querySelector('.register-btn');
+    const authButtons = document.querySelector('.auth-buttons');
+    const tradeButtons = document.querySelector('.trade-buttons');
+    const closeButtons = document.querySelectorAll('.close-btn');
+    const switchToRegister = document.getElementById('switch-to-register');
+    const switchToLogin = document.getElementById('switch-to-login');
+    const forgotPasswordLink = document.getElementById('forgot-password-link');
+    const switchToLoginFromForgot = document.getElementById('switch-to-login-from-forgot');
+
+    const loginError = document.getElementById('login-error');
+    const registerError = document.getElementById('register-error');
+    const forgotError = document.getElementById('forgot-error');
+
+    // Show/Hide Popups
+    function showPopup(popup) { if (popup) popup.style.display = 'flex'; }
+    function hidePopup(popup) {
+        if (popup) {
+            popup.style.display = 'none';
+            popup.querySelectorAll('input, select').forEach(i => i.value = '');
+            const err = popup.querySelector('.error-message');
+            if (err) err.style.display = 'none';
+        }
+    }
+
+    // Close buttons
+    closeButtons.forEach(btn => btn.addEventListener('click', () => hidePopup(btn.closest('.popup'))));
+
+    // Navigation
+    loginBtn?.addEventListener('click', e => { e.preventDefault(); showPopup(loginPopup); });
+    registerBtn?.addEventListener('click', e => { e.preventDefault(); showPopup(registerPopup); });
+    forgotPasswordLink?.addEventListener('click', e => { e.preventDefault(); hidePopup(loginPopup); showPopup(forgotPasswordPopup); });
+    switchToRegister?.addEventListener('click', e => { e.preventDefault(); hidePopup(loginPopup); showPopup(registerPopup); });
+    switchToLogin?.addEventListener('click', e => { e.preventDefault(); hidePopup(registerPopup); showPopup(loginPopup); });
+    switchToLoginFromForgot?.addEventListener('click', e => { e.preventDefault(); hidePopup(forgotPasswordPopup); showPopup(loginPopup); });
+
+    // Login
+    document.getElementById('login-submit')?.addEventListener('click', () => {
+        const email = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-password').value;
+        if (!email || !password) {
+            loginError.textContent = i18next.t('fill_all_fields') || 'Please fill all fields';
+            loginError.style.display = 'block';
+            return;
+        }
+        signInWithEmailAndPassword(auth, email, password)
+            .then(() => hidePopup(loginPopup))
+            .catch(err => {
+                loginError.textContent = err.message;
+                loginError.style.display = 'block';
+            });
+    });
+
+    // Register
+    document.getElementById('register-submit')?.addEventListener('click', () => {
+        const name = document.getElementById('register-name').value.trim();
+        const country = document.getElementById('register-country').value;
+        const phone = document.getElementById('register-phone').value.trim();
+        const referral = document.getElementById('register-referral').value.trim();
+        const email = document.getElementById('register-email').value.trim();
+        const password = document.getElementById('register-password').value;
+        const confirm = document.getElementById('register-confirm-password').value;
+
+        if (!name || !country || !phone || !email || !password) {
+            registerError.textContent = i18next.t('fill_all_fields') || 'All fields required';
+            registerError.style.display = 'block';
+            return;
+        }
+        if (password !== confirm) {
+            registerError.textContent = i18next.t('passwords_mismatch') || 'Passwords do not match';
+            registerError.style.display = 'block';
+            return;
+        }
+
+        createUserWithEmailAndPassword(auth, email, password)
+            .then(cred => {
+                const user = cred.user;
+                return Promise.all([
+                    updateProfile(user, { displayName: name }),
+                    setDoc(doc(db, 'users', user.uid), {
+                        name, country, phone, referralCode: referral || null,
+                        email, createdAt: new Date().toISOString(),
+                        balance: 0, totalDeposit: 0, totalProfit: 0, totalBonus: 0, withdrawals: 0
+                    })
+                ]);
+            })
+            .then(() => hidePopup(registerPopup))
+            .catch(err => {
+                registerError.textContent = err.message;
+                registerError.style.display = 'block';
+            });
+    });
+
+    // Forgot Password
+    document.getElementById('forgot-submit')?.addEventListener('click', () => {
+        const email = document.getElementById('forgot-email').value.trim();
+        if (!email) {
+            forgotError.textContent = 'Enter email';
+            forgotError.style.display = 'block';
+            return;
+        }
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                forgotError.textContent = 'Reset link sent!';
+                forgotError.style.color = 'green';
+                forgotError.style.display = 'block';
+            })
+            .catch(err => {
+                forgotError.textContent = err.message;
+                forgotError.style.color = 'red';
+                forgotError.style.display = 'block';
+            });
+    });
+
+    // Auth State
+    onAuthStateChanged(auth, user => {
+        if (user) {
+            authButtons.style.display = 'none';
+            tradeButtons.style.display = 'flex';
+        } else {
+            authButtons.style.display = 'flex';
+            tradeButtons.style.display = 'none';
+        }
+    });
+
+    // Log Page Visit (Only Once)
+    let visitLogged = false;
+    window.addEventListener('load', () => {
+        if (visitLogged) return;
+        visitLogged = true;
+
         onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                await setDoc(doc(db, 'indexPageVisits', `${user.uid}_${Date.now()}`), {
-                    userId: user.uid,
-                    userName: user.displayName || "",
-                    userEmail: user.email || "",
-                    visitedAt: new Date().toISOString()
-                });
-            }
+            const visitData = {
+                userId: user?.uid || 'anonymous',
+                userName: user?.displayName || '',
+                userEmail: user?.email || '',
+                visitedAt: new Date().toISOString(),
+                page: 'index'
+            };
+            const visitId = `visit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            await setDoc(doc(db, 'indexPageVisits', visitId), visitData).catch(() => {});
         });
     });
-    
+
+    // Update content after load
+    updateContent();
 </script>
 </body>
 </html>

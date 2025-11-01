@@ -751,8 +751,7 @@
         const editPopupTitle = document.getElementById('edit-popup-title');
         const notificationBtn = document.getElementById('notificationBtn');
 
-        let lastRequestId = null; // Track last processed deposit request for notifications
-
+let notifiedRequestIds = new Set(); // Track ALL notified request IDs
         // Notification Permission Handler
         if (notificationBtn) {
             notificationBtn.addEventListener('click', async () => {
@@ -1062,18 +1061,20 @@
                         }
                     });
 
-                    // Handle notifications for new deposit requests
-                    requestsSnapshot.docChanges().forEach(change => {
-                        if (change.type === "added" && change.doc.data().status === "pending" && Notification.permission === "granted") {
-                            if (lastRequestId !== change.doc.id) {
-                                new Notification("New Deposit Request", {
-                                    body: `New deposit request from ${change.doc.data().userEmail} for $${parseFloat(change.doc.data().amount || 0).toFixed(2)}`,
-                                    icon: "/logo.jpg",
-                                });
-                                lastRequestId = change.doc.id; // Update last processed request ID
-                            }
+                   // Handle notifications for new deposit requests
+                requestsSnapshot.docChanges().forEach(change => {
+                    if (change.type === "added" && change.doc.data().status === "pending" && Notification.permission === "granted") {
+                        const requestId = change.doc.id;
+                        if (!notifiedRequestIds.has(requestId)) {
+                            new Notification("New Deposit Request", {
+                                body: `New deposit request from ${change.doc.data().userEmail} for $${parseFloat(change.doc.data().amount || 0).toFixed(2)}`,
+                                icon: "/logo.jpg",
+                                tag: `deposit-${requestId}` // Prevents duplicates
+                            });
+                            notifiedRequestIds.add(requestId);
                         }
-                    });
+                    }
+                });
 
                     document.querySelectorAll('.approve-btn').forEach(btn => {
                         btn.addEventListener('click', async () => {
@@ -1167,6 +1168,123 @@
         } else {
             console.error('Sidebar or hamburger element not found');
         }
+
+        // Helper: Send notification to admin
+        // Helper: Send notification to admin
+        async function sendAdminNotification(title, body, icon = '/logo.jpg') {
+            if ("Notification" in window && Notification.permission === "granted") {
+                new Notification(title, { body, icon });
+            }
+        }
+
+        // Check if current user is an admin
+        async function isCurrentUserAdmin() {
+            const user = auth.currentUser;
+            if (!user) return false;
+            try {
+                const idTokenResult = await user.getIdTokenResult();
+                if (idTokenResult.claims.admin === true) return true;
+            } catch (e) {
+                console.warn("Token claims failed, checking Firestore...");
+            }
+            const adminDoc = await getDoc(doc(db, 'admins', user.uid));
+            return adminDoc.exists() && adminDoc.data().isAdmin === true;
+        }
+
+        // Track notified visit IDs to prevent duplicates
+        let notifiedVisitIds = new Set();
+
+        // Listen for user visits on index page
+        async function listenUserVisitsForAdmin() {
+            if (!await isCurrentUserAdmin()) return;
+
+            onSnapshot(collection(db, 'indexPageVisits'), (snapshot) => {
+                snapshot.docChanges().forEach(change => {
+                    if (change.type === "added") {
+                        const visitData = change.doc.data();
+                        const visitId = change.doc.id;
+
+                        // Avoid duplicates
+                        if (notifiedVisitIds.has(visitId)) return;
+                        notifiedVisitIds.add(visitId);
+
+                        // Don't notify admin about their own visit
+                        if (visitData.userId === auth.currentUser?.uid) return;
+
+                        sendAdminNotification(
+                            "New Visitor!",
+                            `${visitData.userName || visitData.userEmail || 'Guest'} visited the homepage.`
+                        );
+                    }
+                });
+            }, (error) => {
+                console.error("Error listening to indexPageVisits:", error);
+            });
+        }
+
+        // Start listening after login
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const isAdmin = await isCurrentUserAdmin();
+                if (isAdmin) {
+                    listenUserVisitsForAdmin();
+                }
+                // ... your existing admin UI setup ...
+                if (authSection) authSection.style.display = 'none';
+                if (adminContent) adminContent.style.display = 'block';
+                if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'block';
+                if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'block';
+                if (document.getElementById('welcome-message')) {
+                    document.getElementById('welcome-message').textContent = i18next.t('welcome_admin', { name: user.displayName || 'Admin' });
+                }
+                await loadUsers();
+                await loadDepositRequests();
+            } else {
+                if (authSection) authSection.style.display = 'block';
+                if (adminContent) adminContent.style.display = 'none';
+                if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'none';
+                if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'none';
+                showPopup(loginPopup);
+            }
+        });
+
+        // Auto-update notification button state on load
+        if (notificationBtn) {
+            const updateButton = () => {
+                if (Notification.permission === "granted") {
+                    notificationBtn.textContent = i18next.t('notifications_enabled');
+                    notificationBtn.disabled = true;
+                    notificationBtn.classList.add('enabled');
+                } else if (Notification.permission === "denied") {
+                    notificationBtn.textContent = "Blocked";
+                    notificationBtn.disabled = true;
+                }
+            };
+
+            updateButton(); // On load
+
+            notificationBtn.addEventListener('click', async () => {
+                if (Notification.permission === "default") {
+                    const permission = await Notification.requestPermission();
+                    updateButton();
+                    if (permission === "granted") {
+                        new Notification("Test", { body: "Notifications enabled!" });
+                    }
+                }
+            });
+        }
+
+        // Add CSS class for enabled state
+        const style = document.createElement('style');
+        style.textContent = `
+            .notification-btn.enabled {
+                background: #00ff00 !important;
+                color: #000;
+            }
+        `;
+        document.head.appendChild(style);
     </script>
+
+    
 </body>
 </html>
