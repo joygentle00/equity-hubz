@@ -808,28 +808,34 @@
     </div>
     <script src="index.js"></script>
     <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
-    <script type="module">
-        // Import Firebase modules
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, updateProfile } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-        import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+    import { 
+        getAuth, 
+        signInWithEmailAndPassword, 
+        createUserWithEmailAndPassword, 
+        sendPasswordResetEmail, 
+        onAuthStateChanged, 
+        updateProfile 
+    } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+    import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
-            authDomain: "investment-40343.firebaseapp.com",
-            projectId: "investment-40343",
-            storageBucket: "investment-40343.firebasestorage.app",
-            messagingSenderId: "126093031981",
-            appId: "1:126093031981:web:fd4ae73c063044693b16a4",
-            measurementId: "G-SXL6ZGL49W"
-        };
+    const firebaseConfig = {
+        apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
+        authDomain: "investment-40343.firebaseapp.com",
+        projectId: "investment-40343",
+        storageBucket: "investment-40343.firebasestorage.app",
+        messagingSenderId: "126093031981",
+        appId: "1:126093031981:web:fd4ae73c063044693b16a4",
+        measurementId: "G-SXL6ZGL49W"
+    };
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', () => {
         // Popup Elements
         const loginPopup = document.getElementById('login-popup');
         const registerPopup = document.getElementById('register-popup');
@@ -857,10 +863,11 @@
         function hidePopup(popup) {
             popup.style.display = 'none';
             popup.querySelectorAll('input, select').forEach(input => input.value = '');
-            popup.querySelector('.error-message').style.display = 'none';
+            const errorMsg = popup.querySelector('.error-message');
+            if (errorMsg) errorMsg.style.display = 'none';
         }
 
-        // Close Button Logic
+        // Close buttons
         closeButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 const popup = btn.closest('.popup');
@@ -868,30 +875,52 @@
             });
         });
 
-        // Event Listeners for Buttons
-        loginBtn.addEventListener('click', () => showPopup(loginPopup));
-        registerBtn.addEventListener('click', () => showPopup(registerPopup));
-        forgotPasswordLink.addEventListener('click', () => {
+        // Button clicks
+        if (loginBtn) loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPopup(loginPopup);
+        });
+
+        if (registerBtn) registerBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPopup(registerPopup);
+        });
+
+        if (forgotPasswordLink) forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
             hidePopup(loginPopup);
             showPopup(forgotPasswordPopup);
         });
-        switchToRegister.addEventListener('click', () => {
+
+        if (switchToRegister) switchToRegister.addEventListener('click', (e) => {
+            e.preventDefault();
             hidePopup(loginPopup);
             showPopup(registerPopup);
         });
-        switchToLogin.addEventListener('click', () => {
+
+        if (switchToLogin) switchToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
             hidePopup(registerPopup);
             showPopup(loginPopup);
         });
-        switchToLoginFromForgot.addEventListener('click', () => {
+
+        if (switchToLoginFromForgot) switchToLoginFromForgot.addEventListener('click', (e) => {
+            e.preventDefault();
             hidePopup(forgotPasswordPopup);
             showPopup(loginPopup);
         });
 
-        // Firebase Authentication Handlers
-        document.getElementById('login-submit').addEventListener('click', () => {
-            const email = document.getElementById('login-email').value;
+        // Login Submit
+        document.getElementById('login-submit')?.addEventListener('click', () => {
+            const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value;
+
+            if (!email || !password) {
+                loginError.textContent = 'Please fill in all fields';
+                loginError.style.display = 'block';
+                return;
+            }
+
             signInWithEmailAndPassword(auth, email, password)
                 .then(() => {
                     hidePopup(loginPopup);
@@ -902,32 +931,24 @@
                 });
         });
 
-        document.getElementById('register-submit').addEventListener('click', () => {
-            const name = document.getElementById('register-name').value;
+        // Register Submit
+        document.getElementById('register-submit')?.addEventListener('click', () => {
+            const name = document.getElementById('register-name').value.trim();
             const country = document.getElementById('register-country').value;
-            const phone = document.getElementById('register-phone').value;
-            const referral = document.getElementById('register-referral').value;
-            const email = document.getElementById('register-email').value;
+            const phone = document.getElementById('register-phone').value.trim();
+            const referral = document.getElementById('register-referral').value.trim();
+            const email = document.getElementById('register-email').value.trim();
             const password = document.getElementById('register-password').value;
             const confirmPassword = document.getElementById('register-confirm-password').value;
 
-            if (!name) {
-                registerError.textContent = i18next.t('error_name_required');
+            if (!name || !country || !phone || !email || !password) {
+                registerError.textContent = 'All required fields must be filled';
                 registerError.style.display = 'block';
                 return;
             }
-            if (!country) {
-                registerError.textContent = i18next.t('error_country_required');
-                registerError.style.display = 'block';
-                return;
-            }
-            if (!phone) {
-                registerError.textContent = i18next.t('error_phone_required');
-                registerError.style.display = 'block';
-                return;
-            }
+
             if (password !== confirmPassword) {
-                registerError.textContent = i18next.t('error_password_mismatch');
+                registerError.textContent = 'Passwords do not match';
                 registerError.style.display = 'block';
                 return;
             }
@@ -938,21 +959,14 @@
                     return Promise.all([
                         updateProfile(user, { displayName: name }),
                         setDoc(doc(db, 'users', user.uid), {
-                            name: name,
-                            country: country,
-                            phone: phone,
-                            referralCode: referral || null,
-                            email: email,
-                            createdAt: new Date().toISOString(),
-                            balance: 0,
-                            totalDeposit: 0,
-                            totalProfit: 0,
-                            totalBonus: 0,
-                            withdrawals: 0
+                            name, country, phone, referralCode: referral || null,
+                            email, createdAt: new Date().toISOString(),
+                            balance: 0, totalDeposit: 0, totalProfit: 0, totalBonus: 0, withdrawals: 0
                         })
-                    ]).then(() => {
-                        hidePopup(registerPopup);
-                    });
+                    ]);
+                })
+                .then(() => {
+                    hidePopup(registerPopup);
                 })
                 .catch(error => {
                     registerError.textContent = error.message;
@@ -960,11 +974,18 @@
                 });
         });
 
-        document.getElementById('forgot-submit').addEventListener('click', () => {
-            const email = document.getElementById('forgot-email').value;
+        // Forgot Password
+        document.getElementById('forgot-submit')?.addEventListener('click', () => {
+            const email = document.getElementById('forgot-email').value.trim();
+            if (!email) {
+                forgotError.textContent = 'Please enter your email';
+                forgotError.style.display = 'block';
+                return;
+            }
+
             sendPasswordResetEmail(auth, email)
                 .then(() => {
-                    forgotError.textContent = i18next.t('reset_email_sent');
+                    forgotError.textContent = 'Password reset email sent!';
                     forgotError.style.color = 'green';
                     forgotError.style.display = 'block';
                 })
@@ -975,7 +996,7 @@
                 });
         });
 
-        // Authentication State Listener
+        // Auth State
         onAuthStateChanged(auth, user => {
             if (user) {
                 authButtons.style.display = 'none';
@@ -986,300 +1007,19 @@
             }
         });
 
-        // i18next Initialization
-        const translations = {
-            en: {
-                alert: "⚠️ BE AWARE OF FRAUD: Equityhubs will **NEVER** ask you to send money to a personal account. Always deposit funds through the secure, verified platform channels. Protect your investment.",
-                nav_home: "Home",
-                nav_about: "About Us",
-                nav_contacts: "Contacts",
-                nav_investment: "Investment",
-                login: "Login",
-                register: "Register",
-                trade: "Trade",
-                login_title: "Login",
-                login_button: "Login",
-                forgot_password: "Forgot Password?",
-                switch_to_register: "Don't have an account? Register",
-                create_account: "Create Account",
-                select_country: "Select Country",
-                register_button: "Register",
-                switch_to_login: "Already have an account? Login",
-                forgot_password_title: "Forgot Password",
-                send_reset_link: "Send Reset Link",
-                back_to_login: "Back to Login",
-                welcome_to: "Welcome to",
-                hero_description: "Providing you with the opportunity to invest in more than 100 assets for continuous income",
-                more_assets: "+100 assets",
-                currency_converter: "Currency Converter",
-                time_label: "Time",
-                time_1min: "1 Min",
-                time_5min: "5 Min",
-                time_15min: "15 Min",
-                amount_label: "Amount ($)",
-                call_button: "CALL (Higher)",
-                put_button: "PUT (Lower)",
-                trade_log: "Trade Log:",
-                how_it_works: "How It Works",
-                deposit_title: "Deposit",
-                deposit_description: "Open a real account and add funds. We work with more than 20 payment systems.",
-                trade_title: "Trade",
-                trade_description: "Trade any of 100 assets and stocks. Use technical analysis and trade the news",
-                withdraw_title: "Withdraw",
-                withdraw_description: "Get funds easily to your bank card or e-wallet. We take no commission.",
-                trusted_title: "Trusted",
-                trusted_description: "Equity Hubs is a leader in the online trading industry. We are trusted by more than 70,000,000 clients.",
-                see_more: "See more",
-                award_title: "Best Trading Platform",
-                award_description: "Award winner at China Trading Expo Shenzhen, 6-7 May 2017",
-                global_platform: "Global Trading Platform",
-                minimum_deposit: "Minimum Deposit",
-                minimum_trading_amount: "Minimum Trading Amount",
-                commissions: "Commissions",
-                fees: "Fees",
-                global_caption: "People from 48 countries trade at ExpertOption",
-                flexible_trading_title: "FLEXIBLE TRADING",
-                flexible_trading_description: "Latest trends: quick and digital trading, express trades, pending trades, copy trading. Payouts of up to 218%.",
-                education_title: "COMPREHENSIVE EDUCATION",
-                education_description: "Our help section contains tutorials, guides and various trading strategies.",
-                instruments_title: "DIVERSE TRADING INSTRUMENTS",
-                instruments_description: "Assets suitable for any trader: currency, commodities, stocks",
-                demo_account_title: "DEMO ACCOUNT",
-                demo_account_description: "Try all platform benefits on the Demo account using virtual money. No investment needed, no risks involved.",
-                deposits_withdrawals_title: "EASY DEPOSITS AND WITHDRAWALS",
-                deposits_withdrawals_description: "Use the most convenient payment method for hassle-free deposits and withdrawals.",
-                loyalty_title: "HIGH CUSTOMER LOYALTY",
-                loyalty_description: "Trading tournaments, regular bonuses, gifts, promo codes and contests are available to any trader.",
-                advantages_title: "TRADING ADVANTAGES",
-                advantages_description: "Use cashback and other advantages for a more comfortable trading experience with minimal risks.",
-                indicators_title: "INDICATORS AND SIGNALS",
-                indicators_description: "Everything you need for a top-tier trading experience including popular indicators and signals.",
-                testimonials_title: "What Our Clients Say",
-                testimonial_1: "I've tried several trading platforms, but Equity Hub's execution speed is unmatched. The withdrawal process is incredibly fast, which gives me great peace of mind. Highly recommend for serious traders.",
-                testimonial_2: "As a beginner, the learning resources here were a game-changer. The platform is intuitive, and I love having access to so many different assets. It truly simplified my entry into investing.",
-                testimonial_3: "The low commission structure is fantastic for high-frequency trading. I appreciate the transparency and the live support chat, which is always responsive. A solid platform all around.",
-                testimonial_4: "Trading 'in seconds' is absolutely accurate. I've seen major improvements in my returns since switching due to the precision and speed of their interface. Plus, the dark theme is easy on the eyes.",
-                location_london: "London, UK",
-                location_toronto: "Toronto, Canada",
-                location_singapore: "Singapore",
-                location_sydney: "Sydney, Australia",
-                disclaimer: "The Company does not provide services to citizens and/or residents of Australia, Austria, Belarus, Belgium, Bulgaria, Canada, Croatia, Republic of Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Iceland, Iran, Ireland, Israel, Italy, Latvia, Liechtenstein, Lithuania, Luxembourg, Malta, Myanmar, Netherlands, New Zealand, North Korea, Norway, Poland, Portugal, Puerto Rico, Romania, Russia, Singapore, Slovakia, Slovenia, South Sudan, Spain, Sudan, Sweden, Switzerland, UK, Ukraine, the USA, Yemen.",
-                home_title: "Home",
-                contacts_title: "Contacts",
-                footer_copyright: "&copy; 2010 Equity Hubs. All rights reserved.",
-                error_name_required: "Name is required",
-                error_country_required: "Country is required",
-                error_phone_required: "Phone number is required",
-                error_password_mismatch: "Passwords do not match",
-                reset_email_sent: "Password reset email sent!"
-            },
-            fr: {
-                alert: "⚠️ ATTENTION AUX FRAUDES : Equityhubs ne vous demandera **JAMAIS** d'envoyer de l'argent sur un compte personnel. Déposez toujours vos fonds via les canaux sécurisés et vérifiés de la plateforme. Protégez votre investissement.",
-                nav_home: "Accueil",
-                nav_about: "À propos",
-                nav_contacts: "Contacts",
-                nav_investment: "Investissement",
-                login: "Connexion",
-                register: "S'inscrire",
-                trade: "Trader",
-                login_title: "Connexion",
-                login_button: "Connexion",
-                forgot_password: "Mot de passe oublié ?",
-                switch_to_register: "Pas de compte ? S'inscrire",
-                create_account: "Créer un compte",
-                select_country: "Sélectionner un pays",
-                register_button: "S'inscrire",
-                switch_to_login: "Vous avez déjà un compte ? Connexion",
-                forgot_password_title: "Mot de passe oublié",
-                send_reset_link: "Envoyer le lien de réinitialisation",
-                back_to_login: "Retour à la connexion",
-                welcome_to: "Bienvenue sur",
-                hero_description: "Vous offrir la possibilité d'investir dans plus de 100 actifs pour un revenu continu",
-                more_assets: "+100 actifs",
-                currency_converter: "Convertisseur de devises",
-                time_label: "Temps",
-                time_1min: "1 min",
-                time_5min: "5 min",
-                time_15min: "15 min",
-                amount_label: "Montant ($)",
-                call_button: "CALL (Plus haut)",
-                put_button: "PUT (Plus bas)",
-                trade_log: "Journal des trades :",
-                how_it_works: "Comment ça fonctionne",
-                deposit_title: "Dépôt",
-                deposit_description: "Ouvrez un compte réel et ajoutez des fonds. Nous collaborons avec plus de 20 systèmes de paiement.",
-                trade_title: "Trader",
-                trade_description: "Tradez parmi 100 actifs et actions. Utilisez l'analyse technique et tradez sur les actualités.",
-                withdraw_title: "Retrait",
-                withdraw_description: "Retirez facilement vos fonds sur votre carte bancaire ou portefeuille électronique. Nous ne prenons aucune commission.",
-                trusted_title: "Fiable",
-                trusted_description: "Equity Hubs est un leader dans l'industrie du trading en ligne. Nous sommes approuvés par plus de 70 000 000 clients.",
-                see_more: "Voir plus",
-                award_title: "Meilleure plateforme de trading",
-                award_description: "Lauréat au China Trading Expo Shenzhen, 6-7 mai 2017",
-                global_platform: "Plateforme de trading mondiale",
-                minimum_deposit: "Dépôt minimum",
-                minimum_trading_amount: "Montant minimum de trading",
-                commissions: "Commissions",
-                fees: "Frais",
-                global_caption: "Des personnes de 48 pays tradent sur ExpertOption",
-                flexible_trading_title: "TRADING FLEXIBLE",
-                flexible_trading_description: "Dernières tendances : trading rapide et numérique, trades express, trades en attente, copy trading. Rendements jusqu'à 218%.",
-                education_title: "ÉDUCATION COMPLÈTE",
-                education_description: "Notre section d'aide contient des tutoriels, des guides et diverses stratégies de trading.",
-                instruments_title: "INSTRUMENTS DE TRADING DIVERSIFIÉS",
-                instruments_description: "Actifs adaptés à tout trader : devises, matières premières, actions",
-                demo_account_title: "COMPTE DÉMO",
-                demo_account_description: "Testez tous les avantages de la plateforme sur le compte démo avec de l'argent virtuel. Aucun investissement requis, aucun risque encouru.",
-                deposits_withdrawals_title: "DÉPÔTS ET RETRAITS FACILES",
-                deposits_withdrawals_description: "Utilisez la méthode de paiement la plus pratique pour des dépôts et retraits sans tracas.",
-                loyalty_title: "FORTE FIDÉLITÉ DES CLIENTS",
-                loyalty_description: "Tournois de trading, bonus réguliers, cadeaux, codes promo et concours sont disponibles pour tous les traders.",
-                advantages_title: "AVANTAGES DE TRADING",
-                advantages_description: "Utilisez le cashback et d'autres avantages pour une expérience de trading plus confortable avec des risques minimes.",
-                indicators_title: "INDICATEURS ET SIGNAUX",
-                indicators_description: "Tout ce dont vous avez besoin pour une expérience de trading de premier ordre, y compris des indicateurs et signaux populaires.",
-                testimonials_title: "Ce que disent nos clients",
-                testimonial_1: "J'ai essayé plusieurs plateformes de trading, mais la vitesse d'exécution d'Equity Hub est inégalée. Le processus de retrait est incroyablement rapide, ce qui me rassure énormément. Je recommande vivement aux traders sérieux.",
-                testimonial_2: "En tant que débutant, les ressources d'apprentissage ici ont changé la donne. La plateforme est intuitive, et j'aime avoir accès à tant d'actifs différents. Cela a vraiment simplifié mon entrée dans l'investissement.",
-                testimonial_3: "La structure de commissions faibles est fantastique pour le trading à haute fréquence. J'apprécie la transparence et le chat de support en direct, toujours réactif. Une plateforme solide à tous égards.",
-                testimonial_4: "Trader 'en secondes' est absolument exact. J'ai vu des améliorations majeures dans mes rendements depuis que je suis passé à cette plateforme grâce à la précision et la vitesse de leur interface. De plus, le thème sombre est agréable pour les yeux.",
-                location_london: "Londres, Royaume-Uni",
-                location_toronto: "Toronto, Canada",
-                location_singapore: "Singapour",
-                location_sydney: "Sydney, Australie",
-                disclaimer: "La société ne fournit pas de services aux citoyens et/ou résidents de l'Australie, l'Autriche, la Biélorussie, la Belgique, la Bulgarie, le Canada, la Croatie, la République de Chypre, la République tchèque, le Danemark, l'Estonie, la Finlande, la France, l'Allemagne, la Grèce, la Hongrie, l'Islande, l'Iran, l'Irlande, Israël, l'Italie, la Lettonie, le Liechtenstein, la Lituanie, le Luxembourg, Malte, le Myanmar, les Pays-Bas, la Nouvelle-Zélande, la Corée du Nord, la Norvège, la Pologne, le Portugal, Porto Rico, la Roumanie, la Russie, Singapour, la Slovaquie, la Slovénie, le Soudan du Sud, l'Espagne, le Soudan, la Suède, la Suisse, le Royaume-Uni, l'Ukraine, les États-Unis, le Yémen.",
-                home_title: "Accueil",
-                contacts_title: "Contacts",
-                footer_copyright: "&copy; 2010 Equity Hubs. Tous droits réservés.",
-                error_name_required: "Le nom est requis",
-                error_country_required: "Le pays est requis",
-                error_phone_required: "Le numéro de téléphone est requis",
-                error_password_mismatch: "Les mots de passe ne correspondent pas",
-                reset_email_sent: "E-mail de réinitialisation du mot de passe envoyé !"
-            },
-            es: {
-                alert: "⚠️ CUIDADO CON EL FRAUDE: Equityhubs **NUNCA** te pedirá que envíes dinero a una cuenta personal. Siempre deposita los fondos a través de los canales seguros y verificados de la plataforma. Protege tu inversión.",
-                nav_home: "Inicio",
-                nav_about: "Sobre Nosotros",
-                nav_contacts: "Contactos",
-                nav_investment: "Inversión",
-                login: "Iniciar Sesión",
-                register: "Registrarse",
-                trade: "Comerciar",
-                login_title: "Iniciar Sesión",
-                login_button: "Iniciar Sesión",
-                forgot_password: "¿Olvidaste tu contraseña?",
-                switch_to_register: "¿No tienes una cuenta? Registrarse",
-                create_account: "Crear una Cuenta",
-                select_country: "Seleccionar País",
-                register_button: "Registrarse",
-                switch_to_login: "¿Ya tienes una cuenta? Iniciar Sesión",
-                forgot_password_title: "Olvidé mi Contraseña",
-                send_reset_link: "Enviar Enlace de Restablecimiento",
-                back_to_login: "Volver a Iniciar Sesión",
-                welcome_to: "Bienvenido a",
-                hero_description: "Brindándote la oportunidad de invertir en más de 100 activos para obtener ingresos continuos",
-                more_assets: "+100 activos",
-                currency_converter: "Convertidor de Divisas",
-                time_label: "Tiempo",
-                time_1min: "1 Min",
-                time_5min: "5 Min",
-                time_15min: "15 Min",
-                amount_label: "Monto ($)",
-                call_button: "CALL (Más Alto)",
-                put_button: "PUT (Más Bajo)",
-                trade_log: "Registro de Operaciones:",
-                how_it_works: "Cómo Funciona",
-                deposit_title: "Depósito",
-                deposit_description: "Abre una cuenta real y agrega fondos. Trabajamos con más de 20 sistemas de pago.",
-                trade_title: "Comerciar",
-                trade_description: "Comercia con cualquiera de los 100 activos y acciones. Usa análisis técnico y comercia con las noticias.",
-                withdraw_title: "Retiro",
-                withdraw_description: "Retira fondos fácilmente a tu tarjeta bancaria o billetera electrónica. No cobramos comisiones.",
-                trusted_title: "Confiable",
-                trusted_description: "Equity Hubs es líder en la industria del trading en línea. Contamos con la confianza de más de 70,000,000 clientes.",
-                see_more: "Ver más",
-                award_title: "Mejor Plataforma de Trading",
-                award_description: "Ganador del premio en la China Trading Expo Shenzhen, 6-7 de mayo de 2017",
-                global_platform: "Plataforma de Trading Global",
-                minimum_deposit: "Depósito Mínimo",
-                minimum_trading_amount: "Monto Mínimo de Trading",
-                commissions: "Comisiones",
-                fees: "Tarifas",
-                global_caption: "Personas de 48 países comercian en ExpertOption",
-                flexible_trading_title: "TRADING FLEXIBLE",
-                flexible_trading_description: "Últimas tendencias: trading rápido y digital, operaciones express, operaciones pendientes, copy trading. Pagos de hasta 218%.",
-                education_title: "EDUCACIÓN INTEGRAL",
-                education_description: "Nuestra sección de ayuda contiene tutoriales, guías y diversas estrategias de trading.",
-                instruments_title: "INSTRUMENTOS DE TRADING DIVERSOS",
-                instruments_description: "Activos adecuados para cualquier trader: divisas, materias primas, acciones",
-                demo_account_title: "CUENTA DEMO",
-                demo_account_description: "Prueba todos los beneficios de la plataforma en la cuenta demo usando dinero virtual. No se requiere inversión, sin riesgos.",
-                deposits_withdrawals_title: "DEPÓSITOS Y RETIROS FÁCILES",
-                deposits_withdrawals_description: "Usa el método de pago más conveniente para depósitos y retiros sin complicaciones.",
-                loyalty_title: "ALTA LEALTAD DEL CLIENTE",
-                loyalty_description: "Torneos de trading, bonos regulares, regalos, códigos promocionales y concursos están disponibles para cualquier trader.",
-                advantages_title: "VENTAJAS DE TRADING",
-                advantages_description: "Usa el cashback y otras ventajas para una experiencia de trading más cómoda con riesgos mínimos.",
-                indicators_title: "INDICADORES Y SEÑALES",
-                indicators_description: "Todo lo que necesitas para una experiencia de trading de primer nivel, incluyendo indicadores y señales populares.",
-                testimonials_title: "Qué Dicen Nuestros Clientes",
-                testimonial_1: "He probado varias plataformas de trading, pero la velocidad de ejecución de Equity Hub es inigualable. El proceso de retiro es increíblemente rápido, lo que me da mucha tranquilidad. Muy recomendado para traders serios.",
-                testimonial_2: "Como principiante, los recursos de aprendizaje aquí fueron un cambio radical. La plataforma es intuitiva, y me encanta tener acceso a tantos activos diferentes. Realmente simplificó mi entrada en la inversión.",
-                testimonial_3: "La estructura de comisiones bajas es fantástica para el trading de alta frecuencia. Aprecio la transparencia y el chat de soporte en vivo, que siempre es receptivo. Una plataforma sólida en todos los sentidos.",
-                testimonial_4: "Comerciar 'en segundos' es absolutamente exacto. He visto mejoras importantes en mis retornos desde que cambié debido a la precisión y velocidad de su interfaz. Además, el tema oscuro es fácil para los ojos.",
-                location_london: "Londres, Reino Unido",
-                location_toronto: "Toronto, Canadá",
-                location_singapore: "Singapur",
-                location_sydney: "Sídney, Australia",
-                disclaimer: "La compañía no proporciona servicios a ciudadanos y/o residentes de Australia, Austria, Bielorrusia, Bélgica, Bulgaria, Canadá, Croacia, República de Chipre, República Checa, Dinamarca, Estonia, Finlandia, Francia, Alemania, Grecia, Hungría, Islandia, Irán, Irlanda, Israel, Italia, Letonia, Liechtenstein, Lituania, Luxemburgo, Malta, Myanmar, Países Bajos, Nueva Zelanda, Corea del Norte, Noruega, Polonia, Portugal, Puerto Rico, Rumania, Rusia, Singapur, Eslovaquia, Eslovenia, Sudán del Sur, España, Sudán, Suecia, Suiza, Reino Unido, Ucrania, Estados Unidos, Yemen.",
-                home_title: "Inicio",
-                contacts_title: "Contactos",
-                footer_copyright: "&copy; 2010 Equity Hubs. Todos los derechos reservados.",
-                error_name_required: "El nombre es obligatorio",
-                error_country_required: "El país es obligatorio",
-                error_phone_required: "El número de teléfono es obligatorio",
-                error_password_mismatch: "Las contraseñas no coinciden",
-                reset_email_sent: "¡Correo de restablecimiento de contraseña enviado!"
+        // Log page visit
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                await setDoc(doc(db, 'indexPageVisits', `${user.uid}_${Date.now()}`), {
+                    userId: user.uid,
+                    userName: user.displayName || "",
+                    userEmail: user.email || "",
+                    visitedAt: new Date().toISOString()
+                });
             }
-        };
-
-        i18next.init({
-            lng: 'en',
-            resources: {
-                en: { translation: translations.en },
-                fr: { translation: translations.fr },
-                es: { translation: translations.es }
-            }
-        }, function(err, t) {
-            updateContent();
         });
-
-        function updateContent() {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                el.textContent = i18next.t(el.getAttribute('data-i18n'));
-            });
-        }
-
-        document.getElementById('languageSwitcher').addEventListener('change', (e) => {
-            i18next.changeLanguage(e.target.value, updateContent);
-        });
-        <!-- ... your existing HTML ... -->
-
-        // Log page visits to Firestore
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        // Log the visit to Firestore
-        await setDoc(doc(db, 'indexPageVisits', `${user.uid}_${Date.now()}`), {
-            userId: user.uid,
-            userName: user.displayName || "",
-            userEmail: user.email || "",
-            visitedAt: new Date().toISOString()
-        });
-    }
-    // ... rest of your index page logic ...
-});
+    });
+    
 </script>
 </body>
 </html>
