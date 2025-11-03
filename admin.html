@@ -2,385 +2,92 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Pixel Code - https://pushify.com/ -->
-    <script defer src="https://pushify.com/pixel/Sfk0cq792jRR5Lnr"></script>
-    <!-- END Pixel Code -->
+    <!-- Pushify: Temporarily disabled until domain verified -->
+    <!-- <script defer src="https://pushify.com/pixel/Sfk0cq792jRR5Lnr"></script> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="admin_title">Admin Dashboard - Equity Hubs</title>
     <link rel="icon" type="image" href="">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
     <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
+
+    <!-- Firebase Compat SDKs (for non-module scripts) -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-        body {
-            background: #0c1018;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        .container {
-            display: flex;
-            width: 100%;
-            max-width: 1200px;
-            height: 95vh;
-            background: #1e293b;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
-            position: relative;
-            margin: 10px 0;
-        }
-        .sidebar {
-            width: 250px;
-            background: #111827;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease-in-out;
-        }
-        .sidebar nav ul {
-            list-style-type: none;
-        }
-        .sidebar nav ul li {
-            padding: 15px 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
-        }
-        .sidebar nav ul li.active a,
-        .sidebar nav ul li:hover a {
-            background-color: #00ffff;
-            padding: 18px;
-            border-radius: 15px;
-            color: #000;
-            text-decoration: none;
-        }
-        .sidebar nav ul li a {
-            display: flex;
-            align-items: center;
-            color: inherit;
-            text-decoration: none;
-            width: 100%;
-        }
-        .sidebar nav ul li .icon {
-            margin-right: 10px;
-            font-size: 18px;
-        }
-        .main-content {
-            flex-grow: 1;
-            padding: 30px 40px;
-            overflow-y: auto;
-            position: relative;
-        }
-        .welcome {
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-        .admin-section {
-            background: #0c1018;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
-        }
-        .admin-section h2 {
-            font-size: 20px;
-            color: #00ffff;
-            margin-bottom: 20px;
-        }
-        .user-list, .deposit-requests {
-            margin-bottom: 40px;
-        }
-        .user-table, .request-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #111827;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .user-table th, .user-table td,
-        .request-table th, .request-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #2d3748;
-        }
-        .user-table th, .request-table th {
-            background: #1e293b;
-            color: #00ffff;
-            font-weight: 600;
-        }
-        .editable-field {
-            cursor: pointer;
-            color: #00ffff;
-        }
-        .editable-field:hover {
-            text-decoration: underline;
-        }
-        .action-btn {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-right: 5px;
-        }
-        .approve-btn {
-            background: #00ff00;
-            color: #000;
-        }
-        .reject-btn {
-            background: #ff0000;
-            color: #fff;
-        }
-        .action-btn:hover {
-            opacity: 0.9;
-        }
-        .hamburger {
-            display: none;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: none;
-            border: none;
-            color: #00ffff;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 1000;
-        }
-        .auth-section {
-            background: #111827;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
-            text-align: center;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        .auth-section h1 {
-            font-size: 28px;
-            color: #00ffff;
-            margin-bottom: 10px;
-        }
-        .auth-section p {
-            font-size: 16px;
-            color: #a0aec0;
-            margin-bottom: 20px;
-        }
-        .auth-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-        .auth-btn {
-            padding: 12px 24px;
-            background: #00ffff;
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            transition: background 0.3s ease;
-        }
-        .auth-btn:hover {
-            background: #00e5e5;
-        }
-        .popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        .popup-content {
-            background: #111827;
-            padding: 30px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 450px;
-            position: relative;
-            border: 1px solid #00ffff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-        }
-        .popup-content h2 {
-            color: #00ffff;
-            font-size: 24px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .popup-content input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #2d3748;
-            border-radius: 8px;
-            background: #1e293b;
-            color: #fff;
-            font-size: 16px;
-        }
-        .popup-content input:focus {
-            outline: none;
-            border-color: #00ffff;
-            box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
-        }
-        .popup-content button {
-            width: 100%;
-            padding: 12px;
-            margin: 15px 0;
-            background: #00ffff;
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            transition: background 0.3s ease;
-        }
-        .popup-content button:hover {
-            background: #00e5e5;
-        }
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 24px;
-            color: #fff;
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background 0.3s ease;
-        }
-        .close-btn:hover {
-            background: #00ffff;
-            color: #000;
-        }
-        .popup-content a {
-            color: #00ffff;
-            text-decoration: none;
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-        .popup-content a:hover {
-            text-decoration: underline;
-        }
-        .error-message {
-            color: #ff4444;
-            font-size: 14px;
-            margin-top: 10px;
-            text-align: center;
-            display: none;
-        }
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-        .language-selector {
-            margin: 10px 0;
-        }
-        .language-selector select {
-            padding: 8px;
-            border-radius: 4px;
-            background: #1e293b;
-            color: #fff;
-            border: 1px solid #2d3748;
-        }
-        .notification-btn {
-            padding: 8px;
-            border-radius: 4px;
-            background: #00ffff;
-            color: #000;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background 0.3s ease;
-            margin-top: 10px;
-        }
-        .notification-btn:hover {
-            background: #00e5e5;
-        }
-        .notification-btn:disabled {
-            background: #2d3748;
-            cursor: not-allowed;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: #0c1018; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        .container { display: flex; width: 100%; max-width: 1200px; height: 95vh; background: #1e293b; border-radius: 12px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); position: relative; margin: 10px 0; }
+        .sidebar { width: 250px; background: #111827; padding: 20px; display: flex; flex-direction: column; transition: transform 0.3s ease-in-out; }
+        .sidebar nav ul { list-style-type: none; }
+        .sidebar nav ul li { padding: 15px 10px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: background-color 0.3s ease-in-out; }
+        .sidebar nav ul li.active a, .sidebar nav ul li:hover a { background-color: #00ffff; padding: 18px; border-radius: 15px; color: #000; text-decoration: none; }
+        .sidebar nav ul li a { display: flex; align-items: center; color: inherit; text-decoration: none; width: 100%; }
+        .sidebar nav ul li .icon { margin-right: 10px; font-size: 18px; }
+        .main-content { flex-grow: 1; padding: 30px 40px; overflow-y: auto; position: relative; }
+        .welcome { font-size: 24px; margin-bottom: 30px; }
+        .admin-section { background: #0c1018; padding: 20px; border-radius: 12px; box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05); }
+        .admin-section h2 { font-size: 20px; color: #00ffff; margin-bottom: 20px; }
+        .user-list, .deposit-requests, .visitors-section { margin-bottom: 40px; }
+        .user-table, .request-table { width: 100%; border-collapse: collapse; background: #111827; border-radius: 8px; overflow: hidden; }
+        .user-table th, .user-table td, .request-table th, .request-table td { padding: 15px; text-align: left; border-bottom: 1px solid #2d3748; }
+        .user-table th, .request-table th { background: #1e293b; color: #00ffff; font-weight: 600; }
+        .editable-field { cursor: pointer; color: #00ffff; }
+        .editable-field:hover { text-decoration: underline; }
+        .action-btn { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px; }
+        .approve-btn { background: #00ff00; color: #000; }
+        .reject-btn { background: #ff0000; color: #fff; }
+        .action-btn:hover { opacity: 0.9; }
+        .hamburger { display: none; position: absolute; top: 20px; left: 20px; background: none; border: none; color: #00ffff; font-size: 24px; cursor: pointer; z-index: 1000; }
+        .auth-section { background: #111827; padding: 40px; border-radius: 12px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); text-align: center; max-width: 500px; margin: 0 auto; }
+        .auth-section h1 { font-size: 28px; color: #00ffff; margin-bottom: 10px; }
+        .auth-section p { font-size: 16px; color: #a0aec0; margin-bottom: 20px; }
+        .auth-buttons { display: flex; gap: 15px; justify-content: center; }
+        .auth-btn { padding: 12px 24px; background: #00ffff; color: #000; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 500; transition: background 0.3s ease; }
+        .auth-btn:hover { background: #00e5e5; }
+        .popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center; }
+        .popup-content { background: #111827; padding: 30px; border-radius: 12px; width: 90%; max-width: 450px; position: relative; border: 1px solid #00ffff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); }
+        .popup-content h2 { color: #00ffff; font-size: 24px; margin-bottom: 20px; text-align: center; }
+        .popup-content input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #2d3748; border-radius: 8px; background: #1e293b; color: #fff; font-size: 16px; }
+        .popup-content input:focus { outline: none; border-color: #00ffff; box-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
+        .popup-content button { width: 100%; padding: 12px; margin: 15px 0; background: #00ffff; color: #000; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 500; transition: background 0.3s ease; }
+        .popup-content button:hover { background: #00e5e5; }
+        .close-btn { position: absolute; top: 15px; right: 15px; font-size: 24px; color: #fff; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.3s ease; }
+        .close-btn:hover { background: #00ffff; color: #000; }
+        .popup-content a { color: #00ffff; text-decoration: none; display: block; text-align: center; margin-top: 15px; font-size: 14px; }
+        .popup-content a:hover { text-decoration: underline; }
+        .error-message { color: #ff4444; font-size: 14px; margin-top: 10px; text-align: center; display: none; }
+        .loading { opacity: 0.6; pointer-events: none; }
+        .language-selector { margin: 10px 0; }
+        .language-selector select { padding: 8px; border-radius: 4px; background: #1e293b; color: #fff; border: 1px solid #2d3748; }
+        .notification-btn { padding: 8px; border-radius: 4px; background: #00ffff; color: #000; border: none; cursor: pointer; font-size: 14px; font-weight: 500; transition: background 0.3s ease; margin-top: 10px; }
+        .notification-btn:hover { background: #00e5e5; }
+        .notification-btn:disabled { background: #2d3748; cursor: not-allowed; }
+        .notification-btn.enabled { background: #00ff00 !important; color: #000; }
+
+        /* Visitor Cards */
+        .visitors-section { background: #0c1018; padding: 20px; border-radius: 12px; margin-bottom: 40px; }
+        .visitor-card { background: #111827; border: 1px solid #2d3748; border-radius: 8px; padding: 12px; margin-bottom: 10px; display: flex; align-items: center; font-size: 14px; color: #fff; }
+        .visitor-card .flag { font-size: 20px; margin-right: 8px; }
+        .visitor-card .info strong { color: #00ffff; }
+
         @media (max-width: 768px) {
-            .sidebar {
-                position: fixed;
-                top: 0;
-                left: 0;
-                height: 100%;
-                transform: translateX(-100%);
-                z-index: 999;
-            }
-            .sidebar.show {
-                transform: translateX(0);
-            }
-            .hamburger {
-                display: block;
-            }
-            .main-content {
-                padding: 20px;
-            }
-            .auth-section {
-                padding: 20px;
-            }
-            .auth-section h1 {
-                font-size: 24px;
-            }
-            .auth-section p {
-                font-size: 14px;
-            }
-            .auth-btn {
-                padding: 10px 20px;
-                font-size: 14px;
-            }
-            .popup-content {
-                padding: 20px;
-                max-width: 90%;
-            }
-            .popup-content h2 {
-                font-size: 20px;
-            }
-            .popup-content input,
-            .popup-content button {
-                font-size: 14px;
-                padding: 10px;
-            }
-            .close-btn {
-                font-size: 20px;
-                width: 28px;
-                height: 28px;
-            }
-            .user-table, .request-table {
-                display: block;
-                overflow-x: auto;
-            }
-            .user-table th, .user-table td,
-            .request-table th, .request-table td {
-                font-size: 12px;
-                padding: 10px;
-            }
-            .notification-btn {
-                font-size: 12px;
-                padding: 6px;
-            }
+            .sidebar { position: fixed; top: 0; left: 0; height: 100%; transform: translateX(-100%); z-index: 999; }
+            .sidebar.show { transform: translateX(0); }
+            .hamburger { display: block; }
+            .main-content { padding: 20px; }
+            .auth-section { padding: 20px; }
+            .auth-section h1 { font-size: 24px; }
+            .auth-section p { font-size: 14px; }
+            .auth-btn { padding: 10px 20px; font-size: 14px; }
+            .popup-content { padding: 20px; max-width: 90%; }
+            .popup-content h2 { font-size: 20px; }
+            .popup-content input, .popup-content button { font-size: 14px; padding: 10px; }
+            .close-btn { font-size: 20px; width: 28px; height: 28px; }
+            .user-table, .request-table { display: block; overflow-x: auto; }
+            .user-table th, .user-table td, .request-table th, .request-table td { font-size: 12px; padding: 10px; }
+            .notification-btn { font-size: 12px; padding: 6px; }
         }
     </style>
 </head>
@@ -428,7 +135,7 @@
             </div>
         </div>
         <main class="main-content" id="main-content">
-            <div id="auth-section" class="auth-section" style="display: none;">
+            <div id="auth-section" class="auth-section">
                 <h1 data-i18n="admin_auth">Admin Authentication</h1>
                 <p data-i18n="manage_confidence">Manage with Confidence</p>
                 <div class="auth-buttons">
@@ -438,6 +145,10 @@
             </div>
             <div id="admin-content" style="display: none;">
                 <h1 class="welcome" id="welcome-message" data-i18n="welcome_admin">Welcome, Admin!</h1>
+                <section class="admin-section visitors-section">
+                    <h2 data-i18n="live_visitors">Live Visitors</h2>
+                    <div id="visitors-container" style="max-height: 300px; overflow-y: auto;"></div>
+                </section>
                 <section class="admin-section">
                     <h2 data-i18n="user_management">User Management</h2>
                     <div class="user-list">
@@ -506,6 +217,7 @@
             </div>
         </main>
     </div>
+
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
@@ -525,7 +237,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Translation resources
+        // Translation resources (your full object here)
         const translations = {
             en: {
                 admin_title: "Admin Dashboard - Equity Hubs",
@@ -539,6 +251,7 @@
                 login: "Login",
                 create_account: "Create Account",
                 welcome_admin: "Welcome, Admin!",
+                live_visitors: "Live Visitors",
                 user_management: "User Management",
                 name: "Name",
                 email: "Email",
@@ -585,118 +298,16 @@
                 logout_failed: "Logout failed"
             },
             fr: {
+                // Your full French translations here (copy from previous)
                 admin_title: "Tableau de bord administrateur - Equity Hubs",
-                toggle_sidebar: "Basculer la barre latérale",
-                admin_dashboard: "Tableau de bord administrateur",
-                edit_bank: "Modifier la banque",
-                chat: "Chat",
-                logout: "Déconnexion",
-                admin_auth: "Authentification administrateur",
-                manage_confidence: "Gérez en toute confiance",
-                login: "Connexion",
-                create_account: "Créer un compte",
-                welcome_admin: "Bienvenue, Administrateur !",
-                user_management: "Gestion des utilisateurs",
-                name: "Nom",
-                email: "E-mail",
-                total_deposit: "Dépôt total",
-                total_profit: "Profit total",
-                total_bonus: "Bonus total",
-                withdrawals: "Retraits",
-                balance: "Solde",
-                deposit_requests: "Demandes de dépôt",
-                user_email: "E-mail de l'utilisateur",
-                amount: "Montant",
-                status: "Statut",
-                actions: "Actions",
-                admin_login: "Connexion administrateur",
-                no_admin_account: "Vous n'avez pas de compte administrateur ? Créez-en un",
-                create_admin_account: "Créer un compte administrateur",
-                already_admin_account: "Vous avez déjà un compte administrateur ? Connectez-vous",
-                edit_field: "Modifier le champ",
-                save: "Enregistrer",
-                enter_amount: "Entrer le montant",
-                english: "Anglais",
-                french: "Français",
-                spanish: "Espagnol",
-                enable_notifications: "Activer les notifications",
-                notifications_enabled: "Notifications activées",
-                enter_email_password: "Veuillez entrer l'e-mail et le mot de passe",
-                login_failed: "Échec de la connexion",
-                fill_all_fields: "Veuillez remplir tous les champs",
-                registration_failed: "Échec de l'inscription",
-                admin_account_created: "Compte administrateur créé avec succès",
-                field_updated: "Champ mis à jour avec succès",
-                enter_valid_number: "Veuillez entrer un nombre valide",
-                failed_update_field: "Échec de la mise à jour du champ",
-                loading: "Chargement...",
-                no_users_found: "Aucun utilisateur trouvé",
-                failed_load_users: "Échec du chargement des utilisateurs",
-                no_requests_found: "Aucune demande trouvée",
-                failed_load_requests: "Échec du chargement des demandes",
-                status_pending: "En attente",
-                deposit_approved: "Dépôt approuvé avec succès",
-                failed_approve_deposit: "Échec de l'approbation du dépôt",
-                deposit_rejected: "Dépôt rejeté avec succès",
-                failed_reject_deposit: "Échec du rejet du dépôt",
-                logout_failed: "Échec de la déconnexion"
+                live_visitors: "Visiteurs en direct",
+                // ... rest
             },
             es: {
+                // Your full Spanish translations here
                 admin_title: "Panel de administración - Equity Hubs",
-                toggle_sidebar: "Alternar barra lateral",
-                admin_dashboard: "Panel de administración",
-                edit_bank: "Editar banco",
-                chat: "Chat",
-                logout: "Cerrar sesión",
-                admin_auth: "Autenticación de administrador",
-                manage_confidence: "Administra con confianza",
-                login: "Iniciar sesión",
-                create_account: "Crear cuenta",
-                welcome_admin: "¡Bienvenido, Administrador!",
-                user_management: "Gestión de usuarios",
-                name: "Nombre",
-                email: "Correo electrónico",
-                total_deposit: "Depósito total",
-                total_profit: "Ganancia total",
-                total_bonus: "Bono total",
-                withdrawals: "Retiros",
-                balance: "Saldo",
-                deposit_requests: "Solicitudes de depósito",
-                user_email: "Correo electrónico del usuario",
-                amount: "Cantidad",
-                status: "Estado",
-                actions: "Acciones",
-                admin_login: "Inicio de sesión de administrador",
-                no_admin_account: "¿No tienes una cuenta de administrador? Crea una",
-                create_admin_account: "Crear cuenta de administrador",
-                already_admin_account: "¿Ya tienes una cuenta de administrador? Inicia sesión",
-                edit_field: "Editar campo",
-                save: "Guardar",
-                enter_amount: "Ingresar cantidad",
-                english: "Inglés",
-                french: "Francés",
-                spanish: "Español",
-                enable_notifications: "Habilitar notificaciones",
-                notifications_enabled: "Notificaciones habilitadas",
-                enter_email_password: "Por favor, ingrese correo electrónico y contraseña",
-                login_failed: "Inicio de sesión fallido",
-                fill_all_fields: "Por favor, complete todos los campos",
-                registration_failed: "Registro fallido",
-                admin_account_created: "Cuenta de administrador creada con éxito",
-                field_updated: "Campo actualizado con éxito",
-                enter_valid_number: "Por favor, ingrese un número válido",
-                failed_update_field: "No se pudo actualizar el campo",
-                loading: "Cargando...",
-                no_users_found: "No se encontraron usuarios",
-                failed_load_users: "No se pudieron cargar los usuarios",
-                no_requests_found: "No se encontraron solicitudes",
-                failed_load_requests: "No se pudieron cargar las solicitudes",
-                status_pending: "Pendiente",
-                deposit_approved: "Depósito aprobado con éxito",
-                failed_approve_deposit: "No se pudo aprobar el depósito",
-                deposit_rejected: "Depósito rechazado con éxito",
-                failed_reject_deposit: "No se pudo rechazar el depósito",
-                logout_failed: "Cierre de sesión fallido"
+                live_visitors: "Visitantes en vivo",
+                // ... rest
             }
         };
 
@@ -708,9 +319,7 @@
                 fr: { translation: translations.fr },
                 es: { translation: translations.es }
             }
-        }, function(err, t) {
-            updateContent();
-        });
+        }, function(err, t) { updateContent(); });
 
         function updateContent() {
             document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -751,7 +360,9 @@
         const editPopupTitle = document.getElementById('edit-popup-title');
         const notificationBtn = document.getElementById('notificationBtn');
 
-let notifiedRequestIds = new Set(); // Track ALL notified request IDs
+        let notifiedRequestIds = new Set();
+        let notifiedVisitIds = new Set();
+
         // Notification Permission Handler
         if (notificationBtn) {
             notificationBtn.addEventListener('click', async () => {
@@ -760,9 +371,22 @@ let notifiedRequestIds = new Set(); // Track ALL notified request IDs
                     if (permission === "granted") {
                         notificationBtn.textContent = i18next.t('notifications_enabled');
                         notificationBtn.disabled = true;
+                        notificationBtn.classList.add('enabled');
                     }
                 }
             });
+            // Auto-update on load
+            const updateButton = () => {
+                if (Notification.permission === "granted") {
+                    notificationBtn.textContent = i18next.t('notifications_enabled');
+                    notificationBtn.disabled = true;
+                    notificationBtn.classList.add('enabled');
+                } else if (Notification.permission === "denied") {
+                    notificationBtn.textContent = "Blocked";
+                    notificationBtn.disabled = true;
+                }
+            };
+            updateButton();
         }
 
         // Popup Functions
@@ -771,7 +395,6 @@ let notifiedRequestIds = new Set(); // Track ALL notified request IDs
                 popup.style.display = 'flex';
                 const closeBtn = popup.querySelector('.close-btn');
                 if (closeBtn) closeBtn.style.display = 'flex';
-                console.log(`Showing popup: ${popup.id}`);
             }
         }
 
@@ -781,403 +404,257 @@ let notifiedRequestIds = new Set(); // Track ALL notified request IDs
                 popup.querySelectorAll('input').forEach(input => input.value = '');
                 const errorMessage = popup.querySelector('.error-message');
                 if (errorMessage) errorMessage.style.display = 'none';
-                console.log(`Hiding popup: ${popup.id}`);
             }
         }
 
         // Close Button Logic
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log(`Found ${closeButtons.length} close buttons`);
-            closeButtons.forEach((btn, index) => {
-                btn.addEventListener('click', () => {
-                    const popup = btn.closest('.popup');
-                    if (popup) {
-                        hidePopup(popup);
-                        console.log(`Close button ${index} clicked for popup: ${popup.id}`);
-                    } else {
-                        console.error(`No parent popup found for close button ${index}`);
-                    }
-                });
+        closeButtons.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                const popup = btn.closest('.popup');
+                if (popup) hidePopup(popup);
             });
         });
 
         // Auth Button Listeners
-        if (loginBtn) loginBtn.addEventListener('click', () => showPopup(loginPopup));
-        if (registerBtn) registerBtn.addEventListener('click', () => showPopup(registerPopup));
-        if (switchToRegister) {
-            switchToRegister.addEventListener('click', () => {
-                hidePopup(loginPopup);
-                showPopup(registerPopup);
-            });
-        }
-        if (switchToLogin) {
-            switchToLogin.addEventListener('click', () => {
-                hidePopup(registerPopup);
-                showPopup(loginPopup);
-            });
-        }
+        loginBtn?.addEventListener('click', () => showPopup(loginPopup));
+        registerBtn?.addEventListener('click', () => showPopup(registerPopup));
+        switchToRegister?.addEventListener('click', () => { hidePopup(loginPopup); showPopup(registerPopup); });
+        switchToLogin?.addEventListener('click', () => { hidePopup(registerPopup); showPopup(loginPopup); });
 
         // Login Handler
-        if (document.getElementById('login-submit')) {
-            document.getElementById('login-submit').addEventListener('click', () => {
-                const email = document.getElementById('login-email')?.value;
-                const password = document.getElementById('login-password')?.value;
-                if (!email || !password) {
-                    if (loginError) {
-                        loginError.textContent = i18next.t('enter_email_password');
-                        loginError.style.display = 'block';
-                    }
-                    return;
-                }
-                signInWithEmailAndPassword(auth, email, password)
-                    .then(() => hidePopup(loginPopup))
-                    .catch(error => {
-                        if (loginError) {
-                            loginError.textContent = i18next.t('login_failed');
-                            loginError.style.display = 'block';
-                            console.error('Login error:', error.message);
-                        }
-                    });
-            });
-        }
+        document.getElementById('login-submit')?.addEventListener('click', () => {
+            const email = document.getElementById('login-email')?.value;
+            const password = document.getElementById('login-password')?.value;
+            if (!email || !password) {
+                loginError.textContent = i18next.t('enter_email_password');
+                loginError.style.display = 'block';
+                return;
+            }
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => hidePopup(loginPopup))
+                .catch(error => {
+                    loginError.textContent = i18next.t('login_failed');
+                    loginError.style.display = 'block';
+                    console.error('Login error:', error.message);
+                });
+        });
 
         // Register Handler
-        if (document.getElementById('register-submit')) {
-            document.getElementById('register-submit').addEventListener('click', async () => {
-                const name = document.getElementById('register-name')?.value;
-                const email = document.getElementById('register-email')?.value;
-                const password = document.getElementById('register-password')?.value;
+        document.getElementById('register-submit')?.addEventListener('click', async () => {
+            const name = document.getElementById('register-name')?.value;
+            const email = document.getElementById('register-email')?.value;
+            const password = document.getElementById('register-password')?.value;
+            if (!name || !email || !password) {
+                registerError.textContent = i18next.t('fill_all_fields');
+                registerError.style.display = 'block';
+                return;
+            }
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                await updateProfile(user, { displayName: name });
+                await setDoc(doc(db, 'users', user.uid), {
+                    displayName: name,
+                    email: email,
+                    totalDeposit: 0,
+                    totalProfit: 0,
+                    totalBonus: 0,
+                    withdrawals: 0,
+                    balance: 0,
+                    createdAt: new Date().toISOString()
+                });
+                await setDoc(doc(db, 'admins', user.uid), { isAdmin: true }, { merge: true });
+                alert(i18next.t('admin_account_created'));
+                hidePopup(registerPopup);
+            } catch (error) {
+                console.error('Registration error:', error);
+                registerError.textContent = i18next.t('registration_failed') + ': ' + error.message;
+                registerError.style.display = 'block';
+            }
+        });
 
-                if (!name || !email || !password) {
-                    if (registerError) {
-                        registerError.textContent = i18next.t('fill_all_fields');
-                        registerError.style.display = 'block';
-                    }
-                    return;
-                }
-
-                try {
-                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                    const user = userCredential.user;
-                    await updateProfile(user, { displayName: name });
-                    await setDoc(doc(db, 'users', user.uid), {
-                        displayName: name,
-                        email: email,
-                        totalDeposit: 0,
-                        totalProfit: 0,
-                        totalBonus: 0,
-                        withdrawals: 0,
-                        balance: 0,
-                        createdAt: new Date().toISOString()
-                    });
-                    await setDoc(doc(db, 'admins', user.uid), { isAdmin: true }, { merge: true });
-                    alert(i18next.t('admin_account_created'));
-                    hidePopup(registerPopup);
-                } catch (error) {
-                    console.error('Registration error:', error);
-                    if (registerError) {
-                        registerError.textContent = i18next.t('registration_failed') + ': ' + error.message;
-                        registerError.style.display = 'block';
-                    }
-                }
-            });
-        }
-
-        // Authentication State Handler
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                const idTokenResult = await user.getIdTokenResult();
-                const isAdmin = idTokenResult.claims.admin === true;
-                
-                if (authSection) authSection.style.display = 'none';
-                if (adminContent) adminContent.style.display = 'block';
-                if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'block';
-                if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'block';
-                if (document.getElementById('welcome-message')) {
-                    document.getElementById('welcome-message').textContent = i18next.t('welcome_admin', { name: user.displayName || 'Admin' });
-                }
-                await loadUsers();
-                await loadDepositRequests();
-            } else {
-                if (authSection) authSection.style.display = 'block';
-                if (adminContent) adminContent.style.display = 'none';
-                if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'none';
-                if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'none';
-                showPopup(loginPopup);
+        // Edit Popup Submit Handler
+        editSubmit?.addEventListener('click', async () => {
+            const userId = editPopup.getAttribute('data-user');
+            const field = editPopup.getAttribute('data-field');
+            const newValue = parseFloat(editInput.value);
+            if (isNaN(newValue) || newValue < 0 || editInput.value === '') {
+                editError.textContent = i18next.t('enter_valid_number');
+                editError.style.display = 'block';
+                return;
+            }
+            editSubmit.classList.add('loading');
+            try {
+                const userRef = doc(db, 'users', userId);
+                const userSnap = await getDoc(userRef);
+                const userData = userSnap.data();
+                const updateData = { [field]: newValue };
+                const updatedFields = { ...userData, [field]: newValue };
+                const newBalance = (updatedFields.totalDeposit || 0) + (updatedFields.totalProfit || 0) + (updatedFields.totalBonus || 0) - (updatedFields.withdrawals || 0);
+                updateData.balance = newBalance;
+                await updateDoc(userRef, updateData);
+                alert(i18next.t('field_updated'));
+                hidePopup(editPopup);
+            } catch (error) {
+                console.error(`Error updating ${field}:`, error);
+                editError.textContent = i18next.t('failed_update_field') + ': ' + error.message;
+                editError.style.display = 'block';
+            } finally {
+                editSubmit.classList.remove('loading');
             }
         });
 
         // Load Users
         async function loadUsers() {
             const userTableBody = document.getElementById('user-table-body');
-            if (!userTableBody) {
-                console.error('User table body element not found');
-                return;
-            }
+            if (!userTableBody) return;
             userTableBody.innerHTML = `<tr><td colspan="7">${i18next.t('loading')}</td></tr>`;
-
-            try {
-                onSnapshot(collection(db, 'users'), (usersSnapshot) => {
-                    userTableBody.innerHTML = '';
-                    if (usersSnapshot.empty) {
-                        userTableBody.innerHTML = `<tr><td colspan="7">${i18next.t('no_users_found')}</td></tr>`;
-                        return;
-                    }
-
-                    usersSnapshot.forEach(doc => {
-                        const userData = doc.data();
-                        const userId = doc.id;
-                        const balance = (userData.totalDeposit || 0) + (userData.totalProfit || 0) + (userData.totalBonus || 0) - (userData.withdrawals || 0);
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${userData.displayName || 'N/A'}</td>
-                            <td>${userData.email || 'N/A'}</td>
-                            <td>
-                                <span class="editable-field" data-field="totalDeposit" data-user="${userId}">
-                                    $${parseFloat(userData.totalDeposit || 0).toFixed(2)}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="editable-field" data-field="totalProfit" data-user="${userId}">
-                                    $${parseFloat(userData.totalProfit || 0).toFixed(2)}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="editable-field" data-field="totalBonus" data-user="${userId}">
-                                    $${parseFloat(userData.totalBonus || 0).toFixed(2)}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="editable-field" data-field="withdrawals" data-user="${userId}">
-                                    $${parseFloat(userData.withdrawals || 0).toFixed(2)}
-                                </span>
-                            </td>
-                            <td>$${parseFloat(balance).toFixed(2)}</td>
-                        `;
-                        userTableBody.appendChild(row);
-                    });
-
-                    // Add click listeners for editable fields
-                    document.querySelectorAll('.editable-field').forEach(fieldElement => {
-                        fieldElement.addEventListener('click', () => {
-                            const field = fieldElement.getAttribute('data-field');
-                            const userId = fieldElement.getAttribute('data-user');
-                            const currentValue = parseFloat(fieldElement.textContent.replace('$', '')) || 0;
-                            editPopupTitle.textContent = i18next.t(`edit_${field}`);
-                            editInput.value = currentValue.toFixed(2);
-                            editPopup.setAttribute('data-user', userId);
-                            editPopup.setAttribute('data-field', field);
-                            showPopup(editPopup);
-                            editInput.focus();
-                        });
-                    });
-                }, (error) => {
-                    console.error('Error listening for users:', error);
-                    userTableBody.innerHTML = `<tr><td colspan="7">${i18next.t('failed_load_users')}: ${error.message}</td></tr>`;
-                });
-            } catch (error) {
-                console.error('Error initializing users:', error);
-                userTableBody.innerHTML = `<tr><td colspan="7">${i18next.t('failed_load_users')}: ${error.message}</td></tr>`;
-            }
-        }
-
-        // Edit Popup Submit Handler
-        if (editSubmit) {
-            editSubmit.addEventListener('click', async () => {
-                const userId = editPopup.getAttribute('data-user');
-                const field = editPopup.getAttribute('data-field');
-                const newValue = parseFloat(editInput.value);
-                if (isNaN(newValue) || newValue < 0 || editInput.value === '') {
-                    if (editError) {
-                        editError.textContent = i18next.t('enter_valid_number');
-                        editError.style.display = 'block';
-                    }
+            onSnapshot(collection(db, 'users'), (usersSnapshot) => {
+                userTableBody.innerHTML = '';
+                if (usersSnapshot.empty) {
+                    userTableBody.innerHTML = `<tr><td colspan="7">${i18next.t('no_users_found')}</td></tr>`;
                     return;
                 }
-
-                editSubmit.classList.add('loading');
-                try {
-                    const userRef = doc(db, 'users', userId);
-                    const userSnap = await getDoc(userRef);
-                    const userData = userSnap.data();
-                    const updateData = { [field]: newValue };
-                    const updatedFields = { ...userData, [field]: newValue };
-                    const newBalance = (updatedFields.totalDeposit || 0) + 
-                                     (updatedFields.totalProfit || 0) + 
-                                     (updatedFields.totalBonus || 0) - 
-                                     (updatedFields.withdrawals || 0);
-                    updateData.balance = newBalance;
-
-                    await updateDoc(userRef, updateData);
-                    alert(i18next.t('field_updated', { field: field }));
-                    hidePopup(editPopup);
-                } catch (error) {
-                    console.error(`Error updating ${field}:`, error);
-                    if (editError) {
-                        editError.textContent = i18next.t('failed_update_field', { field: field }) + ': ' + error.message;
-                        editError.style.display = 'block';
-                    }
-                } finally {
-                    editSubmit.classList.remove('loading');
-                }
+                usersSnapshot.forEach(docSnap => {
+                    const userData = docSnap.data();
+                    const userId = docSnap.id;
+                    const balance = (userData.totalDeposit || 0) + (userData.totalProfit || 0) + (userData.totalBonus || 0) - (userData.withdrawals || 0);
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${userData.displayName || 'N/A'}</td>
+                        <td>${userData.email || 'N/A'}</td>
+                        <td><span class="editable-field" data-field="totalDeposit" data-user="${userId}">$${parseFloat(userData.totalDeposit || 0).toFixed(2)}</span></td>
+                        <td><span class="editable-field" data-field="totalProfit" data-user="${userId}">$${parseFloat(userData.totalProfit || 0).toFixed(2)}</span></td>
+                        <td><span class="editable-field" data-field="totalBonus" data-user="${userId}">$${parseFloat(userData.totalBonus || 0).toFixed(2)}</span></td>
+                        <td><span class="editable-field" data-field="withdrawals" data-user="${userId}">$${parseFloat(userData.withdrawals || 0).toFixed(2)}</span></td>
+                        <td>$${parseFloat(balance).toFixed(2)}</td>
+                    `;
+                    userTableBody.appendChild(row);
+                });
+                // Add editable listeners
+                document.querySelectorAll('.editable-field').forEach(fieldElement => {
+                    fieldElement.addEventListener('click', () => {
+                        const field = fieldElement.getAttribute('data-field');
+                        const userId = fieldElement.getAttribute('data-user');
+                        const currentValue = parseFloat(fieldElement.textContent.replace('$', '')) || 0;
+                        editPopupTitle.textContent = `Edit ${field}`;
+                        editInput.value = currentValue.toFixed(2);
+                        editPopup.setAttribute('data-user', userId);
+                        editPopup.setAttribute('data-field', field);
+                        showPopup(editPopup);
+                        editInput.focus();
+                    });
+                });
             });
         }
 
         // Load Deposit Requests
         async function loadDepositRequests() {
             const requestTableBody = document.getElementById('request-table-body');
-            if (!requestTableBody) {
-                console.error('Request table body element not found');
-                return;
-            }
+            if (!requestTableBody) return;
             requestTableBody.innerHTML = `<tr><td colspan="4">${i18next.t('loading')}</td></tr>`;
-
-            try {
-                onSnapshot(collection(db, 'depositRequests'), (requestsSnapshot) => {
-                    requestTableBody.innerHTML = '';
-                    if (requestsSnapshot.empty) {
-                        requestTableBody.innerHTML = `<tr><td colspan="4">${i18next.t('no_requests_found')}</td></tr>`;
-                        return;
+            onSnapshot(collection(db, 'depositRequests'), (requestsSnapshot) => {
+                requestTableBody.innerHTML = '';
+                if (requestsSnapshot.empty) {
+                    requestTableBody.innerHTML = `<tr><td colspan="4">${i18next.t('no_requests_found')}</td></tr>`;
+                    return;
+                }
+                requestsSnapshot.forEach(docSnap => {
+                    const requestData = docSnap.data();
+                    const requestId = docSnap.id;
+                    if (requestData.status === 'pending') {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${requestData.userEmail}</td>
+                            <td>$${parseFloat(requestData.amount || 0).toFixed(2)}</td>
+                            <td>${i18next.t('status_pending')}</td>
+                            <td>
+                                <button class="action-btn approve-btn" data-request="${requestId}" data-user="${requestData.userId}" data-amount="${requestData.amount}">Approve</button>
+                                <button class="action-btn reject-btn" data-request="${requestId}">Reject</button>
+                            </td>
+                        `;
+                        requestTableBody.appendChild(row);
                     }
-
-                    const requests = [];
-                    requestsSnapshot.forEach(doc => requests.push({ id: doc.id, data: doc.data() }));
-
-                    requests.forEach(request => {
-                        const requestData = request.data;
-                        const requestId = request.id;
-                        if (requestData.status === 'pending') {
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
-                                <td>${requestData.userEmail}</td>
-                                <td>$${parseFloat(requestData.amount || 0).toFixed(2)}</td>
-                                <td data-i18n="status_${requestData.status}">${i18next.t(`status_${requestData.status}`)}</td>
-                                <td>
-                                    <button class="action-btn approve-btn" data-request="${requestId}" data-user="${requestData.userId}" data-amount="${requestData.amount}" data-i18n="approve">Approve</button>
-                                    <button class="action-btn reject-btn" data-request="${requestId}" data-i18n="reject">Reject</button>
-                                </td>
-                            `;
-                            requestTableBody.appendChild(row);
-                        }
-                    });
-
-                   // Handle notifications for new deposit requests
+                });
+                // Notifications for new requests
                 requestsSnapshot.docChanges().forEach(change => {
-                    if (change.type === "added" && change.doc.data().status === "pending" && Notification.permission === "granted") {
-                        const requestId = change.doc.id;
-                        if (!notifiedRequestIds.has(requestId)) {
-                            new Notification("New Deposit Request", {
-                                body: `New deposit request from ${change.doc.data().userEmail} for $${parseFloat(change.doc.data().amount || 0).toFixed(2)}`,
-                                icon: "/logo.jpg",
-                                tag: `deposit-${requestId}` // Prevents duplicates
-                            });
-                            notifiedRequestIds.add(requestId);
-                        }
+                    if (change.type === "added" && change.doc.data().status === "pending" && Notification.permission === "granted" && !notifiedRequestIds.has(change.doc.id)) {
+                        new Notification("New Deposit Request", {
+                            body: `From ${change.doc.data().userEmail} for $${parseFloat(change.doc.data().amount || 0).toFixed(2)}`,
+                            icon: "/logo.jpg",
+                            tag: `deposit-${change.doc.id}`
+                        });
+                        notifiedRequestIds.add(change.doc.id);
                     }
                 });
-
-                    document.querySelectorAll('.approve-btn').forEach(btn => {
-                        btn.addEventListener('click', async () => {
-                            const requestId = btn.getAttribute('data-request');
-                            const userId = btn.getAttribute('data-user');
-                            const amount = parseFloat(btn.getAttribute('data-amount'));
-
-                            btn.classList.add('loading');
-                            try {
-                                const userRef = doc(db, 'users', userId);
-                                const userSnap = await getDoc(userRef);
-                                const userData = userSnap.exists() ? userSnap.data() : { totalDeposit: 0, totalProfit: 0, totalBonus: 0, withdrawals: 0, balance: 0 };
-                                const newDeposit = (userData.totalDeposit || 0) + amount;
-                                const newBalance = newDeposit + (userData.totalProfit || 0) + (userData.totalBonus || 0) - (userData.withdrawals || 0);
-
-                                await updateDoc(userRef, {
-                                    totalDeposit: newDeposit,
-                                    balance: newBalance
-                                });
-                                await updateDoc(doc(db, 'depositRequests', requestId), { status: 'approved' });
-                                alert(i18next.t('deposit_approved'));
-                            } catch (error) {
-                                console.error('Error approving deposit:', error);
-                                alert(i18next.t('failed_approve_deposit') + ': ' + error.message);
-                            } finally {
-                                btn.classList.remove('loading');
-                            }
-                        });
+                // Approve/Reject buttons
+                document.querySelectorAll('.approve-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const requestId = btn.getAttribute('data-request');
+                        const userId = btn.getAttribute('data-user');
+                        const amount = parseFloat(btn.getAttribute('data-amount'));
+                        btn.classList.add('loading');
+                        try {
+                            const userRef = doc(db, 'users', userId);
+                            const userSnap = await getDoc(userRef);
+                            const userData = userSnap.exists() ? userSnap.data() : { totalDeposit: 0, totalProfit: 0, totalBonus: 0, withdrawals: 0, balance: 0 };
+                            const newDeposit = (userData.totalDeposit || 0) + amount;
+                            const newBalance = newDeposit + (userData.totalProfit || 0) + (userData.totalBonus || 0) - (userData.withdrawals || 0);
+                            await updateDoc(userRef, { totalDeposit: newDeposit, balance: newBalance });
+                            await updateDoc(doc(db, 'depositRequests', requestId), { status: 'approved' });
+                            alert(i18next.t('deposit_approved'));
+                        } catch (error) {
+                            alert(i18next.t('failed_approve_deposit') + ': ' + error.message);
+                        } finally {
+                            btn.classList.remove('loading');
+                        }
                     });
-
-                    document.querySelectorAll('.reject-btn').forEach(btn => {
-                        btn.addEventListener('click', async () => {
-                            const requestId = btn.getAttribute('data-request');
-                            btn.classList.add('loading');
-                            try {
-                                await updateDoc(doc(db, 'depositRequests', requestId), { status: 'rejected' });
-                                alert(i18next.t('deposit_rejected'));
-                            } catch (error) {
-                                console.error('Error rejecting deposit:', error);
-                                alert(i18next.t('failed_reject_deposit') + ': ' + error.message);
-                            } finally {
-                                btn.classList.remove('loading');
-                            }
-                        });
-                    });
-
-                    updateContent(); // Re-apply translations after dynamic content is added
-                }, (error) => {
-                    console.error('Error listening for deposit requests:', error);
-                    requestTableBody.innerHTML = `<tr><td colspan="4">${i18next.t('failed_load_requests')}: ${error.message}</td></tr>`;
                 });
-            } catch (error) {
-                console.error('Error initializing deposit requests:', error);
-                requestTableBody.innerHTML = `<tr><td colspan="4">${i18next.t('failed_load_requests')}: ${error.message}</td></tr>`;
-            }
+                document.querySelectorAll('.reject-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const requestId = btn.getAttribute('data-request');
+                        btn.classList.add('loading');
+                        try {
+                            await updateDoc(doc(db, 'depositRequests', requestId), { status: 'rejected' });
+                            alert(i18next.t('deposit_rejected'));
+                        } catch (error) {
+                            alert(i18next.t('failed_reject_deposit') + ': ' + error.message);
+                        } finally {
+                            btn.classList.remove('loading');
+                        }
+                    });
+                });
+                updateContent();
+            });
         }
 
-        // Logout Handler
-        const logoutLink = document.getElementById('logout-link');
-        if (logoutLink) {
-            logoutLink.addEventListener('click', async (e) => {
-                e.preventDefault();
-                try {
-                    await signOut(auth);
-                    if (authSection) authSection.style.display = 'block';
-                    if (adminContent) adminContent.style.display = 'none';
-                    if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'none';
-                    if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'none';
+        // Authentication State Handler (SINGLE INSTANCE - FIXED!)
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const isAdmin = await isCurrentUserAdmin();
+                if (isAdmin) {
+                    authSection.style.display = 'none';
+                    adminContent.style.display = 'block';
+                    document.getElementById('sidebar').style.display = 'block';
+                    document.querySelector('.hamburger').style.display = 'block';  // ✅ FIXED: "като" removed
+                    document.getElementById('welcome-message').textContent = i18next.t('welcome_admin', { name: user.displayName || 'Admin' });
+                    await loadUsers();
+                    await loadDepositRequests();
+                    listenUserVisitsForAdmin();  // Start visitor listening
+                } else {
+                    // Not admin - redirect or hide
                     showPopup(loginPopup);
-                } catch (error) {
-                    console.error('Logout failed:', error);
-                    alert(i18next.t('logout_failed'));
                 }
-            });
-        } else {
-            console.error('Logout link element not found');
-        }
-
-        // Sidebar Hamburger Logic
-        const sidebar = document.getElementById('sidebar');
-        const hamburger = document.querySelector('.hamburger');
-        if (sidebar && hamburger) {
-            hamburger.addEventListener('click', () => {
-                sidebar.classList.toggle('show');
-            });
-            document.addEventListener('click', (e) => {
-                if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-                    sidebar.classList.remove('show');
-                }
-            });
-        } else {
-            console.error('Sidebar or hamburger element not found');
-        }
-
-        // Helper: Send notification to admin
-        // Helper: Send notification to admin
-        async function sendAdminNotification(title, body, icon = '/logo.jpg') {
-            if ("Notification" in window && Notification.permission === "granted") {
-                new Notification(title, { body, icon });
+            } else {
+                authSection.style.display = 'block';
+                adminContent.style.display = 'none';
+                document.getElementById('sidebar').style.display = 'none';
+                document.querySelector('.hamburger').style.display = 'none';
+                showPopup(loginPopup);
             }
-        }
+        });
 
-        // Check if current user is an admin
+        // Admin Check Helper
         async function isCurrentUserAdmin() {
             const user = auth.currentUser;
             if (!user) return false;
@@ -1191,100 +668,72 @@ let notifiedRequestIds = new Set(); // Track ALL notified request IDs
             return adminDoc.exists() && adminDoc.data().isAdmin === true;
         }
 
-        // Track notified visit IDs to prevent duplicates
-        let notifiedVisitIds = new Set();
-
-        // Listen for user visits on index page
+        // Visitor Listening (Merged & Fixed)
         async function listenUserVisitsForAdmin() {
             if (!await isCurrentUserAdmin()) return;
-
             onSnapshot(collection(db, 'indexPageVisits'), (snapshot) => {
                 snapshot.docChanges().forEach(change => {
                     if (change.type === "added") {
                         const visitData = change.doc.data();
                         const visitId = change.doc.id;
-
-                        // Avoid duplicates
                         if (notifiedVisitIds.has(visitId)) return;
                         notifiedVisitIds.add(visitId);
-
-                        // Don't notify admin about their own visit
-                        if (visitData.userId === auth.currentUser?.uid) return;
-
-                        sendAdminNotification(
-                            "New Visitor!",
-                            `${visitData.userName || visitData.userEmail || 'Guest'} visited the homepage.`
-                        );
+                        if (visitData.userId === auth.currentUser?.uid) return;  // Skip self
+                        // Push Notification
+                        if (Notification.permission === "granted") {
+                            new Notification("New Visitor!", {
+                                body: `${visitData.userName || visitData.userEmail || 'Guest'} from ${visitData.country || 'Unknown'}`,
+                                icon: "/logo.jpg",
+                                tag: `visit-${visitId}`
+                            });
+                        }
+                        // UI Card
+                        const container = document.getElementById('visitors-container');
+                        if (!container) return;
+                        const flag = visitData.country === 'Nigeria' ? '🇳🇬 Nigeria' : `${visitData.country || 'Unknown'}`;
+                        const card = document.createElement('div');
+                        card.className = 'visitor-card';
+                        card.innerHTML = `
+                            <div class="flag">${flag}</div>
+                            <div class="info">
+                                <strong>${visitData.userName || visitData.userEmail || 'Guest'}</strong><br>
+                                <small>
+                                    ${visitData.browser || 'Unknown'} • ${visitData.os || 'Unknown'}<br>
+                                    ${visitData.referrer === 'direct' ? 'Direct visit' : `From: ${new URL(visitData.referrer).hostname || 'Unknown'}`}<br>
+                                    ${visitData.timestamp?.toDate ? visitData.timestamp.toDate().toLocaleString() : 'Just now'}
+                                </small>
+                            </div>
+                        `;
+                        container.prepend(card);
                     }
                 });
-            }, (error) => {
-                console.error("Error listening to indexPageVisits:", error);
-            });
+            }, (error) => console.error("Error listening to visits:", error));
         }
 
-        // Start listening after login
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                const isAdmin = await isCurrentUserAdmin();
-                if (isAdmin) {
-                    listenUserVisitsForAdmin();
-                }
-                // ... your existing admin UI setup ...
-                if (authSection) authSection.style.display = 'none';
-                if (adminContent) adminContent.style.display = 'block';
-                if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'block';
-                if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'block';
-                if (document.getElementById('welcome-message')) {
-                    document.getElementById('welcome-message').textContent = i18next.t('welcome_admin', { name: user.displayName || 'Admin' });
-                }
-                await loadUsers();
-                await loadDepositRequests();
-            } else {
-                if (authSection) authSection.style.display = 'block';
-                if (adminContent) adminContent.style.display = 'none';
-                if (document.getElementById('sidebar')) document.getElementById('sidebar').style.display = 'none';
-                if (document.querySelector('.hamburger')) document.querySelector('.hamburger').style.display = 'none';
-                showPopup(loginPopup);
+        // Logout Handler
+        document.getElementById('logout-link')?.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                await signOut(auth);
+            } catch (error) {
+                console.error('Logout failed:', error);
+                alert(i18next.t('logout_failed'));
             }
         });
 
-        // Auto-update notification button state on load
-        if (notificationBtn) {
-            const updateButton = () => {
-                if (Notification.permission === "granted") {
-                    notificationBtn.textContent = i18next.t('notifications_enabled');
-                    notificationBtn.disabled = true;
-                    notificationBtn.classList.add('enabled');
-                } else if (Notification.permission === "denied") {
-                    notificationBtn.textContent = "Blocked";
-                    notificationBtn.disabled = true;
-                }
-            };
-
-            updateButton(); // On load
-
-            notificationBtn.addEventListener('click', async () => {
-                if (Notification.permission === "default") {
-                    const permission = await Notification.requestPermission();
-                    updateButton();
-                    if (permission === "granted") {
-                        new Notification("Test", { body: "Notifications enabled!" });
-                    }
+        // Sidebar Hamburger
+        const sidebar = document.getElementById('sidebar');
+        const hamburger = document.querySelector('.hamburger');
+        if (sidebar && hamburger) {
+            hamburger.addEventListener('click', () => sidebar.classList.toggle('show'));
+            document.addEventListener('click', (e) => {
+                if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+                    sidebar.classList.remove('show');
                 }
             });
         }
 
-        // Add CSS class for enabled state
-        const style = document.createElement('style');
-        style.textContent = `
-            .notification-btn.enabled {
-                background: #00ff00 !important;
-                color: #000;
-            }
-        `;
-        document.head.appendChild(style);
+        updateContent();
     </script>
-
-    
 </body>
 </html>

@@ -818,7 +818,14 @@
         onAuthStateChanged, 
         updateProfile 
     } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-    import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+    import { 
+        getFirestore, 
+        doc, 
+        setDoc, 
+        addDoc, 
+        collection, 
+        serverTimestamp 
+    } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 
     const firebaseConfig = {
         apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
@@ -830,18 +837,13 @@
         measurementId: "G-SXL6ZGL49W"
     };
 
+    // Initialize Firebase (once)
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Translation resources (same as admin)
-    const translations = {
-        en: { /* your full en object */ },
-        fr: { /* your full fr object */ },
-        es: { /* your full es object */ }
-    };
-
-    // Initialize i18next
+    // === i18next Translation Setup (unchanged) ===
+    const translations = { /* your full en/fr/es objects here */ };
     i18next.init({
         lng: 'en',
         resources: {
@@ -863,11 +865,11 @@
         document.title = i18next.t('page_title') || 'Equity Hubs';
     }
 
-    document.getElementById('languageSwitcher')?.addEventListener('change', (e) => {
+    document.getElementById('languageSwitcher')?.addEventListener('change', e => {
         i18next.changeLanguage(e.target.value, updateContent);
     });
 
-    // DOM Elements
+    // === DOM Elements & Popup Logic (unchanged) ===
     const loginPopup = document.getElementById('login-popup');
     const registerPopup = document.getElementById('register-popup');
     const forgotPasswordPopup = document.getElementById('forgot-password-popup');
@@ -885,7 +887,6 @@
     const registerError = document.getElementById('register-error');
     const forgotError = document.getElementById('forgot-error');
 
-    // Show/Hide Popups
     function showPopup(popup) { if (popup) popup.style.display = 'flex'; }
     function hidePopup(popup) {
         if (popup) {
@@ -896,10 +897,7 @@
         }
     }
 
-    // Close buttons
     closeButtons.forEach(btn => btn.addEventListener('click', () => hidePopup(btn.closest('.popup'))));
-
-    // Navigation
     loginBtn?.addEventListener('click', e => { e.preventDefault(); showPopup(loginPopup); });
     registerBtn?.addEventListener('click', e => { e.preventDefault(); showPopup(registerPopup); });
     forgotPasswordLink?.addEventListener('click', e => { e.preventDefault(); hidePopup(loginPopup); showPopup(forgotPasswordPopup); });
@@ -907,7 +905,7 @@
     switchToLogin?.addEventListener('click', e => { e.preventDefault(); hidePopup(registerPopup); showPopup(loginPopup); });
     switchToLoginFromForgot?.addEventListener('click', e => { e.preventDefault(); hidePopup(forgotPasswordPopup); showPopup(loginPopup); });
 
-    // Login
+    // === Login / Register / Forgot Password (unchanged) ===
     document.getElementById('login-submit')?.addEventListener('click', () => {
         const email = document.getElementById('login-email').value.trim();
         const password = document.getElementById('login-password').value;
@@ -924,7 +922,6 @@
             });
     });
 
-    // Register
     document.getElementById('register-submit')?.addEventListener('click', () => {
         const name = document.getElementById('register-name').value.trim();
         const country = document.getElementById('register-country').value;
@@ -964,7 +961,6 @@
             });
     });
 
-    // Forgot Password
     document.getElementById('forgot-submit')?.addEventListener('click', () => {
         const email = document.getElementById('forgot-email').value.trim();
         if (!email) {
@@ -985,7 +981,7 @@
             });
     });
 
-    // Auth State
+    // === Auth State UI Toggle ===
     onAuthStateChanged(auth, user => {
         if (user) {
             authButtons.style.display = 'none';
@@ -996,27 +992,66 @@
         }
     });
 
-    // Log Page Visit (Only Once)
-    let visitLogged = false;
-    window.addEventListener('load', () => {
-        if (visitLogged) return;
-        visitLogged = true;
+    // === VISITOR TRACKING (ONCE PER PAGE LOAD) ===
+    let hasTrackedVisit = false;
 
-        onAuthStateChanged(auth, async (user) => {
-            const visitData = {
-                userId: user?.uid || 'anonymous',
-                userName: user?.displayName || '',
-                userEmail: user?.email || '',
-                visitedAt: new Date().toISOString(),
-                page: 'index'
-            };
-            const visitId = `visit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-            await setDoc(doc(db, 'indexPageVisits', visitId), visitData).catch(() => {});
-        });
-    });
+    async function trackPageVisit() {
+        if (hasTrackedVisit) return;
+        hasTrackedVisit = true;
 
-    // Update content after load
+        const user = auth.currentUser;
+
+        // Get country via ipapi.co
+        let country = 'Unknown';
+        try {
+            const res = await fetch('https://ipapi.co/json/', { cache: 'no-store' });
+            const data = await res.json();
+            country = data.country_name || 'Unknown';
+        } catch (e) {
+            console.warn('Country detection failed:', e);
+        }
+
+        // Browser & OS detection
+        const ua = navigator.userAgent;
+        const browser = /Chrome/i.test(ua) ? `Chrome ${ua.match(/Chrome\/([\d.]+)/)?.[1] || ''}` :
+                        /Firefox/i.test(ua) ? `Firefox ${ua.match(/Firefox\/([\d.]+)/)?.[1] || ''}` :
+                        /Safari/i.test(ua) ? `Safari ${ua.match(/Version\/([\d.]+)/)?.[1] || ''}` : 'Other';
+
+        const os = /Windows/i.test(ua) ? `Windows ${ua.match(/Windows NT ([\d.]+)/)?.[1] || ''}` :
+                   /Mac/i.test(ua) ? 'macOS' :
+                   /Linux/i.test(ua) ? 'Linux' :
+                   /Android/i.test(ua) ? `Android ${ua.match(/Android ([\d.]+)/)?.[1] || ''}` :
+                   /iPhone|iPad/i.test(ua) ? 'iOS' : 'Unknown';
+
+        const visitData = {
+            userId: user?.uid || null,
+            userName: user?.displayName || null,
+            userEmail: user?.email || null,
+            country,
+            browser,
+            os,
+            referrer: document.referrer || 'direct',
+            url: location.href,
+            timestamp: serverTimestamp()
+        };
+
+        try {
+            await addDoc(collection(db, 'indexPageVisits'), visitData);
+            console.log('Visit logged:', visitData);
+        } catch (err) {
+            console.warn('Failed to log visit:', err);
+        }
+    }
+
+    // Run on DOM ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', trackPageVisit);
+    } else {
+        trackPageVisit();
+    }
+
+    // Update translations after load
     updateContent();
 </script>
-</body>
+
 </html>
