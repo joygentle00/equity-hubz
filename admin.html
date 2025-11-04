@@ -183,7 +183,7 @@
         // REDIRECT IF NOT AUTH OR NOT ADMIN
         onAuthStateChanged(auth, async (user) => {
             if (!user || !(await isCurrentUserAdmin())) {
-                location.replace('admin-login.html');
+                location.replace('admin_login.html');
                 return;
             }
 
