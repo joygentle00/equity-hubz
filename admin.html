@@ -112,12 +112,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="admin-chat.html">
-                            <span class="icon"><i class="fa-solid fa-house"></i></span>
-                            <span class="text" data-i18n="chat">Chat</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="#" id="logout-link">
                             <span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span>
                             <span class="text" data-i18n="logout">Logout</span>
@@ -131,7 +125,6 @@
                     <option value="fr" data-i18n="french">Français</option>
                     <option value="es" data-i18n="spanish">Español</option>
                 </select>
-                <button id="notificationBtn" class="notification-btn" data-i18n="enable_notifications">Enable Notifications</button>
             </div>
         </div>
         <main class="main-content" id="main-content">
@@ -145,10 +138,6 @@
             </div>
             <div id="admin-content" style="display: none;">
                 <h1 class="welcome" id="welcome-message" data-i18n="welcome_admin">Welcome, Admin!</h1>
-                <section class="admin-section visitors-section">
-                    <h2 data-i18n="live_visitors">Live Visitors</h2>
-                    <div id="visitors-container" style="max-height: 300px; overflow-y: auto;"></div>
-                </section>
                 <section class="admin-section">
                     <h2 data-i18n="user_management">User Management</h2>
                     <div class="user-list">
@@ -275,7 +264,6 @@
                 english: "English",
                 french: "French",
                 spanish: "Spanish",
-                enable_notifications: "Enable Notifications",
                 notifications_enabled: "Notifications Enabled",
                 enter_email_password: "Please enter both email and password",
                 login_failed: "Login failed",
@@ -576,17 +564,7 @@
                         requestTableBody.appendChild(row);
                     }
                 });
-                // Notifications for new requests
-                requestsSnapshot.docChanges().forEach(change => {
-                    if (change.type === "added" && change.doc.data().status === "pending" && Notification.permission === "granted" && !notifiedRequestIds.has(change.doc.id)) {
-                        new Notification("New Deposit Request", {
-                            body: `From ${change.doc.data().userEmail} for $${parseFloat(change.doc.data().amount || 0).toFixed(2)}`,
-                            icon: "/logo.jpg",
-                            tag: `deposit-${change.doc.id}`
-                        });
-                        notifiedRequestIds.add(change.doc.id);
-                    }
-                });
+            
                 // Approve/Reject buttons
                 document.querySelectorAll('.approve-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
@@ -667,49 +645,6 @@
             const adminDoc = await getDoc(doc(db, 'admins', user.uid));
             return adminDoc.exists() && adminDoc.data().isAdmin === true;
         }
-
-        // Visitor Listening (Merged & Fixed)
-        async function listenUserVisitsForAdmin() {
-            if (!await isCurrentUserAdmin()) return;
-            onSnapshot(collection(db, 'indexPageVisits'), (snapshot) => {
-                snapshot.docChanges().forEach(change => {
-                    if (change.type === "added") {
-                        const visitData = change.doc.data();
-                        const visitId = change.doc.id;
-                        if (notifiedVisitIds.has(visitId)) return;
-                        notifiedVisitIds.add(visitId);
-                        if (visitData.userId === auth.currentUser?.uid) return;  // Skip self
-                        // Push Notification
-                        if (Notification.permission === "granted") {
-                            new Notification("New Visitor!", {
-                                body: `${visitData.userName || visitData.userEmail || 'Guest'} from ${visitData.country || 'Unknown'}`,
-                                icon: "/logo.jpg",
-                                tag: `visit-${visitId}`
-                            });
-                        }
-                        // UI Card
-                        const container = document.getElementById('visitors-container');
-                        if (!container) return;
-                        const flag = visitData.country === 'Nigeria' ? '🇳🇬 Nigeria' : `${visitData.country || 'Unknown'}`;
-                        const card = document.createElement('div');
-                        card.className = 'visitor-card';
-                        card.innerHTML = `
-                            <div class="flag">${flag}</div>
-                            <div class="info">
-                                <strong>${visitData.userName || visitData.userEmail || 'Guest'}</strong><br>
-                                <small>
-                                    ${visitData.browser || 'Unknown'} • ${visitData.os || 'Unknown'}<br>
-                                    ${visitData.referrer === 'direct' ? 'Direct visit' : `From: ${new URL(visitData.referrer).hostname || 'Unknown'}`}<br>
-                                    ${visitData.timestamp?.toDate ? visitData.timestamp.toDate().toLocaleString() : 'Just now'}
-                                </small>
-                            </div>
-                        `;
-                        container.prepend(card);
-                    }
-                });
-            }, (error) => console.error("Error listening to visits:", error));
-        }
-
         // Logout Handler
         document.getElementById('logout-link')?.addEventListener('click', async (e) => {
             e.preventDefault();
