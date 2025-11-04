@@ -1140,9 +1140,10 @@
         }
 
         updateContent();
+
+        
     </script>
     <!-- Smartsupp Live Chat script -->
-<!-- Smartsupp Live Chat script -->
 <script type="text/javascript">
 var _smartsupp = _smartsupp || {};
 _smartsupp.key = '7f2bba33007b0ceba9ef214c29b3c6dcb2c1112d';
@@ -1153,7 +1154,27 @@ window.smartsupp||(function(d) {
   c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
 })(document);
 </script>
-<noscript> Powered by <a href=“https://www.smartsupp.com” target=“_blank”>Smartsupp</a></noscript>
+<noscript> Powered by <a href=“https://www.smartsupp.com” target=“_blank”>Equity Hubz</a></noscript>
 
+<script>
+    // Mobile Menu Toggle
+const menuToggle = document.getElementById('menu-toggle');
+const navLinks = document.getElementById('nav-links-menu');
+
+if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        menuToggle.classList.toggle('open');
+    });
+
+    // Close menu when a link is clicked
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            menuToggle.classList.remove('open');
+        });
+    });
+}
+</script>
 </body>
 </html>

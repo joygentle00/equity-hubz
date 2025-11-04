@@ -2,18 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Pushify: Temporarily disabled until domain verified -->
-    <!-- <script defer src="https://pushify.com/pixel/Sfk0cq792jRR5Lnr"></script> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="admin_title">Admin Dashboard - Equity Hubs</title>
     <link rel="icon" type="image" href="">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
     <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
-
-    <!-- Firebase Compat SDKs (for non-module scripts) -->
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
@@ -29,7 +22,7 @@
         .welcome { font-size: 24px; margin-bottom: 30px; }
         .admin-section { background: #0c1018; padding: 20px; border-radius: 12px; box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05); }
         .admin-section h2 { font-size: 20px; color: #00ffff; margin-bottom: 20px; }
-        .user-list, .deposit-requests, .visitors-section { margin-bottom: 40px; }
+        .user-list, .deposit-requests { margin-bottom: 40px; }
         .user-table, .request-table { width: 100%; border-collapse: collapse; background: #111827; border-radius: 8px; overflow: hidden; }
         .user-table th, .user-table td, .request-table th, .request-table td { padding: 15px; text-align: left; border-bottom: 1px solid #2d3748; }
         .user-table th, .request-table th { background: #1e293b; color: #00ffff; font-weight: 600; }
@@ -40,12 +33,6 @@
         .reject-btn { background: #ff0000; color: #fff; }
         .action-btn:hover { opacity: 0.9; }
         .hamburger { display: none; position: absolute; top: 20px; left: 20px; background: none; border: none; color: #00ffff; font-size: 24px; cursor: pointer; z-index: 1000; }
-        .auth-section { background: #111827; padding: 40px; border-radius: 12px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); text-align: center; max-width: 500px; margin: 0 auto; }
-        .auth-section h1 { font-size: 28px; color: #00ffff; margin-bottom: 10px; }
-        .auth-section p { font-size: 16px; color: #a0aec0; margin-bottom: 20px; }
-        .auth-buttons { display: flex; gap: 15px; justify-content: center; }
-        .auth-btn { padding: 12px 24px; background: #00ffff; color: #000; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 500; transition: background 0.3s ease; }
-        .auth-btn:hover { background: #00e5e5; }
         .popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center; }
         .popup-content { background: #111827; padding: 30px; border-radius: 12px; width: 90%; max-width: 450px; position: relative; border: 1px solid #00ffff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); }
         .popup-content h2 { color: #00ffff; font-size: 24px; margin-bottom: 20px; text-align: center; }
@@ -55,39 +42,22 @@
         .popup-content button:hover { background: #00e5e5; }
         .close-btn { position: absolute; top: 15px; right: 15px; font-size: 24px; color: #fff; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.3s ease; }
         .close-btn:hover { background: #00ffff; color: #000; }
-        .popup-content a { color: #00ffff; text-decoration: none; display: block; text-align: center; margin-top: 15px; font-size: 14px; }
-        .popup-content a:hover { text-decoration: underline; }
         .error-message { color: #ff4444; font-size: 14px; margin-top: 10px; text-align: center; display: none; }
         .loading { opacity: 0.6; pointer-events: none; }
         .language-selector { margin: 10px 0; }
         .language-selector select { padding: 8px; border-radius: 4px; background: #1e293b; color: #fff; border: 1px solid #2d3748; }
-        .notification-btn { padding: 8px; border-radius: 4px; background: #00ffff; color: #000; border: none; cursor: pointer; font-size: 14px; font-weight: 500; transition: background 0.3s ease; margin-top: 10px; }
-        .notification-btn:hover { background: #00e5e5; }
-        .notification-btn:disabled { background: #2d3748; cursor: not-allowed; }
-        .notification-btn.enabled { background: #00ff00 !important; color: #000; }
-
-        /* Visitor Cards */
-        .visitors-section { background: #0c1018; padding: 20px; border-radius: 12px; margin-bottom: 40px; }
-        .visitor-card { background: #111827; border: 1px solid #2d3748; border-radius: 8px; padding: 12px; margin-bottom: 10px; display: flex; align-items: center; font-size: 14px; color: #fff; }
-        .visitor-card .flag { font-size: 20px; margin-right: 8px; }
-        .visitor-card .info strong { color: #00ffff; }
 
         @media (max-width: 768px) {
             .sidebar { position: fixed; top: 0; left: 0; height: 100%; transform: translateX(-100%); z-index: 999; }
             .sidebar.show { transform: translateX(0); }
             .hamburger { display: block; }
             .main-content { padding: 20px; }
-            .auth-section { padding: 20px; }
-            .auth-section h1 { font-size: 24px; }
-            .auth-section p { font-size: 14px; }
-            .auth-btn { padding: 10px 20px; font-size: 14px; }
             .popup-content { padding: 20px; max-width: 90%; }
             .popup-content h2 { font-size: 20px; }
             .popup-content input, .popup-content button { font-size: 14px; padding: 10px; }
             .close-btn { font-size: 20px; width: 28px; height: 28px; }
             .user-table, .request-table { display: block; overflow-x: auto; }
             .user-table th, .user-table td, .request-table th, .request-table td { font-size: 12px; padding: 10px; }
-            .notification-btn { font-size: 12px; padding: 6px; }
         }
     </style>
 </head>
@@ -96,27 +66,12 @@
         <button class="hamburger" aria-label="Toggle Sidebar" data-i18n="[aria-label]toggle_sidebar">
             <i class="fa-solid fa-bars"></i>
         </button>
-        <div class="sidebar" id="sidebar">
+        <div class="sidebar" id="sidebar" style="display: none;">
             <nav>
                 <ul>
-                    <li class="active">
-                        <a href="admin.html">
-                            <span class="icon"><i class="fa-solid fa-user-shield"></i></span>
-                            <span class="text" data-i18n="admin_dashboard">Admin Dashboard</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="accounts.html">
-                            <span class="icon"><i class="fa-solid fa-house"></i></span>
-                            <span class="text" data-i18n="edit_bank">Edit Bank</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" id="logout-link">
-                            <span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span>
-                            <span class="text" data-i18n="logout">Logout</span>
-                        </a>
-                    </li>
+                    <li class="active"><a href="admin.html"><span class="icon"><i class="fa-solid fa-user-shield"></i></span><span class="text" data-i18n="admin_dashboard">Admin Dashboard</span></a></li>
+                    <li><a href="accounts.html"><span class="icon"><i class="fa-solid fa-house"></i></span><span class="text" data-i18n="edit_bank">Edit Bank</span></a></li>
+                    <li><a href="#" id="logout-link"><span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span><span class="text" data-i18n="logout">Logout</span></a></li>
                 </ul>
             </nav>
             <div class="language-selector">
@@ -128,14 +83,6 @@
             </div>
         </div>
         <main class="main-content" id="main-content">
-            <div id="auth-section" class="auth-section">
-                <h1 data-i18n="admin_auth">Admin Authentication</h1>
-                <p data-i18n="manage_confidence">Manage with Confidence</p>
-                <div class="auth-buttons">
-                    <button class="auth-btn" id="login-btn" data-i18n="login">Login</button>
-                    <button class="auth-btn" id="register-btn" data-i18n="create_account">Create Account</button>
-                </div>
-            </div>
             <div id="admin-content" style="display: none;">
                 <h1 class="welcome" id="welcome-message" data-i18n="welcome_admin">Welcome, Admin!</h1>
                 <section class="admin-section">
@@ -172,32 +119,11 @@
                     </div>
                 </section>
             </div>
-            <div id="login-popup" class="popup">
-                <div class="popup-content">
-                    <span class="close-btn">&times;</span>
-                    <h2 data-i18n="admin_login">Admin Login</h2>
-                    <input type="email" id="login-email" placeholder="Email" required data-i18n="[placeholder]email">
-                    <input type="password" id="login-password" placeholder="Password" required data-i18n="[placeholder]password">
-                    <p id="login-error" class="error-message"></p>
-                    <button id="login-submit" data-i18n="login">Login</button>
-                    <a href="#" id="switch-to-register" data-i18n="no_admin_account">Don't have an admin account? Create one</a>
-                </div>
-            </div>
-            <div id="register-popup" class="popup">
-                <div class="popup-content">
-                    <span class="close-btn">&times;</span>
-                    <h2 data-i18n="create_admin_account">Create Admin Account</h2>
-                    <input type="text" id="register-name" placeholder="Name" required data-i18n="[placeholder]name">
-                    <input type="email" id="register-email" placeholder="Email" required data-i18n="[placeholder]email">
-                    <input type="password" id="register-password" placeholder="Password" required data-i18n="[placeholder]password">
-                    <p id="register-error" class="error-message"></p>
-                    <button id="register-submit" data-i18n="create_account">Create Account</button>
-                    <a href="#" id="switch-to-login" data-i18n="already_admin_account">Already have an admin account? Login</a>
-                </div>
-            </div>
+
+            <!-- EDIT POPUP ONLY -->
             <div id="edit-popup" class="popup">
                 <div class="popup-content">
-                    <span class="close-btn">&times;</span>
+                    <span class="close-btn">×</span>
                     <h2 id="edit-popup-title" data-i18n="edit_field">Edit Field</h2>
                     <input type="number" id="edit-input" placeholder="Enter amount" min="0" step="0.01" required data-i18n="[placeholder]enter_amount">
                     <p id="edit-error" class="error-message"></p>
@@ -209,8 +135,8 @@
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
-        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-        import { getFirestore, collection, onSnapshot, doc, getDoc, setDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+        import { getFirestore, collection, onSnapshot, doc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
@@ -226,309 +152,133 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Translation resources (your full object here)
-        const translations = {
-            en: {
-                admin_title: "Admin Dashboard - Equity Hubs",
-                toggle_sidebar: "Toggle Sidebar",
-                admin_dashboard: "Admin Dashboard",
-                edit_bank: "Edit Bank",
-                chat: "Chat",
-                logout: "Logout",
-                admin_auth: "Admin Authentication",
-                manage_confidence: "Manage with Confidence",
-                login: "Login",
-                create_account: "Create Account",
-                welcome_admin: "Welcome, Admin!",
-                live_visitors: "Live Visitors",
-                user_management: "User Management",
-                name: "Name",
-                email: "Email",
-                total_deposit: "Total Deposit",
-                total_profit: "Total Profit",
-                total_bonus: "Total Bonus",
-                withdrawals: "Withdrawals",
-                balance: "Balance",
-                deposit_requests: "Deposit Requests",
-                user_email: "User Email",
-                amount: "Amount",
-                status: "Status",
-                actions: "Actions",
-                admin_login: "Admin Login",
-                no_admin_account: "Don't have an admin account? Create one",
-                create_admin_account: "Create Admin Account",
-                already_admin_account: "Already have an admin account? Login",
-                edit_field: "Edit Field",
-                save: "Save",
-                enter_amount: "Enter amount",
-                english: "English",
-                french: "French",
-                spanish: "Spanish",
-                notifications_enabled: "Notifications Enabled",
-                enter_email_password: "Please enter both email and password",
-                login_failed: "Login failed",
-                fill_all_fields: "Please fill all fields",
-                registration_failed: "Registration failed",
-                admin_account_created: "Admin account created successfully",
-                field_updated: "Field updated successfully",
-                enter_valid_number: "Please enter a valid number",
-                failed_update_field: "Failed to update field",
-                loading: "Loading...",
-                no_users_found: "No users found",
-                failed_load_users: "Failed to load users",
-                no_requests_found: "No requests found",
-                failed_load_requests: "Failed to load requests",
-                status_pending: "Pending",
-                deposit_approved: "Deposit approved successfully",
-                failed_approve_deposit: "Failed to approve deposit",
-                deposit_rejected: "Deposit rejected successfully",
-                failed_reject_deposit: "Failed to reject deposit",
-                logout_failed: "Logout failed"
-            },
-            fr: {
-                // Your full French translations here (copy from previous)
-                admin_title: "Tableau de bord administrateur - Equity Hubs",
-                live_visitors: "Visiteurs en direct",
-                // ... rest
-            },
-            es: {
-                // Your full Spanish translations here
-                admin_title: "Panel de administración - Equity Hubs",
-                live_visitors: "Visitantes en vivo",
-                // ... rest
-            }
-        };
+        const translations = { /* PASTE YOUR FULL translations OBJECT HERE */ };
 
-        // Initialize i18next
         i18next.init({
             lng: 'en',
-            resources: {
-                en: { translation: translations.en },
-                fr: { translation: translations.fr },
-                es: { translation: translations.es }
-            }
-        }, function(err, t) { updateContent(); });
+            resources: { en: { translation: translations.en }, fr: { translation: translations.fr }, es: { translation: translations.es } }
+        }, () => updateContent());
 
         function updateContent() {
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (key.startsWith('[placeholder]')) {
-                    const actualKey = key.replace('[placeholder]', '');
-                    el.placeholder = i18next.t(actualKey);
-                } else if (key.startsWith('[aria-label]')) {
-                    const actualKey = key.replace('[aria-label]', '');
-                    el.setAttribute('aria-label', i18next.t(actualKey));
-                } else {
-                    el.textContent = i18next.t(key);
-                }
+                if (key.startsWith('[placeholder]')) el.placeholder = i18next.t(key.slice(12));
+                else if (key.startsWith('[aria-label]')) el.setAttribute('aria-label', i18next.t(key.slice(12)));
+                else el.textContent = i18next.t(key);
             });
             document.title = i18next.t('admin_title');
         }
 
-        document.getElementById('languageSwitcher').addEventListener('change', (e) => {
-            i18next.changeLanguage(e.target.value, updateContent);
-        });
+        document.getElementById('languageSwitcher')?.addEventListener('change', e => i18next.changeLanguage(e.target.value, updateContent));
 
-        // DOM Elements
-        const loginPopup = document.getElementById('login-popup');
-        const registerPopup = document.getElementById('register-popup');
-        const editPopup = document.getElementById('edit-popup');
-        const loginBtn = document.getElementById('login-btn');
-        const registerBtn = document.getElementById('register-btn');
-        const closeButtons = document.querySelectorAll('.close-btn');
-        const switchToRegister = document.getElementById('switch-to-register');
-        const switchToLogin = document.getElementById('switch-to-login');
-        const authSection = document.getElementById('auth-section');
         const adminContent = document.getElementById('admin-content');
-        const loginError = document.getElementById('login-error');
-        const registerError = document.getElementById('register-error');
-        const editError = document.getElementById('edit-error');
+        const sidebar = document.getElementById('sidebar');
+        const hamburger = document.querySelector('.hamburger');
+        const editPopup = document.getElementById('edit-popup');
         const editSubmit = document.getElementById('edit-submit');
         const editInput = document.getElementById('edit-input');
+        const editError = document.getElementById('edit-error');
         const editPopupTitle = document.getElementById('edit-popup-title');
-        const notificationBtn = document.getElementById('notificationBtn');
 
-        let notifiedRequestIds = new Set();
-        let notifiedVisitIds = new Set();
-
-        // Notification Permission Handler
-        if (notificationBtn) {
-            notificationBtn.addEventListener('click', async () => {
-                if ("Notification" in window && Notification.permission !== "granted") {
-                    const permission = await Notification.requestPermission();
-                    if (permission === "granted") {
-                        notificationBtn.textContent = i18next.t('notifications_enabled');
-                        notificationBtn.disabled = true;
-                        notificationBtn.classList.add('enabled');
-                    }
-                }
-            });
-            // Auto-update on load
-            const updateButton = () => {
-                if (Notification.permission === "granted") {
-                    notificationBtn.textContent = i18next.t('notifications_enabled');
-                    notificationBtn.disabled = true;
-                    notificationBtn.classList.add('enabled');
-                } else if (Notification.permission === "denied") {
-                    notificationBtn.textContent = "Blocked";
-                    notificationBtn.disabled = true;
-                }
-            };
-            updateButton();
-        }
-
-        // Popup Functions
-        function showPopup(popup) {
-            if (popup) {
-                popup.style.display = 'flex';
-                const closeBtn = popup.querySelector('.close-btn');
-                if (closeBtn) closeBtn.style.display = 'flex';
-            }
-        }
-
-        function hidePopup(popup) {
-            if (popup) {
-                popup.style.display = 'none';
-                popup.querySelectorAll('input').forEach(input => input.value = '');
-                const errorMessage = popup.querySelector('.error-message');
-                if (errorMessage) errorMessage.style.display = 'none';
-            }
-        }
-
-        // Close Button Logic
-        closeButtons.forEach((btn, index) => {
-            btn.addEventListener('click', () => {
-                const popup = btn.closest('.popup');
-                if (popup) hidePopup(popup);
-            });
-        });
-
-        // Auth Button Listeners
-        loginBtn?.addEventListener('click', () => showPopup(loginPopup));
-        registerBtn?.addEventListener('click', () => showPopup(registerPopup));
-        switchToRegister?.addEventListener('click', () => { hidePopup(loginPopup); showPopup(registerPopup); });
-        switchToLogin?.addEventListener('click', () => { hidePopup(registerPopup); showPopup(loginPopup); });
-
-        // Login Handler
-        document.getElementById('login-submit')?.addEventListener('click', () => {
-            const email = document.getElementById('login-email')?.value;
-            const password = document.getElementById('login-password')?.value;
-            if (!email || !password) {
-                loginError.textContent = i18next.t('enter_email_password');
-                loginError.style.display = 'block';
+        // REDIRECT IF NOT AUTH OR NOT ADMIN
+        onAuthStateChanged(auth, async (user) => {
+            if (!user || !(await isCurrentUserAdmin())) {
+                location.replace('admin-login.html');
                 return;
             }
-            signInWithEmailAndPassword(auth, email, password)
-                .then(() => hidePopup(loginPopup))
-                .catch(error => {
-                    loginError.textContent = i18next.t('login_failed');
-                    loginError.style.display = 'block';
-                    console.error('Login error:', error.message);
-                });
+
+            // AUTHORIZED
+            adminContent.style.display = 'block';
+            sidebar.style.display = 'block';
+            hamburger.style.display = 'block';
+            document.getElementById('welcome-message').textContent = i18next.t('welcome_admin', { name: user.displayName || 'Admin' });
+            loadUsers();
+            loadDepositRequests();
         });
 
-        // Register Handler
-        document.getElementById('register-submit')?.addEventListener('click', async () => {
-            const name = document.getElementById('register-name')?.value;
-            const email = document.getElementById('register-email')?.value;
-            const password = document.getElementById('register-password')?.value;
-            if (!name || !email || !password) {
-                registerError.textContent = i18next.t('fill_all_fields');
-                registerError.style.display = 'block';
-                return;
-            }
+        async function isCurrentUserAdmin() {
+            const user = auth.currentUser;
+            if (!user) return false;
             try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-                await updateProfile(user, { displayName: name });
-                await setDoc(doc(db, 'users', user.uid), {
-                    displayName: name,
-                    email: email,
-                    totalDeposit: 0,
-                    totalProfit: 0,
-                    totalBonus: 0,
-                    withdrawals: 0,
-                    balance: 0,
-                    createdAt: new Date().toISOString()
-                });
-                await setDoc(doc(db, 'admins', user.uid), { isAdmin: true }, { merge: true });
-                alert(i18next.t('admin_account_created'));
-                hidePopup(registerPopup);
-            } catch (error) {
-                console.error('Registration error:', error);
-                registerError.textContent = i18next.t('registration_failed') + ': ' + error.message;
-                registerError.style.display = 'block';
+                const token = await user.getIdTokenResult();
+                if (token.claims.admin) return true;
+            } catch (_) {}
+            const snap = await getDoc(doc(db, 'admins', user.uid));
+            return snap.exists() && snap.data().isAdmin === true;
+        }
+
+        // LOGOUT
+        document.getElementById('logout-link')?.addEventListener('click', async (e) => {
+            e.preventDefault();
+            await signOut(auth);
+            location.href = 'admin_login.html';
+        });
+
+        // HAMBURGER
+        hamburger?.addEventListener('click', () => sidebar.classList.toggle('show'));
+        document.addEventListener('click', e => {
+            if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+                sidebar.classList.remove('show');
             }
         });
 
-        // Edit Popup Submit Handler
+        // EDIT POPUP
+        function showPopup(p) { p.style.display = 'flex'; }
+        function hidePopup(p) { p.style.display = 'none'; p.querySelectorAll('input').forEach(i => i.value = ''); p.querySelectorAll('.error-message').forEach(e => e.style.display = 'none'); }
+        document.querySelectorAll('.close-btn').forEach(btn => btn.addEventListener('click', () => hidePopup(btn.closest('.popup'))));
+
         editSubmit?.addEventListener('click', async () => {
-            const userId = editPopup.getAttribute('data-user');
-            const field = editPopup.getAttribute('data-field');
-            const newValue = parseFloat(editInput.value);
-            if (isNaN(newValue) || newValue < 0 || editInput.value === '') {
-                editError.textContent = i18next.t('enter_valid_number');
-                editError.style.display = 'block';
-                return;
-            }
+            const userId = editPopup.dataset.user;
+            const field = editPopup.dataset.field;
+            const value = parseFloat(editInput.value);
+            if (isNaN(value) || value < 0) { editError.textContent = i18next.t('enter_valid_number'); editError.style.display = 'block'; return; }
             editSubmit.classList.add('loading');
             try {
-                const userRef = doc(db, 'users', userId);
-                const userSnap = await getDoc(userRef);
-                const userData = userSnap.data();
-                const updateData = { [field]: newValue };
-                const updatedFields = { ...userData, [field]: newValue };
-                const newBalance = (updatedFields.totalDeposit || 0) + (updatedFields.totalProfit || 0) + (updatedFields.totalBonus || 0) - (updatedFields.withdrawals || 0);
-                updateData.balance = newBalance;
-                await updateDoc(userRef, updateData);
+                const ref = doc(db, 'users', userId);
+                const snap = await getDoc(ref);
+                const data = snap.data();
+                const updates = { [field]: value };
+                updates.balance = (data.totalDeposit||0) + (data.totalProfit||0) + (data.totalBonus||0) - (data.withdrawals||0) + (field === 'totalDeposit' ? value - (data.totalDeposit||0) : 0);
+                await updateDoc(ref, updates);
                 alert(i18next.t('field_updated'));
                 hidePopup(editPopup);
-            } catch (error) {
-                console.error(`Error updating ${field}:`, error);
-                editError.textContent = i18next.t('failed_update_field') + ': ' + error.message;
+            } catch (err) {
+                editError.textContent = i18next.t('failed_update_field');
                 editError.style.display = 'block';
             } finally {
                 editSubmit.classList.remove('loading');
             }
         });
 
-        // Load Users
-        async function loadUsers() {
-            const userTableBody = document.getElementById('user-table-body');
-            if (!userTableBody) return;
-            userTableBody.innerHTML = `<tr><td colspan="7">${i18next.t('loading')}</td></tr>`;
-            onSnapshot(collection(db, 'users'), (usersSnapshot) => {
-                userTableBody.innerHTML = '';
-                if (usersSnapshot.empty) {
-                    userTableBody.innerHTML = `<tr><td colspan="7">${i18next.t('no_users_found')}</td></tr>`;
-                    return;
-                }
-                usersSnapshot.forEach(docSnap => {
-                    const userData = docSnap.data();
-                    const userId = docSnap.id;
-                    const balance = (userData.totalDeposit || 0) + (userData.totalProfit || 0) + (userData.totalBonus || 0) - (userData.withdrawals || 0);
+        // LOAD USERS
+        function loadUsers() {
+            const tbody = document.getElementById('user-table-body');
+            tbody.innerHTML = `<tr><td colspan="7">${i18next.t('loading')}</td></tr>`;
+            onSnapshot(collection(db, 'users'), snap => {
+                tbody.innerHTML = '';
+                if (snap.empty) { tbody.innerHTML = `<tr><td colspan="7">${i18next.t('no_users_found')}</td></tr>`; return; }
+                snap.forEach(d => {
+                    const data = d.data();
+                    const id = d.id;
+                    const balance = (data.totalDeposit||0) + (data.totalProfit||0) + (data.totalBonus||0) - (data.withdrawals||0);
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${userData.displayName || 'N/A'}</td>
-                        <td>${userData.email || 'N/A'}</td>
-                        <td><span class="editable-field" data-field="totalDeposit" data-user="${userId}">$${parseFloat(userData.totalDeposit || 0).toFixed(2)}</span></td>
-                        <td><span class="editable-field" data-field="totalProfit" data-user="${userId}">$${parseFloat(userData.totalProfit || 0).toFixed(2)}</span></td>
-                        <td><span class="editable-field" data-field="totalBonus" data-user="${userId}">$${parseFloat(userData.totalBonus || 0).toFixed(2)}</span></td>
-                        <td><span class="editable-field" data-field="withdrawals" data-user="${userId}">$${parseFloat(userData.withdrawals || 0).toFixed(2)}</span></td>
-                        <td>$${parseFloat(balance).toFixed(2)}</td>
+                        <td>${data.displayName || 'N/A'}</td>
+                        <td>${data.email || 'N/A'}</td>
+                        <td><span class="editable-field" data-field="totalDeposit" data-user="${id}">$${parseFloat(data.totalDeposit||0).toFixed(2)}</span></td>
+                        <td><span class="editable-field" data-field="totalProfit" data-user="${id}">$${parseFloat(data.totalProfit||0).toFixed(2)}</span></td>
+                        <td><span class="editable-field" data-field="totalBonus" data-user="${id}">$${parseFloat(data.totalBonus||0).toFixed(2)}</span></td>
+                        <td><span class="editable-field" data-field="withdrawals" data-user="${id}">$${parseFloat(data.withdrawals||0).toFixed(2)}</span></td>
+                        <td>$${balance.toFixed(2)}</td>
                     `;
-                    userTableBody.appendChild(row);
+                    tbody.appendChild(row);
                 });
-                // Add editable listeners
-                document.querySelectorAll('.editable-field').forEach(fieldElement => {
-                    fieldElement.addEventListener('click', () => {
-                        const field = fieldElement.getAttribute('data-field');
-                        const userId = fieldElement.getAttribute('data-user');
-                        const currentValue = parseFloat(fieldElement.textContent.replace('$', '')) || 0;
-                        editPopupTitle.textContent = `Edit ${field}`;
-                        editInput.value = currentValue.toFixed(2);
-                        editPopup.setAttribute('data-user', userId);
-                        editPopup.setAttribute('data-field', field);
+                document.querySelectorAll('.editable-field').forEach(el => {
+                    el.addEventListener('click', () => {
+                        editPopupTitle.textContent = `Edit ${el.dataset.field}`;
+                        editInput.value = parseFloat(el.textContent.replace('$','')).toFixed(2);
+                        editPopup.dataset.user = el.dataset.user;
+                        editPopup.dataset.field = el.dataset.field;
                         showPopup(editPopup);
                         editInput.focus();
                     });
@@ -536,135 +286,58 @@
             });
         }
 
-        // Load Deposit Requests
-        async function loadDepositRequests() {
-            const requestTableBody = document.getElementById('request-table-body');
-            if (!requestTableBody) return;
-            requestTableBody.innerHTML = `<tr><td colspan="4">${i18next.t('loading')}</td></tr>`;
-            onSnapshot(collection(db, 'depositRequests'), (requestsSnapshot) => {
-                requestTableBody.innerHTML = '';
-                if (requestsSnapshot.empty) {
-                    requestTableBody.innerHTML = `<tr><td colspan="4">${i18next.t('no_requests_found')}</td></tr>`;
-                    return;
-                }
-                requestsSnapshot.forEach(docSnap => {
-                    const requestData = docSnap.data();
-                    const requestId = docSnap.id;
-                    if (requestData.status === 'pending') {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${requestData.userEmail}</td>
-                            <td>$${parseFloat(requestData.amount || 0).toFixed(2)}</td>
-                            <td>${i18next.t('status_pending')}</td>
-                            <td>
-                                <button class="action-btn approve-btn" data-request="${requestId}" data-user="${requestData.userId}" data-amount="${requestData.amount}">Approve</button>
-                                <button class="action-btn reject-btn" data-request="${requestId}">Reject</button>
-                            </td>
-                        `;
-                        requestTableBody.appendChild(row);
-                    }
+        // LOAD DEPOSIT REQUESTS
+        function loadDepositRequests() {
+            const tbody = document.getElementById('request-table-body');
+            tbody.innerHTML = `<tr><td colspan="4">${i18next.t('loading')}</td></tr>`;
+            onSnapshot(collection(db, 'depositRequests'), snap => {
+                tbody.innerHTML = '';
+                if (snap.empty) { tbody.innerHTML = `<tr><td colspan="4">${i18next.t('no_requests_found')}</td></tr>`; return; }
+                snap.forEach(d => {
+                    const data = d.data();
+                    if (data.status !== 'pending') return;
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${data.userEmail}</td>
+                        <td>$${parseFloat(data.amount||0).toFixed(2)}</td>
+                        <td>${i18next.t('status_pending')}</td>
+                        <td>
+                            <button class="action-btn approve-btn" data-request="${d.id}" data-user="${data.userId}" data-amount="${data.amount}">Approve</button>
+                            <button class="action-btn reject-btn" data-request="${d.id}">Reject</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
                 });
-            
-                // Approve/Reject buttons
                 document.querySelectorAll('.approve-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
-                        const requestId = btn.getAttribute('data-request');
-                        const userId = btn.getAttribute('data-user');
-                        const amount = parseFloat(btn.getAttribute('data-amount'));
+                        const rid = btn.dataset.request;
+                        const uid = btn.dataset.user;
+                        const amt = parseFloat(btn.dataset.amount);
                         btn.classList.add('loading');
                         try {
-                            const userRef = doc(db, 'users', userId);
-                            const userSnap = await getDoc(userRef);
-                            const userData = userSnap.exists() ? userSnap.data() : { totalDeposit: 0, totalProfit: 0, totalBonus: 0, withdrawals: 0, balance: 0 };
-                            const newDeposit = (userData.totalDeposit || 0) + amount;
-                            const newBalance = newDeposit + (userData.totalProfit || 0) + (userData.totalBonus || 0) - (userData.withdrawals || 0);
-                            await updateDoc(userRef, { totalDeposit: newDeposit, balance: newBalance });
-                            await updateDoc(doc(db, 'depositRequests', requestId), { status: 'approved' });
+                            const uRef = doc(db, 'users', uid);
+                            const uSnap = await getDoc(uRef);
+                            const u = uSnap.data() || {};
+                            await updateDoc(uRef, {
+                                totalDeposit: (u.totalDeposit||0) + amt,
+                                balance: (u.totalDeposit||0) + (u.totalProfit||0) + (u.totalBonus||0) - (u.withdrawals||0) + amt
+                            });
+                            await updateDoc(doc(db, 'depositRequests', rid), { status: 'approved' });
                             alert(i18next.t('deposit_approved'));
-                        } catch (error) {
-                            alert(i18next.t('failed_approve_deposit') + ': ' + error.message);
-                        } finally {
-                            btn.classList.remove('loading');
-                        }
+                        } catch (e) { alert(i18next.t('failed_approve_deposit')); }
+                        finally { btn.classList.remove('loading'); }
                     });
                 });
                 document.querySelectorAll('.reject-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
-                        const requestId = btn.getAttribute('data-request');
                         btn.classList.add('loading');
                         try {
-                            await updateDoc(doc(db, 'depositRequests', requestId), { status: 'rejected' });
+                            await updateDoc(doc(db, 'depositRequests', btn.dataset.request), { status: 'rejected' });
                             alert(i18next.t('deposit_rejected'));
-                        } catch (error) {
-                            alert(i18next.t('failed_reject_deposit') + ': ' + error.message);
-                        } finally {
-                            btn.classList.remove('loading');
-                        }
+                        } catch (e) { alert(i18next.t('failed_reject_deposit')); }
+                        finally { btn.classList.remove('loading'); }
                     });
                 });
-                updateContent();
-            });
-        }
-
-        // Authentication State Handler (SINGLE INSTANCE - FIXED!)
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                const isAdmin = await isCurrentUserAdmin();
-                if (isAdmin) {
-                    authSection.style.display = 'none';
-                    adminContent.style.display = 'block';
-                    document.getElementById('sidebar').style.display = 'block';
-                    document.querySelector('.hamburger').style.display = 'block';  // ✅ FIXED: "като" removed
-                    document.getElementById('welcome-message').textContent = i18next.t('welcome_admin', { name: user.displayName || 'Admin' });
-                    await loadUsers();
-                    await loadDepositRequests();
-                    listenUserVisitsForAdmin();  // Start visitor listening
-                } else {
-                    // Not admin - redirect or hide
-                    showPopup(loginPopup);
-                }
-            } else {
-                authSection.style.display = 'block';
-                adminContent.style.display = 'none';
-                document.getElementById('sidebar').style.display = 'none';
-                document.querySelector('.hamburger').style.display = 'none';
-                showPopup(loginPopup);
-            }
-        });
-
-        // Admin Check Helper
-        async function isCurrentUserAdmin() {
-            const user = auth.currentUser;
-            if (!user) return false;
-            try {
-                const idTokenResult = await user.getIdTokenResult();
-                if (idTokenResult.claims.admin === true) return true;
-            } catch (e) {
-                console.warn("Token claims failed, checking Firestore...");
-            }
-            const adminDoc = await getDoc(doc(db, 'admins', user.uid));
-            return adminDoc.exists() && adminDoc.data().isAdmin === true;
-        }
-        // Logout Handler
-        document.getElementById('logout-link')?.addEventListener('click', async (e) => {
-            e.preventDefault();
-            try {
-                await signOut(auth);
-            } catch (error) {
-                console.error('Logout failed:', error);
-                alert(i18next.t('logout_failed'));
-            }
-        });
-
-        // Sidebar Hamburger
-        const sidebar = document.getElementById('sidebar');
-        const hamburger = document.querySelector('.hamburger');
-        if (sidebar && hamburger) {
-            hamburger.addEventListener('click', () => sidebar.classList.toggle('show'));
-            document.addEventListener('click', (e) => {
-                if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-                    sidebar.classList.remove('show');
-                }
             });
         }
 

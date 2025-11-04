@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="admin_login">Admin Login - Equity Hubs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: #0c1018; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .login-box { background: #111827; padding: 40px; border-radius: 12px; width: 100%; max-width: 400px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); border: 1px solid #00ffff; }
+        .login-box h2 { color: #00ffff; text-align: center; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #1e293b; border: 1px solid #2d3748; border-radius: 8px; color: #fff; font-size: 16px; }
+        input:focus { outline: none; border-color: #00ffff; box-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
+        button { width: 100%; padding: 12px; background: #00ffff; color: #000; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #00e5e5; }
+        .error { color: #ff4444; font-size: 14px; text-align: center; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2 data-i18n="admin_login">Admin Login</h2>
+        <input type="email" id="email" placeholder="Email" data-i18n="[placeholder]email">
+        <input type="password" id="password" placeholder="Password" data-i18n="[placeholder]password">
+        <p id="error" class="error"></p>
+        <button id="login-btn" data-i18n="login">Login</button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+
+ const firebaseConfig = {
+            apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
+            authDomain: "investment-40343.firebaseapp.com",
+            projectId: "investment-40343",
+            storageBucket: "investment-40343.firebasestorage.app",
+            messagingSenderId: "126093031981",
+            appId: "1:126093031981:web:fd4ae73c063044693b16a4",
+            measurementId: "G-SXL6ZGL49W"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const translations = { /* PASTE YOUR translations.en, .fr, .es */ };
+        i18next.init({ lng: 'en', resources: { en: { translation: translations.en } } }, () => {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (key.startsWith('[placeholder]')) el.placeholder = i18next.t(key.slice(12));
+                else el.textContent = i18next.t(key);
+            });
+            document.title = i18next.t('admin_login');
+        });
+
+        document.getElementById('login-btn').addEventListener('click', () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const error = document.getElementById('error');
+
+            if (!email || !password) {
+                error.textContent = i18next.t('enter_email_password');
+                error.style.display = 'block';
+                return;
+            }
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => location.replace('admin.html')) // REDIRECT ON SUCCESS
+                .catch(err => {
+                    error.textContent = i18next.t('login_failed');
+                    error.style.display = 'block';
+                });
+        });
+    </script>
+</body>
+</html>
