@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="ykc_verification_title">YKC Verification</title>
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; 
+                   script-src 'self' https://www.gstatic.com https://unpkg.com 'unsafe-inline'; 
+                   frame-src 'self'; 
+                   style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; 
+                   connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firebasestorage.googleapis.com; 
+                   font-src 'self' https://cdnjs.cloudflare.com; 
+                   img-src 'self' data: https://firebasestorage.googleapis.com;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
+
+    <style>
+        /* ---------- SAME STYLES YOU ALREADY HAVE (kept for brevity) ---------- */
+        * {margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+        body{background:#000;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow-x:hidden;}
+        .container{display:flex;width:100%;max-width:1200px;height:95vh;background:#1e293b;border-radius:12px;box-shadow:0 0 20px rgba(0,255,255,.1);position:relative;margin:10px 0;}
+        .sidebar{width:250px;background:#111827;padding:20px;display:flex;flex-direction:column;transition:transform .3s ease-in-out;}
+        .sidebar nav ul{list-style:none;}
+        .sidebar nav ul li{padding:15px 10px;border-radius:8px;margin-bottom:10px;cursor:pointer;transition:background .3s;}
+        .sidebar nav ul li.active a,.sidebar nav ul li:hover a{background:#00ffff;padding:18px;border-radius:15px;color:#000;text-decoration:none;}
+        .sidebar nav ul li a{display:flex;align-items:center;color:inherit;text-decoration:none;width:100%;}
+        .sidebar nav ul li .icon{margin-right:10px;font-size:18px;}
+        .main-content{flex-grow:1;padding:30px 40px;overflow-y:auto;position:relative;}
+        .hamburger{display:none;position:absolute;top:20px;left:20px;background:none;border:none;color:#00ffff;font-size:24px;cursor:pointer;z-index:1000;}
+        .ykc-verification-content{max-width:600px;margin:0 auto;background:#111827;padding:30px;border-radius:12px;box-shadow:0 0 20px rgba(0,255,255,.1);}
+        .ykc-verification-content h2{color:#00ffff;text-align:center;margin-bottom:20px;}
+        .ykc-verification-content label{display:block;margin-bottom:8px;font-weight:600;}
+        .ykc-verification-content input,
+        .ykc-verification-content select{width:100%;padding:12px;margin-bottom:20px;background:#1e293b;border:1px solid #2d3748;border-radius:8px;color:#fff;font-size:16px;}
+        .ykc-verification-content button{width:100%;padding:12px;background:#00ffff;color:#000;border:none;border-radius:8px;font-weight:600;cursor:pointer;}
+        .ykc-verification-content button:hover{background:#00e5e5;}
+        .admin-panel{margin-top:40px;display:none;}
+        .admin-panel table{width:100%;border-collapse:collapse;margin-top:20px;}
+        .admin-panel th,.admin-panel td{border:1px solid #2d3748;padding:10px;text-align:left;}
+        .admin-panel th{background:#111827;color:#00ffff;}
+        .admin-panel .btn{padding:6px 12px;margin:0 4px;border:none;border-radius:4px;cursor:pointer;}
+        .admin-panel .approve{background:#00ff00;color:#000;}
+        .admin-panel .reject{background:#ff4d4d;color:#fff;}
+        @media (max-width:768px){
+            .container{flex-direction:column;height:auto;}
+            .sidebar{position:fixed;top:0;left:0;height:100%;transform:translateX(-100%);z-index:999;}
+            .sidebar.show{transform:translateX(0);}
+            .hamburger{display:block;}
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="main-container">
+    <!-- Hamburger -->
+    <button class="hamburger" aria-label="Toggle Sidebar" data-i18n="[aria-label]toggle_sidebar">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- Sidebar (same as your original) -->
+    <div class="sidebar" id="sidebar">
+        <nav>
+            <ul>
+                <li><a href="dashboard.html"><span class="icon"><i class="fa-solid fa-house"></i></span><span class="text" data-i18n="home">Home</span></a></li>
+                <li class="active"><a href="ykc.html"><span class="icon"><i class="fa-solid fa-user"></i></span><span class="text" data-i18n="YKC">YKC</span></a></li>
+                <li><a href="investment.html"><span class="icon"><i class="fa-solid fa-boxes-stacked"></i></span><span class="text" data-i18n="packages">Packages</span></a></li>
+                <li><a href="deposit.html"><span class="icon"><i class="fa-regular fa-credit-card"></i></span><span class="text" data-i18n="deposit">Deposit</span></a></li>
+                <li><a href="withdraw.html"><span class="icon"><i class="fa-regular fa-briefcase"></i></span><span class="text" data-i18n="withdraw">Withdraw</span></a></li>
+                <li><a href="profile.html"><span class="icon"><i class="fa-regular fa-address-card"></i></span><span class="text" data-i18n="profile">Profile</span></a></li>
+                <li><a href="logout.html" id="logout-link"><span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span><span class="text" data-i18n="logout">Logout</span></a></li>
+            </ul>
+        </nav>
+        <div class="language-selector">
+            <select id="languageSwitcher">
+                <option value="en" data-i18n="english">English</option>
+                <option value="fr" data-i18n="french">Français</option>
+                <option value="es" data-i18n="spanish">Español</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- USER FORM -->
+    <main class="ykc-verification-content">
+        <form id="ykcForm">
+            <h2 data-i18n="ykc_verification">YKC Verification</h2>
+
+            <label for="full-name" data-i18n="full_name">Full Name</label>
+            <input type="text" id="full-name" required>
+
+            <label for="date-of-birth" data-i18n="date_of_birth">Date of Birth</label>
+            <input type="date" id="date-of-birth" required>
+
+            <label for="address" data-i18n="address">Address</label>
+            <input type="text" id="address" required>
+
+            <label for="id-type" data-i18n="id_type">ID Type</label>
+            <select id="id-type" required>
+                <option value="" disabled selected data-i18n="select_id_type">Select ID Type</option>
+                <option value="passport" data-i18n="passport">Passport</option>
+                <option value="driver_license" data-i18n="driver_license">Driver's License</option>
+                <option value="national_id" data-i18n="national_id">National ID</option>
+            </select>
+
+            <label for="id-document" data-i18n="id_document">Upload ID Document</label>
+            <input type="file" id="id-document" accept=".jpg,.jpeg,.png,.pdf" required>
+
+            <button type="submit" data-i18n="submit_verification">Submit Verification</button>
+        </form>
+
+        <!-- ADMIN PANEL (hidden by default) -->
+        <section class="admin-panel" id="adminPanel">
+            <h2 data-i18n="admin_verifications">Pending Verifications</h2>
+            <table id="adminTable">
+                <thead>
+                <tr>
+                    <th data-i18n="user_id">User ID</th>
+                    <th data-i18n="full_name">Name</th>
+                    <th data-i18n="dob">DOB</th>
+                    <th data-i18n="address">Address</th>
+                    <th data-i18n="id_type">ID Type</th>
+                    <th data-i18n="document">Document</th>
+                    <th data-i18n="actions">Actions</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </main>
+</div>
+
+<!-- ==================== FIREBASE + LOGIC ==================== -->
+<script type="module">
+    import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+    import {
+        getAuth,
+        onAuthStateChanged,
+        sign77Out
+    } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+    import {
+        getFirestore,
+        collection,
+        addDoc,
+        query,
+        where,
+        onSnapshot,
+        doc,
+        updateDoc,
+        serverTimestamp
+    } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+    import {
+        getStorage,
+        ref,
+        uploadBytes,
+        getDownloadURL
+    } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js';
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
+        authDomain: "investment-40343.firebaseapp.com",
+        projectId: "investment-40343",
+        storageBucket: "investment-40343.firebasestorage.app",
+        messagingSenderId: "126093031981",
+        appId: "1:126093031981:web:fd4ae73c063044693b16a4",
+        measurementId: "G-SXL6ZGL49W"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    /* ---------- i18next (unchanged) ---------- */
+    const translations = { /* ... your existing object ... */ };
+    i18next.init({lng: 'en', resources: {en:{translation:translations.en}, fr:{translation:translations.fr}, es:{translation:translations.es}}}, () => updateContent());
+    function updateContent(){
+        document.querySelectorAll('[data-i18n]').forEach(el=>{
+            const key = el.getAttribute('data-i18n');
+            if(key.startsWith('[placeholder]')) el.placeholder = i18next.t(key.replace('[placeholder]',''));
+            else if(key.startsWith('[aria-label]')) el.setAttribute('aria-label',i18next.t(key.replace('[aria-label]','')));
+            else el.textContent = i18next.t(key);
+        });
+    }
+    document.getElementById('languageSwitcher').addEventListener('change', e=>i18next.changeLanguage(e.target.value, updateContent));
+
+    /* ---------- Sidebar hamburger ---------- */
+    const sidebar = document.getElementById('sidebar');
+    const hamburger = document.querySelector('.hamburger');
+    hamburger.addEventListener('click', () => sidebar.classList.toggle('show'));
+    document.addEventListener('click', e=>{
+        if(!sidebar.contains(e.target) && !hamburger.contains(e.target)) sidebar.classList.remove('show');
+    });
+
+    /* ---------- Auth state ---------- */
+    let currentUser = null;
+    onAuthStateChanged(auth, user => {
+        if (!user) return location.href = 'login.html';
+        currentUser = user;
+        document.getElementById('main-container').style.display = 'flex';
+        checkAdmin(user.uid);
+    });
+
+    /* ---------- Check if user is admin ---------- */
+    async function checkAdmin(uid){
+        const adminRef = doc(db, 'admins', uid);
+        const snap = await adminRef.get ? adminRef.get() : {exists:false};
+        if (snap.exists) {
+            document.getElementById('adminPanel').style.display = 'block';
+            loadPendingVerifications();
+        }
+    }
+
+    /* ---------- USER SUBMIT ---------- */
+    const form = document.getElementById('ykcForm');
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        if (!currentUser) return alert('You must be logged in');
+
+        const file = document.getElementById('id-document').files[0];
+        if (!file) return alert('Please upload a document');
+
+        try {
+            // 1. Upload file
+            const fileRef = ref(storage, `ykc_documents/${currentUser.uid}_${Date.now()}_${file.name}`);
+            await uploadBytes(fileRef, file);
+            const downloadURL = await getDownloadURL(fileRef);
+
+            // 2. Save to Firestore
+            await addDoc(collection(db, 'ykc_verifications'), {
+                uid: currentUser.uid,
+                fullName: document.getElementById('full-name').value.trim(),
+                dob: document.getElementById('date-of-birth').value,
+                address: document.getElementById('address').value.trim(),
+                idType: document.getElementById('id-type').value,
+                documentURL: downloadURL,
+                status: 'pending',
+                submittedAt: serverTimestamp()
+            });
+
+            alert(i18next.t('verification_submitted') || 'Verification submitted successfully!');
+            form.reset();
+        } catch (err) {
+            console.error(err);
+            alert('Error: ' + err.message);
+        }
+    });
+
+    /* ---------- ADMIN: Load pending rows ---------- */
+    function loadPendingVerifications(){
+        const q = query(collection(db, 'ykc_verifications'), where('status', '==', 'pending'));
+        onSnapshot(q, snap => {
+            const tbody = document.querySelector('#adminTable tbody');
+            tbody.innerHTML = '';
+            if (snap.empty) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;">${i18next.t('no_pending')||'No pending verifications'}</td></tr>`;
+                return;
+            }
+            snap.forEach(d => {
+                const data = d.data();
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${data.uid}</td>
+                    <td>${data.fullName}</td>
+                    <td>${data.dob}</td>
+                    <td>${data.address}</td>
+                    <td>${data.idType}</td>
+                    <td><a href="${data.documentURL}" target="_blank" data-i18n="view">View</a></td>
+                    <td>
+                        <button class="btn approve" data-id="${d.id}" data-i18n="approve">Approve</button>
+                        <button class="btn reject" data-id="${d.id}" data-i18n="reject">Reject</button>
+                    </td>`;
+                tbody.appendChild(tr);
+            });
+
+            // Approve / Reject listeners
+            document.querySelectorAll('.approve').forEach(btn=>btn.addEventListener('click',()=>handleStatus(btn.dataset.id,'approved')));
+            document.querySelectorAll('.reject').forEach(btn=>btn.addEventListener('click',()=>handleStatus(btn.dataset.id,'rejected')));
+        });
+    }
+
+    async function handleStatus(docId, newStatus){
+        if(!confirm(i18next.t('confirm_'+newStatus)||`Are you sure you want to ${newStatus} this verification?`)) return;
+        try{
+            await updateDoc(doc(db,'ykc_verifications',docId),{status:newStatus, reviewedAt:serverTimestamp()});
+            alert(i18next.t('status_updated')||'Status updated');
+        }catch(err){
+            console.error(err);
+            alert('Error: '+err.message);
+        }
+    }
+
+    /* ---------- Logout ---------- */
+    document.getElementById('logout-link').addEventListener('click', e=>{
+        e.preventDefault();
+        signOut(auth).then(()=>location.href='login.html');
+    });
+</script>
+
+<!-- Smartsupp (unchanged) -->
+<script type="text/javascript">
+    var _smartsupp = _smartsupp || {};
+    _smartsupp.key = '7f2bba33007b0ceba9ef214c29b3c6dcb2c1112d';
+    window.smartsupp||(function(d) {
+      var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+      s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+      c.type='text/javascript';c.charset='utf-8';c.async=true;
+      c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+    })(document);
+</script>
+<noscript> Powered by <a href="https://www.smartsupp.com" target="_blank">Equity Hubz</a></noscript>
+</body>
+</html>

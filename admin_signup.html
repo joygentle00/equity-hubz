@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="signup">Create Admin Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <style>/* same as login, just change h2 */</style>
+</head>
+<body>
+<div class="box">
+    <h2 data-i18n="create_admin_account">Create Admin Account</h2>
+    <input type="text" id="name" placeholder="Name">
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <p id="error" class="error"></p>
+    <button id="signup-btn" data-i18n="create_account">Create</button>
+    <a href="admin_login.html" data-i18n="have_account">Already have account? Login</a>
+</div>
+
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+    import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+    import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+
+     const firebaseConfig = {
+        apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
+        authDomain: "investment-40343.firebaseapp.com",
+        projectId: "investment-40343",
+        storageBucket: "investment-40343.firebasestorage.app",
+        messagingSenderId: "126093031981",
+        appId: "1:126093031981:web:fd4ae73c063044693b16a4",
+        measurementId: "G-SXL6ZGL49W"
+    };
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    document.getElementById('signup-btn').onclick = async () => {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const error = document.getElementById('error');
+
+        try {
+            const cred = await createUserWithEmailAndPassword(auth, email, password);
+            await updateProfile(cred.user, { displayName: name });
+            await setDoc(doc(db, 'users', cred.user.uid), { displayName: name, email, totalDeposit: 0, totalProfit: 0, totalBonus: 0, withdrawals: 0, balance: 0 });
+            await setDoc(doc(db, 'admins', cred.user.uid), { isAdmin: true });
+            location.href = 'admin.html';
+        } catch (e) {
+            error.textContent = e.message;
+            error.style.display = 'block';
+        }
+    };
+</script>
+</body>
+</html>

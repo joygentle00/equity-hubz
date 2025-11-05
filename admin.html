@@ -2,346 +2,184 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="admin_title">Admin Dashboard - Equity Hubs</title>
-    <link rel="icon" type="image" href="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
     <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
-
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: #0c1018; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
-        .container { display: flex; width: 100%; max-width: 1200px; height: 95vh; background: #1e293b; border-radius: 12px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); position: relative; margin: 10px 0; }
-        .sidebar { width: 250px; background: #111827; padding: 20px; display: flex; flex-direction: column; transition: transform 0.3s ease-in-out; }
-        .sidebar nav ul { list-style-type: none; }
-        .sidebar nav ul li { padding: 15px 10px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: background-color 0.3s ease-in-out; }
-        .sidebar nav ul li.active a, .sidebar nav ul li:hover a { background-color: #00ffff; padding: 18px; border-radius: 15px; color: #000; text-decoration: none; }
-        .sidebar nav ul li a { display: flex; align-items: center; color: inherit; text-decoration: none; width: 100%; }
-        .sidebar nav ul li .icon { margin-right: 10px; font-size: 18px; }
-        .main-content { flex-grow: 1; padding: 30px 40px; overflow-y: auto; position: relative; }
-        .welcome { font-size: 24px; margin-bottom: 30px; }
-        .admin-section { background: #0c1018; padding: 20px; border-radius: 12px; box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05); }
-        .admin-section h2 { font-size: 20px; color: #00ffff; margin-bottom: 20px; }
-        .user-list, .deposit-requests { margin-bottom: 40px; }
-        .user-table, .request-table { width: 100%; border-collapse: collapse; background: #111827; border-radius: 8px; overflow: hidden; }
-        .user-table th, .user-table td, .request-table th, .request-table td { padding: 15px; text-align: left; border-bottom: 1px solid #2d3748; }
-        .user-table th, .request-table th { background: #1e293b; color: #00ffff; font-weight: 600; }
-        .editable-field { cursor: pointer; color: #00ffff; }
-        .editable-field:hover { text-decoration: underline; }
-        .action-btn { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px; }
-        .approve-btn { background: #00ff00; color: #000; }
-        .reject-btn { background: #ff0000; color: #fff; }
-        .action-btn:hover { opacity: 0.9; }
-        .hamburger { display: none; position: absolute; top: 20px; left: 20px; background: none; border: none; color: #00ffff; font-size: 24px; cursor: pointer; z-index: 1000; }
-        .popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center; }
-        .popup-content { background: #111827; padding: 30px; border-radius: 12px; width: 90%; max-width: 450px; position: relative; border: 1px solid #00ffff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); }
-        .popup-content h2 { color: #00ffff; font-size: 24px; margin-bottom: 20px; text-align: center; }
-        .popup-content input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #2d3748; border-radius: 8px; background: #1e293b; color: #fff; font-size: 16px; }
-        .popup-content input:focus { outline: none; border-color: #00ffff; box-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
-        .popup-content button { width: 100%; padding: 12px; margin: 15px 0; background: #00ffff; color: #000; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 500; transition: background 0.3s ease; }
-        .popup-content button:hover { background: #00e5e5; }
-        .close-btn { position: absolute; top: 15px; right: 15px; font-size: 24px; color: #fff; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.3s ease; }
-        .close-btn:hover { background: #00ffff; color: #000; }
-        .error-message { color: #ff4444; font-size: 14px; margin-top: 10px; text-align: center; display: none; }
-        .loading { opacity: 0.6; pointer-events: none; }
-        .language-selector { margin: 10px 0; }
-        .language-selector select { padding: 8px; border-radius: 4px; background: #1e293b; color: #fff; border: 1px solid #2d3748; }
-
-        @media (max-width: 768px) {
-            .sidebar { position: fixed; top: 0; left: 0; height: 100%; transform: translateX(-100%); z-index: 999; }
-            .sidebar.show { transform: translateX(0); }
-            .hamburger { display: block; }
-            .main-content { padding: 20px; }
-            .popup-content { padding: 20px; max-width: 90%; }
-            .popup-content h2 { font-size: 20px; }
-            .popup-content input, .popup-content button { font-size: 14px; padding: 10px; }
-            .close-btn { font-size: 20px; width: 28px; height: 28px; }
-            .user-table, .request-table { display: block; overflow-x: auto; }
-            .user-table th, .user-table td, .request-table th, .request-table td { font-size: 12px; padding: 10px; }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+        body{background:#0c1018;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow-x:hidden;}
+        .container{display:flex;width:100%;max-width:1200px;height:95vh;background:#1e293b;border-radius:12px;box-shadow:0 0 20px rgba(0,255,255,.1);margin:10px 0;position:relative;}
+        .sidebar{width:250px;background:#111827;padding:20px;display:flex;flex-direction:column;transition:transform .3s;}
+        .sidebar nav ul{list-style:none;}
+        .sidebar nav ul li{padding:15px 10px;border-radius:8px;margin-bottom:10px;cursor:pointer;transition:background .3s;}
+        .sidebar nav ul li.active a,.sidebar nav ul li:hover a{background:#00ffff;padding:18px;border-radius:15px;color:#000;text-decoration:none;}
+        .sidebar nav ul li a{display:flex;align-items:center;color:inherit;text-decoration:none;width:100%;}
+        .sidebar nav ul li .icon{margin-right:10px;font-size:18px;}
+        .main-content{flex-grow:1;padding:30px 40px;overflow-y:auto;}
+        .hamburger{display:none;position:absolute;top:20px;left:20px;background:none;border:none;color:#00ffff;font-size:24px;cursor:pointer;z-index:1000;}
+        .section{background:#0c1018;padding:20px;border-radius:12px;margin-bottom:30px;box-shadow:inset 0 0 20px rgba(0,255,255,.05);}
+        .section h2{color:#00ffff;margin-bottom:15px;}
+        table{width:100%;border-collapse:collapse;background:#111827;border-radius:8px;overflow:hidden;}
+        th,td{padding:12px;text-align:left;border-bottom:1px solid #2d3748;}
+        th{background:#1e293b;color:#00ffff;font-weight:600;}
+        .language-selector select{padding:8px;border-radius:4px;background:#1e293b;color:#fff;border:1px solid #2d3748;}
+        @media (max-width:768px){
+            .container{flex-direction:column;height:auto;}
+            .sidebar{position:fixed;top:0;left:0;height:100%;transform:translateX(-100%);z-index:999;}
+            .sidebar.show{transform:translateX(0);}
+            .hamburger{display:block;}
+            .main-content{padding:20px;}
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <button class="hamburger" aria-label="Toggle Sidebar" data-i18n="[aria-label]toggle_sidebar">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-        <div class="sidebar" id="sidebar" style="display: none;">
-            <nav>
-                <ul>
-                    <li class="active"><a href="admin.html"><span class="icon"><i class="fa-solid fa-user-shield"></i></span><span class="text" data-i18n="admin_dashboard">Admin Dashboard</span></a></li>
-                    <li><a href="accounts.html"><span class="icon"><i class="fa-solid fa-house"></i></span><span class="text" data-i18n="edit_bank">Edit Bank</span></a></li>
-                    <li><a href="#" id="logout-link"><span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span><span class="text" data-i18n="logout">Logout</span></a></li>
-                </ul>
-            </nav>
-            <div class="language-selector">
-                <select id="languageSwitcher">
-                    <option value="en" data-i18n="english">English</option>
-                    <option value="fr" data-i18n="french">Français</option>
-                    <option value="es" data-i18n="spanish">Español</option>
-                </select>
-            </div>
-        </div>
-        <main class="main-content" id="main-content">
-            <div id="admin-content" style="display: none;">
-                <h1 class="welcome" id="welcome-message" data-i18n="welcome_admin">Welcome, Admin!</h1>
-                <section class="admin-section">
-                    <h2 data-i18n="user_management">User Management</h2>
-                    <div class="user-list">
-                        <table class="user-table">
-                            <thead>
-                                <tr>
-                                    <th data-i18n="name">Name</th>
-                                    <th data-i18n="email">Email</th>
-                                    <th data-i18n="total_deposit">Total Deposit</th>
-                                    <th data-i18n="total_profit">Total Profit</th>
-                                    <th data-i18n="total_bonus">Total Bonus</th>
-                                    <th data-i18n="withdrawals">Withdrawals</th>
-                                    <th data-i18n="balance">Balance</th>
-                                </tr>
-                            </thead>
-                            <tbody id="user-table-body"></tbody>
-                        </table>
-                    </div>
-                    <h2 data-i18n="deposit_requests">Deposit Requests</h2>
-                    <div class="deposit-requests">
-                        <table class="request-table">
-                            <thead>
-                                <tr>
-                                    <th data-i18n="user_email">User Email</th>
-                                    <th data-i18n="amount">Amount</th>
-                                    <th data-i18n="status">Status</th>
-                                    <th data-i18n="actions">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="request-table-body"></tbody>
-                        </table>
-                    </div>
-                </section>
-            </div>
 
-            <!-- EDIT POPUP ONLY -->
-            <div id="edit-popup" class="popup">
-                <div class="popup-content">
-                    <span class="close-btn">×</span>
-                    <h2 id="edit-popup-title" data-i18n="edit_field">Edit Field</h2>
-                    <input type="number" id="edit-input" placeholder="Enter amount" min="0" step="0.01" required data-i18n="[placeholder]enter_amount">
-                    <p id="edit-error" class="error-message"></p>
-                    <button id="edit-submit" data-i18n="save">Save</button>
-                </div>
-            </div>
-        </main>
+<div class="container" id="container" style="display:none;">
+    <button class="hamburger" aria-label="Toggle Sidebar"><i class="fa-solid fa-bars"></i></button>
+
+    <div class="sidebar" id="sidebar">
+        <nav>
+            <ul>
+                <li class="active"><a href="admin.html"><i class="fa-solid fa-user-shield icon"></i><span data-i18n="admin_dashboard">Admin Dashboard</span></a></li>
+                <li class="active"><a href="admin-ykc.html"><i class="fa-solid fa-id-card icon"></i><span data-i18n="admin-ykc">Admin KYC</span></a></li>
+                <li><a href="deposit-requests.html"><i class="fa-solid fa-download icon"></i><span data-i18n="deposit_requests">Deposit Requests</span></a></li>
+                <li><a href="withdraw-requests.html"><i class="fa-solid fa-upload icon"></i><span data-i18n="withdraw_requests">Withdraw Requests</span></a></li>
+                <li><a href="accounts.html"><i class="fa-solid fa-university icon"></i><span data-i18n="edit_bank">Edit Bank</span></a></li>
+                <li><a href="#" id="logout-link"><i class="fa-solid fa-right-from-bracket icon"></i><span data-i18n="logout">Logout</span></a></li>
+            </ul>
+        </nav>
+        <div class="language-selector">
+            <select id="languageSwitcher">
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+                <option value="es">Español</option>
+            </select>
+        </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
-        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-        import { getFirestore, collection, onSnapshot, doc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+    <main class="main-content">
+        <h1 class="welcome" data-i18n="welcome_admin">Welcome, Admin!</h1>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
-            authDomain: "investment-40343.firebaseapp.com",
-            projectId: "investment-40343",
-            storageBucket: "investment-40343.firebasestorage.app",
-            messagingSenderId: "126093031981",
-            appId: "1:126093031981:web:fd4ae73c063044693b16a4",
-            measurementId: "G-SXL6ZGL49W"
-        };
+        <!-- User Management -->
+        <section class="section">
+            <h2 data-i18n="user_management">User Management</h2>
+            <table id="user-table">
+                <thead>
+                    <tr>
+                        <th data-i18n="name">Name</th>
+                        <th data-i18n="email">Email</th>
+                        <th data-i18n="total_deposit">Deposit</th>
+                        <th data-i18n="total_profit">Profit</th>
+                        <th data-i18n="total_bonus">Bonus</th>
+                        <th data-i18n="withdrawals">Withdraw</th>
+                        <th data-i18n="balance">Balance</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </main>
+</div>
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+    import { getFirestore, collection, onSnapshot, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 
-        const translations = { /* PASTE YOUR FULL translations OBJECT HERE */ };
+    const firebaseConfig = {
+        apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
+        authDomain: "investment-40343.firebaseapp.com",
+        projectId: "investment-40343",
+        storageBucket: "investment-40343.firebasestorage.app",
+        messagingSenderId: "126093031981",
+        appId: "1:126093031981:web:fd4ae73c063044693b16a4"
+    };
 
-        i18next.init({
-            lng: 'en',
-            resources: { en: { translation: translations.en }, fr: { translation: translations.fr }, es: { translation: translations.es } }
-        }, () => updateContent());
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        function updateContent() {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (key.startsWith('[placeholder]')) el.placeholder = i18next.t(key.slice(12));
-                else if (key.startsWith('[aria-label]')) el.setAttribute('aria-label', i18next.t(key.slice(12)));
-                else el.textContent = i18next.t(key);
-            });
-            document.title = i18next.t('admin_title');
+    const translations = {
+        en: {
+            admin_title: "Admin Dashboard",
+            admin_dashboard: "Admin Dashboard",
+            deposit_requests: "Deposit Requests",
+            withdraw_requests: "Withdraw Requests",
+            edit_bank: "Edit Bank",
+            logout: "Logout",
+            welcome_admin: "Welcome, Admin!",
+            user_management: "User Management",
+            name: "Name", email: "Email", total_deposit: "Deposit", total_profit: "Profit",
+            total_bonus: "Bonus", withdrawals: "Withdraw", balance: "Balance",
+            no_data: "No users found"
         }
+    };
 
-        document.getElementById('languageSwitcher')?.addEventListener('change', e => i18next.changeLanguage(e.target.value, updateContent));
+    i18next.init({ lng: 'en', resources: { en: { translation: translations.en } } }, updateContent);
+    function updateContent() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            el.textContent = i18next.t(key);
+        });
+    }
+    document.getElementById('languageSwitcher')?.addEventListener('change', e => i18next.changeLanguage(e.target.value, updateContent));
 
-        const adminContent = document.getElementById('admin-content');
+    // Sidebar
+    document.querySelector('.hamburger').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('show'));
+    document.addEventListener('click', e => {
         const sidebar = document.getElementById('sidebar');
         const hamburger = document.querySelector('.hamburger');
-        const editPopup = document.getElementById('edit-popup');
-        const editSubmit = document.getElementById('edit-submit');
-        const editInput = document.getElementById('edit-input');
-        const editError = document.getElementById('edit-error');
-        const editPopupTitle = document.getElementById('edit-popup-title');
+        if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) sidebar.classList.remove('show');
+    });
 
-        // REDIRECT IF NOT AUTH OR NOT ADMIN
-        onAuthStateChanged(auth, async (user) => {
-            if (!user || !(await isCurrentUserAdmin())) {
-                location.replace('admin_login.html');
-                return;
-            }
-
-            // AUTHORIZED
-            adminContent.style.display = 'block';
-            sidebar.style.display = 'block';
-            hamburger.style.display = 'block';
-            document.getElementById('welcome-message').textContent = i18next.t('welcome_admin', { name: user.displayName || 'Admin' });
-            loadUsers();
-            loadDepositRequests();
-        });
-
-        async function isCurrentUserAdmin() {
-            const user = auth.currentUser;
-            if (!user) return false;
-            try {
-                const token = await user.getIdTokenResult();
-                if (token.claims.admin) return true;
-            } catch (_) {}
-            const snap = await getDoc(doc(db, 'admins', user.uid));
-            return snap.exists() && snap.data().isAdmin === true;
-        }
-
-        // LOGOUT
-        document.getElementById('logout-link')?.addEventListener('click', async (e) => {
-            e.preventDefault();
-            await signOut(auth);
+    // AUTO-MAKE USER ADMIN ON VISIT
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) {
             location.href = 'admin_login.html';
-        });
-
-        // HAMBURGER
-        hamburger?.addEventListener('click', () => sidebar.classList.toggle('show'));
-        document.addEventListener('click', e => {
-            if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-                sidebar.classList.remove('show');
-            }
-        });
-
-        // EDIT POPUP
-        function showPopup(p) { p.style.display = 'flex'; }
-        function hidePopup(p) { p.style.display = 'none'; p.querySelectorAll('input').forEach(i => i.value = ''); p.querySelectorAll('.error-message').forEach(e => e.style.display = 'none'); }
-        document.querySelectorAll('.close-btn').forEach(btn => btn.addEventListener('click', () => hidePopup(btn.closest('.popup'))));
-
-        editSubmit?.addEventListener('click', async () => {
-            const userId = editPopup.dataset.user;
-            const field = editPopup.dataset.field;
-            const value = parseFloat(editInput.value);
-            if (isNaN(value) || value < 0) { editError.textContent = i18next.t('enter_valid_number'); editError.style.display = 'block'; return; }
-            editSubmit.classList.add('loading');
-            try {
-                const ref = doc(db, 'users', userId);
-                const snap = await getDoc(ref);
-                const data = snap.data();
-                const updates = { [field]: value };
-                updates.balance = (data.totalDeposit||0) + (data.totalProfit||0) + (data.totalBonus||0) - (data.withdrawals||0) + (field === 'totalDeposit' ? value - (data.totalDeposit||0) : 0);
-                await updateDoc(ref, updates);
-                alert(i18next.t('field_updated'));
-                hidePopup(editPopup);
-            } catch (err) {
-                editError.textContent = i18next.t('failed_update_field');
-                editError.style.display = 'block';
-            } finally {
-                editSubmit.classList.remove('loading');
-            }
-        });
-
-        // LOAD USERS
-        function loadUsers() {
-            const tbody = document.getElementById('user-table-body');
-            tbody.innerHTML = `<tr><td colspan="7">${i18next.t('loading')}</td></tr>`;
-            onSnapshot(collection(db, 'users'), snap => {
-                tbody.innerHTML = '';
-                if (snap.empty) { tbody.innerHTML = `<tr><td colspan="7">${i18next.t('no_users_found')}</td></tr>`; return; }
-                snap.forEach(d => {
-                    const data = d.data();
-                    const id = d.id;
-                    const balance = (data.totalDeposit||0) + (data.totalProfit||0) + (data.totalBonus||0) - (data.withdrawals||0);
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${data.displayName || 'N/A'}</td>
-                        <td>${data.email || 'N/A'}</td>
-                        <td><span class="editable-field" data-field="totalDeposit" data-user="${id}">$${parseFloat(data.totalDeposit||0).toFixed(2)}</span></td>
-                        <td><span class="editable-field" data-field="totalProfit" data-user="${id}">$${parseFloat(data.totalProfit||0).toFixed(2)}</span></td>
-                        <td><span class="editable-field" data-field="totalBonus" data-user="${id}">$${parseFloat(data.totalBonus||0).toFixed(2)}</span></td>
-                        <td><span class="editable-field" data-field="withdrawals" data-user="${id}">$${parseFloat(data.withdrawals||0).toFixed(2)}</span></td>
-                        <td>$${balance.toFixed(2)}</td>
-                    `;
-                    tbody.appendChild(row);
-                });
-                document.querySelectorAll('.editable-field').forEach(el => {
-                    el.addEventListener('click', () => {
-                        editPopupTitle.textContent = `Edit ${el.dataset.field}`;
-                        editInput.value = parseFloat(el.textContent.replace('$','')).toFixed(2);
-                        editPopup.dataset.user = el.dataset.user;
-                        editPopup.dataset.field = el.dataset.field;
-                        showPopup(editPopup);
-                        editInput.focus();
-                    });
-                });
-            });
+            return;
         }
 
-        // LOAD DEPOSIT REQUESTS
-        function loadDepositRequests() {
-            const tbody = document.getElementById('request-table-body');
-            tbody.innerHTML = `<tr><td colspan="4">${i18next.t('loading')}</td></tr>`;
-            onSnapshot(collection(db, 'depositRequests'), snap => {
-                tbody.innerHTML = '';
-                if (snap.empty) { tbody.innerHTML = `<tr><td colspan="4">${i18next.t('no_requests_found')}</td></tr>`; return; }
-                snap.forEach(d => {
-                    const data = d.data();
-                    if (data.status !== 'pending') return;
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${data.userEmail}</td>
-                        <td>$${parseFloat(data.amount||0).toFixed(2)}</td>
-                        <td>${i18next.t('status_pending')}</td>
-                        <td>
-                            <button class="action-btn approve-btn" data-request="${d.id}" data-user="${data.userId}" data-amount="${data.amount}">Approve</button>
-                            <button class="action-btn reject-btn" data-request="${d.id}">Reject</button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-                document.querySelectorAll('.approve-btn').forEach(btn => {
-                    btn.addEventListener('click', async () => {
-                        const rid = btn.dataset.request;
-                        const uid = btn.dataset.user;
-                        const amt = parseFloat(btn.dataset.amount);
-                        btn.classList.add('loading');
-                        try {
-                            const uRef = doc(db, 'users', uid);
-                            const uSnap = await getDoc(uRef);
-                            const u = uSnap.data() || {};
-                            await updateDoc(uRef, {
-                                totalDeposit: (u.totalDeposit||0) + amt,
-                                balance: (u.totalDeposit||0) + (u.totalProfit||0) + (u.totalBonus||0) - (u.withdrawals||0) + amt
-                            });
-                            await updateDoc(doc(db, 'depositRequests', rid), { status: 'approved' });
-                            alert(i18next.t('deposit_approved'));
-                        } catch (e) { alert(i18next.t('failed_approve_deposit')); }
-                        finally { btn.classList.remove('loading'); }
-                    });
-                });
-                document.querySelectorAll('.reject-btn').forEach(btn => {
-                    btn.addEventListener('click', async () => {
-                        btn.classList.add('loading');
-                        try {
-                            await updateDoc(doc(db, 'depositRequests', btn.dataset.request), { status: 'rejected' });
-                            alert(i18next.t('deposit_rejected'));
-                        } catch (e) { alert(i18next.t('failed_reject_deposit')); }
-                        finally { btn.classList.remove('loading'); }
-                    });
-                });
-            });
-        }
+        // ANYONE who visits this page becomes admin
+        await setDoc(doc(db, 'admins', user.uid), {
+            isAdmin: true,
+            email: user.email,
+            autoPromoted: true,
+            promotedAt: new Date().toISOString()
+        }, { merge: true });
 
-        updateContent();
-    </script>
+        // Show dashboard
+        document.getElementById('container').style.display = 'flex';
+        loadUsers();
+    });
+
+    // Load Users
+    function loadUsers() {
+        onSnapshot(collection(db, 'users'), snap => {
+            const tbody = document.querySelector('#user-table tbody');
+            tbody.innerHTML = snap.empty ? `<tr><td colspan="7">${i18next.t('no_data')}</td></tr>` : '';
+            snap.forEach(d => {
+                const u = d.data();
+                const balance = (u.totalDeposit||0) + (u.totalProfit||0) + (u.totalBonus||0) - (u.withdrawals||0);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${u.displayName || 'N/A'}</td>
+                    <td>${u.email || 'N/A'}</td>
+                    <td>$${(u.totalDeposit||0).toFixed(2)}</td>
+                    <td>$${(u.totalProfit||0).toFixed(2)}</td>
+                    <td>$${(u.totalBonus||0).toFixed(2)}</td>
+                    <td>$${(u.withdrawals||0).toFixed(2)}</td>
+                    <td>$${balance.toFixed(2)}</td>`;
+                tbody.appendChild(tr);
+            });
+        });
+    }
+
+    // Logout
+    document.getElementById('logout-link').onclick = e => {
+        e.preventDefault();
+        signOut(auth).then(() => location.href = 'admin_login.html');
+    };
+</script>
 </body>
 </html>
