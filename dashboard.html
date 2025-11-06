@@ -628,8 +628,13 @@
             e.preventDefault();
             signOut(auth).then(() => location.href = 'index.html');
         };
-    </script>
 
+        // Sidebar Toggle
+        document.querySelector('.hamburger').onclick = () => {
+            document.getElementById('sidebar').classList.toggle('show');
+        };
+        
+    </script>
     <!-- Smartsupp Live Chat (NOW WORKS — CSP REMOVED) -->
     <script type="text/javascript">
     var _smartsupp = _smartsupp || {};
