@@ -87,21 +87,6 @@
             margin-top: 5px;
             display: none;
         }
-        .success-message {
-            color: green;
-            font-weight: 600;
-            margin: 10px 0;
-            display: none;
-            position: relative;
-        }
-        .close-success {
-            position: absolute;
-            right: 0;
-            top: 0;
-            cursor: pointer;
-            font-size: 18px;
-            line-height: 1;
-        }
         /* Language selector styles */
         .language-selector {
             position: relative;
@@ -124,7 +109,7 @@
         }
     </style>
 </head>
- строительства<body>
+<body>
     <div class="container">
         <header>
             <div class="alert-ticker-container">
@@ -145,6 +130,7 @@
                     <a href="about.html" data-i18n="nav_about">About Us</a>
                     <a href="contact.html" data-i18n="nav_contacts">Contacts</a>
                     <a href="investment.html" data-i18n="nav_investment">Investment</a>
+                   
                 </div>
                 <div class="language-selector">
                     <select id="languageSwitcher">
@@ -153,9 +139,9 @@
                         <option value="es">Español</option>
                     </select>
                 </div>
-                <div class="ykc">
-                    <a href=""> <i class="fa-solid fa-user"></i> </a>
-                </div>
+                 <div class="ykc">
+                        <a href=""> <i class="fa-solid fa-user"></i> </a>
+                    </div>
                 <div class="nav-right-buttons auth-buttons">
                     <a href="#" class="login-btn" data-i18n="login">Login</a>
                     <a href="#" class="register-btn" data-i18n="register">Register <i class="fa-solid fa-angle-right"></i></a>
@@ -166,15 +152,14 @@
             </nav>
         </header>
 
+        <!-- CHAT -->
+        
+
         <!-- Login Popup -->
         <div id="login-popup" class="popup">
             <div class="popup-content">
                 <span class="close-btn">&times;</span>
                 <h2 data-i18n="login_title">Login</h2>
-                <div class="success-message">
-                    <span id="login-success-text"></span>
-                    <span class="close-success">&times;</span>
-                </div>
                 <input type="email" id="login-email" data-i18n="[placeholder]email" placeholder="Email" required>
                 <input type="password" id="login-password" data-i18n="[placeholder]password" placeholder="Password" required>
                 <p id="login-error" class="error-message"></p>
@@ -189,18 +174,362 @@
             <div class="popup-content">
                 <span class="close-btn">&times;</span>
                 <h2 data-i18n="create_account">Create Account</h2>
-                <div class="success-message">
-                    <span id="register-success-text"></span>
-                    <span class="close-success">&times;</span>
-                </div>
                 <input type="text" id="register-name" data-i18n="[placeholder]name" placeholder="Name" required>
                 <select id="register-country" required>
                     <option value="" disabled selected data-i18n="select_country">Select Country</option>
-                    <!-- (Country list unchanged - kept for brevity) -->
                     <option value="AF">Afghanistan</option>
                     <option value="AL">Albania</option>
                     <option value="DZ">Algeria</option>
-                    <!-- ... rest of countries ... -->
+                    <option value="AS">American Samoa</option>
+                    <option value="AD">Andorra</option>
+                    <option value="AO">Angola</option>
+                    <option value="AI">Anguilla</option>
+                    <option value="AQ">Antarctica</option>
+                    <option value="AG">Antigua and Barbuda</option>
+                    <option value="AR">Argentina</option>
+                    <option value="AM">Armenia</option>
+                    <option value="AW">Aruba</option>
+                    <option value="AU">Australia</option>
+                    <option value="AT">Austria</option>
+                    <option value="AZ">Azerbaijan</option>
+                    <option value="BS">Bahamas</option>
+                    <option value="BH">Bahrain</option>
+                    <option value="BD">Bangladesh</option>
+                    <option value="BB">Barbados</option>
+                    <option value="BY">Belarus</option>
+                    <option value="BE">Belgium</option>
+                    <option value="BZ">Belize</option>
+                    <option value="BJ">Benin</option>
+                    <option value="BM">Bermuda</option>
+                    <option value="BT">Bhutan</option>
+                    <option value="BO">Bolivia</option>
+                    <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
+                    <option value="BA">Bosnia and Herzegovina</option>
+                    <option value="BW">Botswana</option>
+                    <option value="BV">Bouvet Island</option>
+                    <option value="BR">Brazil</option>
+                    <option value="IO">British Indian Ocean Territory</option>
+                    <option value="BN">Brunei Darussalam</option>
+                    <option value="BG">Bulgaria</option>
+                    <option value="BF">Burkina Faso</option>
+                    <option value="BI">Burundi</option>
+                    <option value="CV">Cabo Verde</option>
+                    <option value="KH">Cambodia</option>
+                    <option value="CM">Cameroon</option>
+                    <option value="CA">Canada</option>
+                    <option value="KY">Cayman Islands</option>
+                    <option value="CF">Central African Republic</option>
+                    <option value="TD">Chad</option>
+                    <option value="CL">Chile</option>
+                    <option value="CN">China</option>
+                    <option value="CX">Christmas Island</option>
+                    <option value="CC">Cocos (Keeling) Islands</option>
+                    <option value="CO">Colombia</option>
+                    <option value="KM">Comoros</option>
+                    <option value="CG">Congo</option>
+                    <option value="CD">Congo, Democratic Republic of the</option>
+                    <option value="CK">Cook Islands</option>
+                    <option value="CR">Costa Rica</option>
+                    <option value="CI">Côte d'Ivoire</option>
+                    <option value="HR">Croatia</option>
+                    <option value="CU">Cuba</option>
+                    <option value="CW">Curaçao</option>
+                    <option value="CY">Cyprus</option>
+                    <option value="CZ">Czech Republic</option>
+                    <option value="DK">Denmark</option>
+                    <option value="DJ">Djibouti</option>
+                    <option value="DM">Dominica</option>
+                    <option value="DO">Dominican Republic</option>
+                    <option value="EC">Ecuador</option>
+                    <option value="EG">Egypt</option>
+                    <option value="SV">El Salvador</option>
+                    <option value="GQ">Equatorial Guinea</option>
+                    <option value="ER">Eritrea</option>
+                    <option value="EE">Estonia</option>
+                    <option value="SZ">Eswatini</option>
+                    <option value="ET">Ethiopia</option>
+                    <option value="FK">Falkland Islands (Malvinas)</option>
+                    <option value="FO">Faroe Islands</option>
+                    <option value="FJ">Fiji</option>
+                    <option value="FI">Finland</option>
+                    <option value="FR">France</option>
+                    <option value="GF">French Guiana</option>
+                    <option value="PF">French Polynesia</option>
+                    <option value="TF">French Southern Territories</option>
+                    <option value="GA">Gabon</option>
+                    <option value="GM">Gambia</option>
+                    <option value="GE">Georgia</option>
+                    <option value="DE">Germany</option>
+                    <option value="GH">Ghana</option>
+                    <option value="GI">Gibraltar</option>
+                    <option value="GR">Greece</option>
+                    <option value="GL">Greenland</option>
+                    <option value="GD">Grenada</option>
+                    <option value="GP">Guadeloupe</option>
+                    <option value="GU">Guam</option>
+                    <option value="GT">Guatemala</option>
+                    <option value="GG">Guernsey</option>
+                    <option value="GN">Guinea</option>
+                    <option value="GW">Guinea-Bissau</option>
+                    <option value="GY">Guyana</option>
+                    <option value="HT">Haiti</option>
+                    <option value="HM">Heard Island and McDonald Islands</option>
+                    <option value="VA">Holy See</option>
+                    <option value="HN">Honduras</option>
+                    <option value="HK">Hong Kong</option>
+                    <option value="HU">Hungary</option>
+                    <option value="IS">Iceland</option>
+                    <option value="IN">India</option>
+                    <option value="ID">Indonesia</option>
+                    <option value="IR">Iran</option>
+                    <option value="IQ">Iraq</option>
+                    <option value="IE">Ireland</option>
+                    <option value="IM">Isle of Man</option>
+                    <option value="IL">Israel</option>
+                    <option value="IT">Italy</option>
+                    <option value="JM">Jamaica</option>
+                    <option value="JP">Japan</option>
+                    <option value="JE">Jersey</option>
+                    <option value="JO">Jordan</option>
+                    <option value="KZ">Kazakhstan</option>
+                    <option value="KE">Kenya</option>
+                    <option value="KI">Kiribati</option>
+                    <option value="KP">Korea, Democratic People's Republic of</option>
+                    <option value="KR">Korea, Republic of</option>
+                    <option value="KW">Kuwait</option>
+                    <option value="KG">Kyrgyzstan</option>
+                    <option value="LA">Lao People's Democratic Republic</option>
+                    <option value="LV">Latvia</option>
+                    <option value="LB">Lebanon</option>
+                    <option value="LS">Lesotho</option>
+                    <option value="LR">Liberia</option>
+                    <option value="LY">Libya</option>
+                    <option value="LI">Liechtenstein</option>
+                    <option value="LT">Lithuania</option>
+                    <option value="LU">Luxembourg</option>
+                    <option value="MO">Macao</option>
+                    <option value="MG">Madagascar</option>
+                    <option value="MW">Malawi</option>
+                    <option value="MY">Malaysia</option>
+                    <option value="MV">Maldives</option>
+                    <option value="ML">Mali</option>
+                    <option value="MT">Malta</option>
+                    <option value="MH">Marshall Islands</option>
+                    <option value="MQ">Martinique</option>
+                    <option value="MR">Mauritania</option>
+                    <option value="MU">Mauritius</option>
+                    <option value="YT">Mayotte</option>
+                    <option value="MX">Mexico</option>
+                    <option value="FM">Micronesia, Federated States of</option>
+                    <option value="MD">Moldova, Republic of</option>
+                    <option value="MC">Monaco</option>
+                    <option value="MN">Mongolia</option>
+                    <option value="ME">Montenegro</option>
+                    <option value="MS">Montserrat</option>
+                    <option value="MA">Morocco</option>
+                    <option value="MZ">Mozambique</option>
+                    <option value="MM">Myanmar</option>
+                    <option value="NA">Namibia</option>
+                    <option value="NR">Nauru</option>
+                    <option value="NP">Nepal</option>
+                    <option value="NL">Netherlands</option>
+                    <option value="NC">New Caledonia</option>
+                    <option value="NZ">New Zealand</option>
+                    <option value="NI">Nicaragua</option>
+                    <option value="NE">Niger</option>
+                    <option value="NG">Nigeria</option>
+                    <option value="NU">Niue</option>
+                    <option value="NF">Norfolk Island</option>
+                    <option value="MP">Northern Mariana Islands</option>
+                    <option value="NO">Norway</option>
+                    <option value="OM">Oman</option>
+                    <option value="PK">Pakistan</option>
+                    <option value="PW">Palau</option>
+                    <option value="PS">Palestine, State of</option>
+                    <option value="PA">Panama</option>
+                    <option value="PG">Papua New Guinea</option>
+                    <option value="PY">Paraguay</option>
+                    <option value="PE">Peru</option>
+                    <option value="PH">Philippines</option>
+                    <option value="PN">Pitcairn</option>
+                    <option value="PL">Poland</option>
+                    <option value="PT">Portugal</option>
+                    <option value="PR">Puerto Rico</option>
+                    <option value="QA">Qatar</option>
+                    <option value="RE">Réunion</option>
+                    <option value="RO">Romania</option>
+                    <option value="RU">Russia</option>
+                    <option value="RW">Rwanda</option>
+                    <option value="BL">Saint Barthélemy</option>
+                    <option value="SH">Saint Helena, Ascension and Tristan da Cunha</option>
+                    <option value="KN">Saint Kitts and Nevis</option>
+                    <option value="LC">Saint Lucia</option>
+                    <option value="MF">Saint Martin (French part)</option>
+                    <option value="PM">Saint Pierre and Miquelon</option>
+                    <option value="VC">Saint Vincent and the Grenadines</option>
+                    <option value="WS">Samoa</option>
+                    <option value="SM">San Marino</option>
+                    <option value="ST">Sao Tome and Principe</option>
+                    <option value="SA">Saudi Arabia</option>
+                    <option value="SN">Senegal</option>
+                    <option value="RS">Serbia</option>
+                    <option value="SC">Seychelles</option>
+                    <option value="SL">Sierra Leone</option>
+                    <option value="SG">Singapore</option>
+                    <option value="SX">Sint Maarten (Dutch part)</option>
+                    <option value="SK">Slovakia</option>
+                    <option value="SI">Slovenia</option>
+                    <option value="SB">Solomon Islands</option>
+                    <option value="SO">Somalia</option>
+                    <option value="ZA">South Africa</option>
+                    <option value="GS">South Georgia and the South Sandwich Islands</option>
+                    <option value="SS">South Sudan</option>
+                    <option value="ES">Spain</option>
+                    <option value="LK">Sri Lanka</option>
+                    <option value="SD">Sudan</option>
+                    <option value="SR">Suriname</option>
+                    <option value="SJ">Svalbard and Jan Mayen</option>
+                    <option value="SE">Sweden</option>
+                    <option value="CH">Switzerland</option>
+                    <option value="SY">Syrian Arab Republic</option>
+                    <option value="TW">Taiwan</option>
+                    <option value="TJ">Tajikistan</option>
+                    <option value="TZ">Tanzania</option>
+                    <option value="TH">Thailand</option>
+                    <option value="TL">Timor-Leste</option>
+                    <option value="TG">Togo</option>
+                    <option value="TK">Tokelau</option>
+                    <option value="TO">Tonga</option>
+                    <option value="TT">Trinidad and Tobago</option>
+                    <option value="TN">Tunisia</option>
+                    <option value="TR">Turkey</option>
+                    <option value="TM">Turkmenistan</option>
+                    <option value="TC">Turks and Caicos Islands</option>
+                    <option value="TV">Tuvalu</option>
+                    <option value="UG">Uganda</option>
+                    <option value="UA">Ukraine</option>
+                    <option value="AE">United Arab Emirates</option>
+                    <option value="GB">United Kingdom</option>
+                    <option value="US">United States</option>
+                    <option value="UM">United States Minor Outlying Islands</option>
+                    <option value="UY">Uruguay</option>
+                    <option value="UZ">Uzbekistan</option>
+                    <option value="VU">Vanuatu</option>
+                    <option value="VE">Venezuela</option>
+                    <option value="VN">Vietnam</option>
+                    <option value="VG">Virgin Islands, British</option>
+                    <option value="VI">Virgin Islands, U.S.</option>
+                    <option value="WF">Wallis and Futuna</option>
+                    <option value="EH">Western Sahara</option>
+                    <option value="YE">Yemen</option>
+                    <option value="ZM">Zambia</option>
+                    <option value="ZW">Zimbabwe</option>
+                    <option value="NG">Nigeria</option>
+                    <option value="GH">Ghana</option>
+                    <option value="KE">Kenya</option>
+                    <option value="ZA">South Africa</option>
+                    <option value="IN">India</option>
+                    <option value="BR">Brazil</option>
+                    <option value="MX">Mexico</option>
+                    <option value="JP">Japan</option>
+                    <option value="CN">China</option>
+                    <option value="TR">Turkey</option>
+                    <option value="RU">Russia</option>
+                    <option value="FR">France</option>
+                    <option value="DE">Germany</option>
+                    <option value="ES">Spain</option>
+                    <option value="IT">Italy</option>
+                    <option value="GB">United Kingdom</option>
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="AU">Australia</option>
+                    <option value="NZ">New Zealand</option>
+                    <option value="SG">Singapore</option>
+                    <option value="AE">United Arab Emirates</option>
+                    <option value="SA">Saudi Arabia</option>
+                    <option value="EG">Egypt</option>
+                    <option value="PK">Pakistan</option>
+                    <option value="BD">Bangladesh</option>
+                    <option value="ID">Indonesia</option>
+                    <option value="PH">Philippines</option>
+                    <option value="TH">Thailand</option>
+                    <option value="VN">Vietnam</option>
+                    <option value="AR">Argentina</option>
+                    <option value="CL">Chile</option>
+                    <option value="CO">Colombia</option>
+                    <option value="PE">Peru</option>
+                    <option value="VE">Venezuela</option>
+                    <option value="PL">Poland</option>
+                    <option value="UA">Ukraine</option>
+                    <option value="CZ">Czech Republic</option>
+                    <option value="RO">Romania</option>
+                    <option value="HU">Hungary</option>
+                    <option value="SE">Sweden</option>
+                    <option value="NO">Norway</option>
+                    <option value="FI">Finland</option>
+                    <option value="DK">Denmark</option>
+                    <option value="IE">Ireland</option>
+                    <option value="PT">Portugal</option>
+                    <option value="GR">Greece</option>
+                    <option value="IL">Israel</option>
+                    <option value="KR">South Korea</option>
+                    <option value="TW">Taiwan</option>
+                    <option value="HK">Hong Kong</option>
+                    <option value="CH">Switzerland</option>
+                    <option value="AT">Austria</option>
+                    <option value="BE">Belgium</option>
+                    <option value="NL">Netherlands</option>
+                    <option value="LU">Luxembourg</option>
+                    <option value="IS">Iceland</option>
+                    <option value="MT">Malta</option>
+                    <option value="CY">Cyprus</option>
+                    <option value="SI">Slovenia</option>
+                    <option value="HR">Croatia</option>
+                    <option value="SK">Slovakia</option>
+                    <option value="BG">Bulgaria</option>
+                    <option value="RS">Serbia</option>
+                    <option value="AL">Albania</option>
+                    <option value="ME">Montenegro</option>
+                    <option value="MK">North Macedonia</option>
+                    <option value="BA">Bosnia and Herzegovina</option>
+                    <option value="LT">Lithuania</option>
+                    <option value="LV">Latvia</option>
+                    <option value="EE">Estonia</option>
+                    <option value="AZ">Azerbaijan</option>
+                    <option value="GE">Georgia</option>
+                    <option value="AM">Armenia</option>
+                    <option value="KZ">Kazakhstan</option>
+                    <option value="UZ">Uzbekistan</option>
+                    <option value="TJ">Tajikistan</option>
+                    <option value="KG">Kyrgyzstan</option>
+                    <option value="TM">Turkmenistan</option>
+                    <option value="IR">Iran</option>
+                    <option value="IQ">Iraq</option>
+                    <option value="SY">Syria</option>
+                    <option value="JO">Jordan</option>
+                    <option value="LB">Lebanon</option>
+                    <option value="KW">Kuwait</option>
+                    <option value="BH">Bahrain</option>
+                    <option value="OM">Oman</option>
+                    <option value="QA">Qatar</option>
+                    <option value="YE">Yemen</option>
+                    <option value="DZ">Algeria</option>
+                    <option value="MA">Morocco</option>
+                    <option value="TN">Tunisia</option>
+                    <option value="LY">Libya</option>
+                    <option value="SD">Sudan</option>
+                    <option value="ET">Ethiopia</option>
+                    <option value="UG">Uganda</option>
+                    <option value="TZ">Tanzania</option>
+                    <option value="ZM">Zambia</option>
+                    <option value="ZW">Zimbabwe</option>
+                    <option value="MW">Malawi</option>
+                    <option value="MZ">Mozambique</option>
+                    <option value="AO">Angola</option>
+                    <option value="CM">Cameroon</option>
+                    <option value="CI">Côte d'Ivoire</option>
+                    <option value="SN">Senegal</option>
+                    <option value="GH">Ghana</option>
                     <option value="NG">Nigeria</option>
                 </select>
                 <input type="tel" id="register-phone" data-i18n="[placeholder]phone" placeholder="Phone Number" required>
@@ -226,31 +555,263 @@
             </div>
         </div>
 
-        <!-- Rest of your page content (unchanged) -->
-        <section class="hero-section"> ... </section>
-        <!-- ... all other sections ... -->
-        
+        <section class="hero-section">
+            <main>
+                <div class="hero-image-container">
+                    <video src="hero-video.mp4" class="hero-image" autoplay muted loop playsinline></video>
+                </div>
+                <div class="sides-containers">
+                    <h1 class="hero-title" data-i18n="welcome_to" style="color: yellow;">Welcome to</h1>
+                    <h2 class="even-better" style="font-size: 3rem;">Equity Hub</h2>
+                    <p data-i18n="hero_description">
+                        Providing you with the opportunity to invest in more than 100 assets for continuous income
+                    </p>
+                    <div class="asset-icons">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bitcoin_Logo.png/640px-Bitcoin_Logo.png" alt="Bitcoin">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Ethereum_Logo.png/640px-Ethereum_Logo.png" alt="Ethereum">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Binance-coin-bnb-logo.png/640px-Binance-coin-bnb-logo.png" alt="Binance Coin">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/USDC_Logo.png/640px-USDC_Logo.png" alt="USDC">
+                        <span data-i18n="more_assets">+100 assets</span>
+                    </div>
+                </div>
+            </main>
+        </section>
+
+        <div class="hero-image-section">
+            <div class="trading-mockup">
+                <h1 style="font-size: 2rem;" data-i18n="currency_converter">Currency Converter</h1>
+                <header class="mockup-asset-info">
+                    <span class="mockup-asset-name">EUR/USD</span>
+                    <span id="current-price" class="mockup-current-price">1.09540</span>
+                </header>
+                <div id="chart-container" class="mockup-chart-container"></div>
+                <div class="mockup-controls-panel">
+                    <div class="mockup-control-group">
+                        <label for="expiry-time" data-i18n="time_label">Time</label>
+                        <select id="expiry-time">
+                            <option value="60" data-i18n="time_1min">1 Min</option>
+                            <option value="300" selected data-i18n="time_5min">5 Min</option>
+                            <option value="900" data-i18n="time_15min">15 Min</option>
+                        </select>
+                    </div>
+                    <div class="mockup-control-group">
+                        <label for="investment-amount" data-i18n="amount_label">Amount ($)</label>
+                        <input type="number" id="investment-amount" value="100" min="10">
+                    </div>
+                </div>
+                <div class="mockup-trade-buttons">
+                    <button id="call-button" class="mockup-trade-button mockup-call" data-i18n="call_button">CALL (Higher)</button>
+                    <button id="put-button" class="mockup-trade-button mockup-put" data-i18n="put_button">PUT (Lower)</button>
+                </div>
+                <div id="results-log" class="mockup-results-log">
+                    <p data-i18n="trade_log">Trade Log:</p>
+                </div>
+            </div>
+        </div>
+
+        <section class="how-it-works-section">
+            <h2 class="section-title" data-i18n="how_it_works">How It Works</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
+                    <h3 data-i18n="deposit_title">Deposit</h3>
+                    <p data-i18n="deposit_description">Open a real account and add funds. We work with more than 20 payment systems.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <h3 data-i18n="trade_title">Trade</h3>
+                    <p data-i18n="trade_description">Trade any of 100 assets and stocks. Use technical analysis and trade the news</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                    <h3 data-i18n="withdraw_title">Withdraw</h3>
+                    <p data-i18n="withdraw_description">Get funds easily to your bank card or e-wallet. We take no commission.</p>
+                </div>
+            </div>
+            <div class="trusted-container">
+                <div class="trusted-card">
+                    <div class="trusted-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h2 data-i18n="trusted_title">Trusted</h2>
+                    <p data-i18n="trusted_description">Equity Hubs is a leader in the online trading industry. We are trusted by more than 70,000,000 clients.</p>
+                    <a href="#" class="see-more-btn" data-i18n="see_more">See more</a>
+                </div>
+                <div class="platform-award-card">
+                    <div class="award-icon"><i class="fa-solid fa-trophy"></i></div>
+                    <h3 data-i18n="award_title">Best Trading Platform</h3>
+                    <p data-i18n="award_description">Award winner at China Trading Expo Shenzhen, 6-7 May 2017</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="global-platform-section">
+            <h2 class="section-title-global" data-i18n="global_platform">Global Trading Platform</h2>
+            <div class="metrics-container">
+                <div class="metric-box">
+                    <span class="metric-value">$200</span>
+                    <span class="metric-label" data-i18n="minimum_deposit">Minimum Deposit</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value">$500</span>
+                    <span class="metric-label" data-i18n="minimum_trading_amount">Minimum Trading Amount</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value">0%</span>
+                    <span class="metric-label" data-i18n="commissions">Commissions</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value">0%</span>
+                    <span class="metric-label" data-i18n="fees">Fees</span>
+                </div>
+            </div>
+            <p class="global-caption" data-i18n="global_caption">People from 48 countries trade at ExpertOption</p>
+        </section>
+
+        <section class="features-section">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-chart-bar"></i></div>
+                    <h3 data-i18n="flexible_trading_title">FLEXIBLE TRADING</h3>
+                    <p data-i18n="flexible_trading_description">Latest trends: quick and digital trading, express trades, pending trades, copy trading. Payouts of up to 218%.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <h3 data-i18n="education_title">COMPREHENSIVE EDUCATION</h3>
+                    <p data-i18n="education_description">Our help section contains tutorials, guides and various trading strategies.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                    <h3 data-i18n="instruments_title">DIVERSE TRADING INSTRUMENTS</h3>
+                    <p data-i18n="instruments_description">Assets suitable for any trader: currency, commodities, stocks</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                    <h3 data-i18n="demo_account_title">DEMO ACCOUNT</h3>
+                    <p data-i18n="demo_account_description">Try all platform benefits on the Demo account using virtual money. No investment needed, no risks involved.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-wallet"></i></div>
+                    <h3 data-i18n="deposits_withdrawals_title">EASY DEPOSITS AND WITHDRAWALS</h3>
+                    <p data-i18n="deposits_withdrawals_description">Use the most convenient payment method for hassle-free deposits and withdrawals.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-certificate"></i></div>
+                    <h3 data-i18n="loyalty_title">HIGH CUSTOMER LOYALTY</h3>
+                    <p data-i18n="loyalty_description">Trading tournaments, regular bonuses, gifts, promo codes and contests are available to any trader.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-shield-alt"></i></div>
+                    <h3 data-i18n="advantages_title">TRADING ADVANTAGES</h3>
+                    <p data-i18n="advantages_description">Use cashback and other advantages for a more comfortable trading experience with minimal risks.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-sort"></i></div>
+                    <h3 data-i18n="indicators_title">INDICATORS AND SIGNALS</h3>
+                    <p data-i18n="indicators_description">Everything you need for a top-tier trading experience including popular indicators and signals.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonial-section">
+            <h2 class="section-title" data-i18n="testimonials_title">What Our Clients Say</h2>
+            <div class="carousel-container">
+                <div class="testimonials-wrapper" id="testimonials-wrapper">
+                    <div class="testimonial-slide">
+                        <div class="quote-icon">❝</div>
+                        <p class="quote-text" data-i18n="testimonial_1">"I've tried several trading platforms, but Equity Hub's execution speed is unmatched..."</p>
+                        <div class="client-info">
+                            <span class="client-name">Alex M.</span>
+                            <span class="client-location" data-i18n="location_london">London, UK</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="quote-icon">❝</div>
+                        <p class="quote-text" data-i18n="testimonial_2">"As a beginner, the learning resources here were a game-changer..."</p>
+                        <div class="client-info">
+                            <span class="client-name">Sofia R.</span>
+                            <span class="client-location" data-i18n="location_toronto">Toronto, Canada</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="quote-icon">❝</div>
+                        <p class="quote-text" data-i18n="testimonial_3">"The low commission structure is fantastic for high-frequency trading..."</p>
+                        <div class="client-info">
+                            <span class="client-name">Chen W.</span>
+                            <span class="client-location" data-i18n="location_singapore">Singapore</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="quote-icon">❝</div>
+                        <p class="quote-text" data-i18n="testimonial_4">"Trading 'in seconds' is absolutely accurate..."</p>
+                        <div class="client-info">
+                            <span class="client-name">David H.</span>
+                            <span class="client-location" data-i18n="location_sydney">Sydney, Australia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-dots" id="carousel-dots">
+                <span class="dot active" data-slide="0"></span>
+                <span class="dot" data-slide="1"></span>
+                <span class="dot" data-slide="2"></span>
+                <span class="dot" data-slide="3"></span>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-col disclaimer-col">
+                    <div class="footer-logo">Equity Hubs</div>
+                    <p class="disclaimer-text" data-i18n="disclaimer">
+                        The Company does not provide services to citizens and/or residents of Australia, Austria, Belarus, Belgium, Bulgaria, Canada, Croatia, Republic of Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Iceland, Iran, Ireland, Israel, Italy, Latvia, Liechtenstein, Lithuania, Luxembourg, Malta, Myanmar, Netherlands, New Zealand, North Korea, Norway, Poland, Portugal, Puerto Rico, Romania, Russia, Singapore, Slovakia, Slovenia, South Sudan, Spain, Sudan, Sweden, Switzerland, UK, Ukraine, the USA, Yemen.
+                    </p>
+                </div>
+                <div class="footer-col link-group">
+                    <h4 data-i18n="home_title">Home</h4>
+                    <ul>
+                        <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+                        <li><a href="about.html" data-i18n="nav_about">About Us</a></li>
+                        <li><a href="contact.html" data-i18n="nav_contacts">Contacts</a></li>
+                        <li><a href="investment.html" data-i18n="nav_investment">Investment</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col link-group">
+                    <h4 data-i18n="contacts_title">Contacts</h4>
+                    <p>Email: contact@equityhubz.org</p>
+                    <p>Phone: +16066020676</p>
+                    <p>Address: 123 Finance St, New York, NY</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+                <p style="justify-content: center; text-align: center;" data-i18n="footer_copyright">© 2010 Equity Hubs. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
 
     <!-- Scripts -->
     <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
-        import {
-            getAuth,
-            signInWithEmailAndPassword,
-            createUserWithEmailAndPassword,
-            sendPasswordResetEmail,
-            onAuthStateChanged,
-            updateProfile
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword, 
+            sendPasswordResetEmail, 
+            onAuthStateChanged, 
+            updateProfile 
         } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-        import {
-            getFirestore,
-            doc,
-            setDoc,
-            addDoc,
-            collection,
-            serverTimestamp
+        import { 
+            getFirestore, 
+            doc, 
+            setDoc, 
+            addDoc, 
+            collection, 
+            serverTimestamp 
         } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 
         const firebaseConfig = {
@@ -296,26 +857,152 @@
                 forgot_password_title: "Forgot Password",
                 send_reset_link: "Send Reset Link",
                 back_to_login: "Back to Login",
-                login_success: "Login successful!",
-                register_success: "Registration successful!",
-                fill_all_fields: "Please fill in all required fields.",
-                passwords_mismatch: "Passwords do not match.",
-                // ... rest of translations ...
+                welcome_to: "Welcome to",
+                hero_description: "Providing you with the opportunity to invest in more than 100 assets for continuous income",
+                more_assets: "+100 assets",
+                how_it_works: "How It Works",
+                deposit_title: "Deposit",
+                deposit_description: "Open a real account and add funds. We work with more than 20 payment systems.",
+                trade_title: "Trade",
+                trade_description: "Trade any of 100 assets and stocks. Use technical analysis and trade the news",
+                withdraw_title: "Withdraw",
+                withdraw_description: "Get funds easily to your bank card or e-wallet. We take no commission.",
+                trusted_title: "Trusted",
+                trusted_description: "Equity Hubs is a leader in the online trading industry. We are trusted by more than 70,000,000 clients.",
+                see_more: "See more",
+                award_title: "Best Trading Platform",
+                award_description: "Award winner at China Trading Expo Shenzhen, 6-7 May 2017",
+                global_platform: "Global Trading Platform",
+                minimum_deposit: "Minimum Deposit",
+                minimum_trading_amount: "Minimum Trading Amount",
+                commissions: "Commissions",
+                fees: "Fees",
+                global_caption: "People from 48 countries trade at Equity Hubs",
+                flexible_trading_title: "FLEXIBLE TRADING",
+                flexible_trading_description: "Latest trends: quick and digital trading, express trades, pending trades, copy trading. Payouts of up to 218%.",
+                education_title: "COMPREHENSIVE EDUCATION",
+                education_description: "Our help section contains tutorials, guides and various trading strategies.",
+                instruments_title: "DIVERSE TRADING INSTRUMENTS",
+                instruments_description: "Assets suitable for any trader: currency, commodities, stocks",
+                demo_account_title: "DEMO ACCOUNT",
+                demo_account_description: "Try all platform benefits on the Demo account using virtual money. No investment needed, no risks involved.",
+                deposits_withdrawals_title: "EASY DEPOSITS AND WITHDRAWALS",
+                deposits_withdrawals_description: "Use the most convenient payment method for hassle-free deposits and withdrawals.",
+                loyalty_title: "HIGH CUSTOMER LOYALTY",
+                loyalty_description: "Trading tournaments, regular bonuses, gifts, promo codes and contests are available to any trader.",
+                advantages_title: "TRADING ADVANTAGES",
+                advantages_description: "Use cashback and other advantages for a more comfortable trading experience with minimal risks.",
+                indicators_title: "INDICATORS AND SIGNALS",
+                indicators_description: "Everything you need for a top-tier trading experience including popular indicators and signals.",
+                testimonials_title: "What Our Clients Say",
+                testimonial_1: "I've tried several trading platforms, but Equity Hub's execution speed is unmatched. The withdrawal process is incredibly fast, which gives me great peace of mind. Highly recommend for serious traders.",
+                location_london: "London, UK",
+                testimonial_2: "As a beginner, the learning resources here were a game-changer. The platform is intuitive, and I love having access to so many different assets. It truly simplified my entry into investing.",
+                location_toronto: "Toronto, Canada",
+                testimonial_3: "The low commission structure is fantastic for high-frequency trading. I appreciate the transparency and the live support chat, which is always responsive. A solid platform all around.",
+                location_singapore: "Singapore",
+                testimonial_4: "Trading 'in seconds' is absolutely accurate. I've seen major improvements in my returns since switching due to the precision and speed of their interface. Plus, the dark theme is easy on the eyes.",
+                location_sydney: "Sydney, Australia",
+                home_title: "Home",
+                contacts_title: "Contacts",
+                disclaimer: "The Company does not provide services to citizens and/or residents of Australia, Austria, Belarus, Belgium, Bulgaria, Canada, Croatia, Republic of Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Iceland, Iran, Ireland, Israel, Italy in Italy, Latvia, Liechtenstein, Lithuania, Luxembourg, Malta, Myanmar, Netherlands, New Zealand, North Korea, Norway, Poland, Portugal, Puerto Rico, Romania, Russia, Singapore, Slovakia, Slovenia, South Sudan, Spain, Sudan, Sweden, Switzerland, UK, Ukraine, the USA, Yemen.",
                 footer_copyright: "© 2010 Equity Hubs. All rights reserved."
             },
             fr: {
-                login_success: "Connexion réussie !",
-                register_success: "Inscription réussie !",
-                fill_all_fields: "Veuillez remplir tous les champs obligatoires.",
-                passwords_mismatch: "Les mots de passe ne correspondent pas.",
-                // ... other translations ...
+                page_title: "Equity Hubs",
+                alert: "ATTENTION AUX FRAUDES : Equityhubs ne vous demandera **JAMAIS** d'envoyer de l'argent sur un compte personnel. Déposez toujours via les canaux sécurisés de la plateforme.",
+                nav_home: "Accueil",
+                nav_about: "À propos",
+                nav_contacts: "Contacts",
+                nav_investment: "Investissement",
+                login: "Connexion",
+                register: "S'inscrire",
+                trade: "Trader",
+                login_title: "Connexion",
+                login_button: "Se connecter",
+                forgot_password: "Mot de passe oublié ?",
+                switch_to_register: "Pas de compte ? S'inscrire",
+                create_account: "Créer un compte",
+                select_country: "Sélectionner un pays",
+                name: "Nom",
+                phone: "Téléphone",
+                referral: "Code de parrainage (facultatif)",
+                email: "Email",
+                password: "Mot de passe",
+                confirm_password: "Confirmer le mot de passe",
+                register_button: "S'inscrire",
+                switch_to_login: "Déjà un compte ? Se connecter",
+                forgot_password_title: "Mot de passe oublié",
+                send_reset_link: "Envoyer le lien",
+                back_to_login: "Retour à la connexion",
+                welcome_to: "Bienvenue sur",
+                hero_description: "Investissez dans plus de 100 actifs pour un revenu continu",
+                more_assets: "+100 actifs",
+                how_it_works: "Comment ça marche",
+                deposit_title: "Dépôt",
+                deposit_description: "Ouvrez un compte réel et ajoutez des fonds. Nous acceptons +20 systèmes de paiement.",
+                trade_title: "Trader",
+                trade_description: "Tradez plus de 100 actifs. Analyse technique et trading sur actualités",
+                withdraw_title: "Retrait",
+                withdraw_description: "Retirez facilement sur carte ou portefeuille. Aucune commission.",
+                trusted_title: "Fiable",
+                trusted_description: "Equity Hubs est leader du trading en ligne. Plus de 70 000 000 clients nous font confiance.",
+                see_more: "Voir plus",
+                global_platform: "Plateforme Mondiale",
+                minimum_deposit: "Dépôt Minimum",
+                minimum_trading_amount: "Montant Minimum",
+                commissions: "Commissions",
+                fees: "Frais",
+                global_caption: "Clients de 48 pays tradent sur Equity Hubs",
+                footer_copyright: "© 2010 Equity Hubs. Tous droits réservés."
             },
             es: {
-                login_success: "¡Inicio de sesión exitoso!",
-                register_success: "¡Registro exitoso!",
-                fill_all_fields: "Por favor complete todos los campos requeridos.",
-                passwords_mismatch: "Las contraseñas no coinciden.",
-                // ... other translations ...
+                page_title: "Equity Hubs",
+                alert: "CUIDADO CON EL FRAUDE: Equityhubs **NUNCA** te pedirá enviar dinero a una cuenta personal. Deposita siempre por canales seguros de la plataforma.",
+                nav_home: "Inicio",
+                nav_about: "Nosotros",
+                nav_contacts: "Contactos",
+                nav_investment: "Inversión",
+                login: "Iniciar sesión",
+                register: "Registrarse",
+                trade: "Operar",
+                login_title: "Iniciar sesión",
+                login_button: "Entrar",
+                forgot_password: "¿Olvidaste tu contraseña?",
+                switch_to_register: "¿No tienes cuenta? Regístrate",
+                create_account: "Crear cuenta",
+                select_country: "Seleccionar país",
+                name: "Nombre",
+                phone: "Teléfono",
+                referral: "Código de referido (opcional)",
+                email: "Correo",
+                password: "Contraseña",
+                confirm_password: "Confirmar contraseña",
+                register_button: "Registrarse",
+                switch_to_login: "¿Ya tienes cuenta? Iniciar sesión",
+                forgot_password_title: "Olvidé mi contraseña",
+                send_reset_link: "Enviar enlace",
+                back_to_login: "Volver al inicio",
+                welcome_to: "Bienvenido a",
+                hero_description: "Invierte en más de 100 activos para ingresos continuos",
+                more_assets: "+100 activos",
+                how_it_works: "Cómo funciona",
+                deposit_title: "Depósito",
+                deposit_description: "Abre una cuenta real y agrega fondos. Trabajamos con +20 sistemas de pago.",
+                trade_title: "Operar",
+                trade_description: "Opera con 100 activos y acciones. Análisis técnico y noticias",
+                withdraw_title: "Retiro",
+                withdraw_description: "Retira fácilmente a tarjeta o billetera. Sin comisiones.",
+                trusted_title: "Confiable",
+                trusted_description: "Equity Hubs es líder en trading online. Más de 70M clientes confían en nosotros.",
+                see_more: "Ver más",
+                global_platform: "Plataforma Global",
+                minimum_deposit: "Depósito Mínimo",
+                minimum_trading_amount: "Monto Mínimo",
+                commissions: "Comisiones",
+                fees: "Tarifas",
+                global_caption: "Personas de 48 países operan en Equity Hubs",
+                footer_copyright: "© 2010 Equity Hubs. Todos los derechos reservados."
             }
         };
 
@@ -363,29 +1050,10 @@
                 popup.querySelectorAll('input, select').forEach(i => i.value = '');
                 const err = popup.querySelector('.error-message');
                 if (err) err.style.display = 'none';
-                const success = popup.querySelector('.success-message');
-                if (success) success.style.display = 'none';
             }
         }
 
-        function showSuccess(popup, message) {
-            const banner = popup.querySelector('.success-message');
-            const text = banner.querySelector('span[id$="-success-text"]');
-            text.textContent = message;
-            banner.style.display = 'block';
-
-            setTimeout(() => {
-                hidePopup(popup);
-            }, 1500);
-        }
-
         closeButtons.forEach(btn => btn.addEventListener('click', () => hidePopup(btn.closest('.popup'))));
-        document.querySelectorAll('.close-success').forEach(x => {
-            x.addEventListener('click', e => {
-                e.target.closest('.success-message').style.display = 'none';
-            });
-        });
-
         loginBtn?.addEventListener('click', e => { e.preventDefault(); showPopup(loginPopup); });
         registerBtn?.addEventListener('click', e => { e.preventDefault(); showPopup(registerPopup); });
         document.getElementById('forgot-password-link')?.addEventListener('click', e => { e.preventDefault(); hidePopup(loginPopup); showPopup(forgotPasswordPopup); });
@@ -393,32 +1061,15 @@
         document.getElementById('switch-to-login')?.addEventListener('click', e => { e.preventDefault(); hidePopup(registerPopup); showPopup(loginPopup); });
         document.getElementById('switch-to-login-from-forgot')?.addEventListener('click', e => { e.preventDefault(); hidePopup(forgotPasswordPopup); showPopup(loginPopup); });
 
-        // === Login Submit ===
         document.getElementById('login-submit')?.addEventListener('click', () => {
             const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value;
-
-            const errorEl = document.getElementById('login-error');
-
-            if (!email || !password) {
-                errorEl.textContent = i18next.t('fill_all_fields');
-                errorEl.style.display = 'block';
-                return;
-            }
-
-            errorEl.style.display = 'none';
-
+            if (!email || !password) return alert(i18next.t('fill_all_fields') || 'Fill all fields');
             signInWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    showSuccess(loginPopup, i18next.t('login_success'));
-                })
-                .catch(err => {
-                    errorEl.textContent = err.message;
-                    errorEl.style.display = 'block';
-                });
+                .then(() => hidePopup(loginPopup))
+                .catch(err => alert(err.message));
         });
 
-        // === Register Submit ===
         document.getElementById('register-submit')?.addEventListener('click', () => {
             const name = document.getElementById('register-name').value.trim();
             const country = document.getElementById('register-country').value;
@@ -427,57 +1078,24 @@
             const password = document.getElementById('register-password').value;
             const confirm = document.getElementById('register-confirm-password').value;
 
-            const errorEl = document.getElementById('register-error');
-
-            if (!name || !country || !phone || !email || !password) {
-                errorEl.textContent = i18next.t('fill_all_fields');
-                errorEl.style.display = 'block';
-                return;
-            }
-            if (password !== confirm) {
-                errorEl.textContent = i18next.t('passwords_mismatch');
-                errorEl.style.display = 'block';
-                return;
-            }
-
-            errorEl.style.display = 'none';
+            if (!name || !country || !phone || !email || !password) return alert(i18next.t('fill_all_fields') || 'All fields required');
+            if (password !== confirm) return alert(i18next.t('passwords_mismatch') || 'Passwords do not match');
 
             createUserWithEmailAndPassword(auth, email, password)
                 .then(cred => updateProfile(cred.user, { displayName: name }))
-                .then(() => setDoc(doc(db, 'users', auth.currentUser.uid), {
-                    name, country, phone, email,
-                    createdAt: new Date().toISOString()
-                }))
-                .then(() => {
-                    showSuccess(registerPopup, i18next.t('register_success'));
-                })
-                .catch(err => {
-                    errorEl.textContent = err.message;
-                    errorEl.style.display = 'block';
-                });
+                .then(() => setDoc(doc(db, 'users', auth.currentUser.uid), { name, country, phone, email, createdAt: new Date().toISOString() }))
+                .then(() => hidePopup(registerPopup))
+                .catch(err => alert(err.message));
         });
 
-        // === Forgot Password ===
         document.getElementById('forgot-submit')?.addEventListener('click', () => {
             const email = document.getElementById('forgot-email').value.trim();
-            const errorEl = document.getElementById('forgot-error');
-            if (!email) {
-                errorEl.textContent = 'Please enter your email';
-                errorEl.style.display = 'block';
-                return;
-            }
+            if (!email) return alert('Enter email');
             sendPasswordResetEmail(auth, email)
-                .then(() => {
-                    alert('Password reset email sent!');
-                    hidePopup(forgotPasswordPopup);
-                })
-                .catch(err => {
-                    errorEl.textContent = err.message;
-                    errorEl.style.display = 'block';
-                });
+                .then(() => alert('Reset link sent!'))
+                .catch(err => alert(err.message));
         });
 
-        // === Auth State Listener ===
         onAuthStateChanged(auth, user => {
             if (user) {
                 authButtons.style.display = 'none';
@@ -493,12 +1111,14 @@
         async function trackPageVisit() {
             if (hasTrackedVisit) return;
             hasTrackedVisit = true;
+
             let country = 'Unknown';
             try {
                 const res = await fetch('https://ipapi.co/json/');
                 const data = await res.json();
                 country = data.country_name || 'Unknown';
             } catch (e) {}
+
             const visitData = {
                 userId: auth.currentUser?.uid || null,
                 userName: auth.currentUser?.displayName || null,
@@ -509,12 +1129,14 @@
                 url: location.href,
                 timestamp: serverTimestamp()
             };
+
             try {
                 await addDoc(collection(db, 'indexPageVisits'), visitData);
             } catch (err) {
                 console.warn('Visit log failed:', err);
             }
         }
+
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', trackPageVisit);
         } else {
@@ -522,37 +1144,41 @@
         }
 
         updateContent();
-    </script>
 
-    <!-- Smartsupp Live Chat -->
-    <script type="text/javascript">
-        var _smartsupp = _smartsupp || {};
-        _smartsupp.key = '7f2bba33007b0ceba9ef214c29b3c6dcb2c1112d';
-        window.smartsupp||(function(d) {
-          var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
-          s=d.getElementsByTagName('script')[0];c=d.createElement('script');
-          c.type='text/javascript';c.charset='utf-8';c.async=true;
-          c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
-        })(document);
+        
     </script>
-    <noscript> Powered by <a href="https://www.smartsupp.com" target="_blank">Equity Hubz</a></noscript>
+    <!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '7f2bba33007b0ceba9ef214c29b3c6dcb2c1112d';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript> Powered by <a href=“https://www.smartsupp.com” target=“_blank”>Equity Hubz</a></noscript>
 
-    <script>
-        // Mobile Menu Toggle
-        const menuToggle = document.getElementById('menu-toggle');
-        const navLinks = document.getElementById('nav-links-menu');
-        if (menuToggle && navLinks) {
-            menuToggle.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
-                menuToggle.classList.toggle('open');
-            });
-            navLinks.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    navLinks.classList.remove('active');
-                    menuToggle.classList.remove('open');
-                });
-            });
-        }
-    </script>
+<script>
+    // Mobile Menu Toggle
+const menuToggle = document.getElementById('menu-toggle');
+const navLinks = document.getElementById('nav-links-menu');
+
+if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        menuToggle.classList.toggle('open');
+    });
+
+    // Close menu when a link is clicked
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            menuToggle.classList.remove('open');
+        });
+    });
+}
+</script>
 </body>
 </html>
