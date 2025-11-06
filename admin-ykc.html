@@ -4,14 +4,9 @@
   <meta charset="UTF-8">
   <title data-i18n="admin_ykc_title">Admin – YKC Verifications</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
   <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
-
   <style>
-    /* ---------- RE-USE YOUR DASHBOARD STYLES ---------- */
     *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
     body{background:#000;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow-x:hidden;}
     .container{display:flex;width:100%;max-width:1300px;height:95vh;background:#1e293b;border-radius:12px;box-shadow:0 0 20px rgba(0,255,255,.1);margin:10px 0;position:relative;}
@@ -37,8 +32,6 @@
     .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);justify-content:center;align-items:center;z-index:2000;}
     .modal.show{display:flex;}
     .modal-content{max-width:90%;max-height:90%;background:#1e293b;padding:20px;border-radius:12px;overflow:auto;}
-    #logout-link{margin-top:auto;padding:15px 10px;border-radius:8px;cursor:pointer;transition:background .3s;text-align:center;}
-    #logout-link:hover{background:#ff4444;color:#000;text-decoration:none;}
     .modal-close{position:absolute;top:15px;right:20px;background:none;border:none;color:#fff;font-size:24px;cursor:pointer;}
     @media (max-width:768px){
       .container{flex-direction:column;height:auto;}
@@ -52,33 +45,27 @@
 <body>
 
 <div class="container" id="main-container" style="display:none;">
-  <!-- Hamburger -->
-  <button class="hamburger" aria-label="Toggle Sidebar" data-i18n="[aria-label]toggle_sidebar">
-    <i class="fa-solid fa-bars"></i>
-  </button>
+  <button class="hamburger"><i class="fa-solid fa-bars"></i></button>
 
-  <!-- Sidebar (same as dashboard) -->
   <div class="sidebar" id="sidebar">
     <nav>
       <ul>
-        <li><a href="admin.html"><span class="icon"><i class="fa-solid fa-house"></i></span><span class="text" data-i18n="home">Home</span></a></li>
-        <li class="active"><a href="admin-ykc.html"><span class="icon"><i class="fa-solid fa-shield-halved"></i></span><span class="text" data-i18n="admin_ykc">Admin YKC</span></a></li>
-        <li><a href="logout.html" id="logout-link"><span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span><span class="text" data-i18n="logout">Logout</span></a></li>
+        <li><a href="admin.html"><i class="fa-solid fa-house icon"></i><span data-i18n="home">Home</span></a></li>
+        <li class="active"><a href="admin-ykc.html"><i class="fa-solid fa-shield-halved icon"></i><span data-i18n="admin_ykc">Admin YKC</span></a></li>
+        <li><a href="#" id="logout-link"><i class="fa-solid fa-right-from-bracket icon"></i><span data-i18n="logout">Logout</span></a></li>
       </ul>
     </nav>
     <div class="language-selector">
       <select id="languageSwitcher">
-        <option value="en" data-i18n="english">English</option>
-        <option value="fr" data-i18n="french">Français</option>
-        <option value="es" data-i18n="spanish">Español</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
       </select>
     </div>
   </div>
 
-  <!-- MAIN CONTENT -->
   <main class="main-content">
     <h1 class="page-title" data-i18n="admin_ykc_title">YKC Verification Management</h1>
-
     <table id="ykcTable">
       <thead>
         <tr>
@@ -98,198 +85,107 @@
   </main>
 </div>
 
-<!-- Document Preview Modal -->
 <div class="modal" id="docModal">
-  <div class="modal-content" id="modalBody">
-    <button class="modal-close" id="closeModal">×</button>
+  <div class="modal-content">
+    <button class="modal-close">×</button>
     <iframe id="docFrame" style="width:100%;height:80vh;border:none;"></iframe>
   </div>
 </div>
 
-<!-- ==================== FIREBASE + LOGIC ==================== -->
 <script type="module">
-  import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
-  import {
-    getAuth,
-    onAuthStateChanged,
-    signOut
-  } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-  import {
-    getFirestore,
-    collection,
-    query,
-    onSnapshot,
-    doc,
-    updateDoc,
-    serverTimestamp,
-    getDoc
-  } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+    import { getFirestore, collection, onSnapshot, doc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
-    authDomain: "investment-40343.firebaseapp.com",
-    projectId: "investment-40343",
-    storageBucket: "investment-40343.firebasestorage.app",
-    messagingSenderId: "126093031981",
-    appId: "1:126093031981:web:fd4ae73c063044693b16a4",
-    measurementId: "G-SXL6ZGL49W"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  /* ---------- i18next ---------- */
-  const translations = {
-    en: {
-      admin_ykc_title: "Admin – YKC Verifications",
-      admin_ykc: "Admin YKC",
-      user_id: "User ID",
-      full_name: "Full Name",
-      dob: "Date of Birth",
-      address: "Address",
-      id_type: "ID Type",
-      document: "Document",
-      status: "Status",
-      submitted_at: "Submitted",
-      actions: "Actions",
-      view: "View",
-      approve: "Approve",
-      reject: "Reject",
-      no_submissions: "No submissions yet.",
-      confirm_approve: "Approve this verification?",
-      confirm_reject: "Reject this verification?",
-      updated: "Status updated!",
-      not_admin: "Access denied. Admins only."
-    },
-    fr: { /* ... add French if needed ... */ },
-    es: { /* ... add Spanish if needed ... */ }
-  };
-  i18next.init({
-    lng: 'en',
-    resources: {en: {translation: translations.en}}
-  }, () => updateContent());
-
-  function updateContent() {
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      el.textContent = i18next.t(key);
+    const app = initializeApp({
+        apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
+        authDomain: "investment-40343.firebaseapp.com",
+        projectId: "investment-40343",
+        storageBucket: "investment-40343.firebasestorage.app",
+        messagingSenderId: "126093031981",
+        appId: "1:126093031981:web:fd4ae73c063044693b16a4"
     });
-  }
-  document.getElementById('languageSwitcher')?.addEventListener('change', e => i18next.changeLanguage(e.target.value, updateContent));
 
-  /* ---------- Sidebar ---------- */
-  const sidebar = document.getElementById('sidebar');
-  const hamburger = document.querySelector('.hamburger');
-  hamburger.addEventListener('click', () => sidebar.classList.toggle('show'));
-  document.addEventListener('click', e => {
-    if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) sidebar.classList.remove('show');
-  });
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-  /* ---------- Auth & Admin Check ---------- */
-  let currentUser = null;
-  onAuthStateChanged(auth, async user => {
-    if (!user) return location.href = 'admin_login.html';
-    currentUser = user;
+    // i18n
+    i18next.init({
+        lng: 'en',
+        resources: { en: { translation: {
+            admin_ykc_title: "Admin – YKC Verifications", admin_ykc: "Admin YKC",
+            user_id: "User ID", full_name: "Full Name", dob: "DOB", address: "Address",
+            id_type: "ID Type", document: "Document", status: "Status", submitted_at: "Submitted",
+            actions: "Actions", view: "View", approve: "Approve", reject: "Reject",
+            no_submissions: "No submissions yet."
+        }}}
+    }, () => document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = i18next.t(el.dataset.i18n)));
 
-   
-    document.getElementById('main-container').style.display = 'flex';
-    loadAllSubmissions();
-  });
-
-  /* ---------- Load All Submissions ---------- */
-  function loadAllSubmissions() {
-    const q = query(collection(db, 'ykc_verifications'));
-    onSnapshot(q, snap => {
-      const tbody = document.querySelector('#ykcTable tbody');
-      tbody.innerHTML = '';
-      if (snap.empty) {
-        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;">${i18next.t('no_submissions')}</td></tr>`;
-        return;
-      }
-
-      snap.forEach(d => {
-        const data = d.data();
-        const tr = document.createElement('tr');
-
-        const statusClass = `status-${data.status}`;
-        const statusText = data.status.charAt(0).toUpperCase() + data.status.slice(1);
-
-        const submitted = data.submittedAt?.toDate?.().toLocaleString() || '—';
-
-        tr.innerHTML = `
-          <td>${data.uid}</td>
-          <td>${data.fullName || ''}</td>
-          <td>${data.dob || ''}</td>
-          <td>${data.address || ''}</td>
-          <td>${data.idType || ''}</td>
-          <td><button class="btn view" data-url="${data.documentURL}" data-i18n="view">View</button></td>
-          <td class="${statusClass}">${statusText}</td>
-          <td>${submitted}</td>
-          <td>
-            ${data.status === 'pending' ? `
-              <button class="btn approve" data-id="${d.id}" data-i18n="approve">Approve</button>
-              <button class="btn reject" data-id="${d.id}" data-i18n="reject">Reject</button>
-            ` : '—'}
-          </td>`;
-        tbody.appendChild(tr);
-      });
-
-      // View document
-      document.querySelectorAll('.view').forEach(btn => {
-        btn.addEventListener('click', () => openModal(btn.dataset.url));
-      });
-
-      // Approve / Reject
-      document.querySelectorAll('.approve').forEach(btn => {
-        btn.addEventListener('click', () => changeStatus(btn.dataset.id, 'approved'));
-      });
-      document.querySelectorAll('.reject').forEach(btn => {
-        btn.addEventListener('click', () => changeStatus(btn.dataset.id, 'rejected'));
-      });
+    // Auth - NO ADMIN CHECK
+    onAuthStateChanged(auth, user => {
+        if (!user) return location.href = 'admin_login.html';
+        document.getElementById('main-container').style.display = 'flex';
+        loadAllSubmissions();
     });
-  }
 
-  /* ---------- Change Status ---------- */
-  async function changeStatus(docId, newStatus) {
-    const action = newStatus === 'approved' ? 'approve' : 'reject';
-    if (!confirm(i18next.t(`confirm_${action}`))) return;
+    // Load all
+    function loadAllSubmissions() {
+        onSnapshot(collection(db, 'ykc_verifications'), snap => {
+            const tbody = document.querySelector('#ykcTable tbody');
+            tbody.innerHTML = snap.empty ? `<tr><td colspan="9" style="text-align:center;">${i18next.t('no_submissions')}</td></tr>` : '';
 
-    try {
-      await updateDoc(doc(db, 'ykc_verifications', docId), {
-        status: newStatus,
-        reviewedAt: serverTimestamp(),
-        reviewedBy: currentUser.uid
-      });
-      alert(i18next.t('updated'));
-    } catch (err) {
-      console.error(err);
-      alert('Error: ' + err.message);
+            snap.forEach(d => {
+                const data = d.data();
+                const tr = document.createElement('tr');
+                const statusClass = `status-${data.status}`;
+                const statusText = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+                const submitted = data.submittedAt?.toDate?.().toLocaleString() || '—';
+
+                tr.innerHTML = `
+                    <td>${data.uid}</td>
+                    <td>${data.fullName || ''}</td>
+                    <td>${data.dob || ''}</td>
+                    <td>${data.address || ''}</td>
+                    <td>${data.idType || ''}</td>
+                    <td><button class="btn view" data-url="${data.documentURL}">View</button></td>
+                    <td class="${statusClass}">${statusText}</td>
+                    <td>${submitted}</td>
+                    <td>
+                        ${data.status === 'pending' ? `
+                            <button class="btn approve" data-id="${d.id}">Approve</button>
+                            <button class="btn reject" data-id="${d.id}">Reject</button>
+                        ` : '—'}
+                    </td>`;
+                tbody.appendChild(tr);
+            });
+
+            // Events
+            document.querySelectorAll('.view').forEach(b => b.onclick = () => openModal(b.dataset.url));
+            document.querySelectorAll('.approve').forEach(b => b.onclick = () => changeStatus(b.dataset.id, 'approved'));
+            document.querySelectorAll('.reject').forEach(b => b.onclick = () => changeStatus(b.dataset.id, 'rejected'));
+        });
     }
-  }
 
-  /* ---------- Modal for Document Preview ---------- */
-  const modal = document.getElementById('docModal');
-  const iframe = document.getElementById('docFrame');
-  const closeBtn = document.getElementById('closeModal');
+    async function changeStatus(id, status) {
+        if (!confirm(`Confirm ${status}?`)) return;
+        await updateDoc(doc(db, 'ykc_verifications', id), {
+            status,
+            reviewedAt: serverTimestamp(),
+            reviewedBy: auth.currentUser.uid
+        });
+    }
 
-  function openModal(url) {
-    iframe.src = url;
-    modal.classList.add('show');
-  }
-  closeBtn.addEventListener('click', () => {
-    modal.classList.remove('show');
-    iframe.src = '';
-  });
-  modal.addEventListener('click', e => {
-    if (e.target === modal) modal.classList.remove('show');
-  });
+    function openModal(url) {
+        document.getElementById('docFrame').src = url;
+        document.getElementById('docModal').classList.add('show');
+    }
+    document.querySelector('.modal-close').onclick = () => document.getElementById('docModal').classList.remove('show');
 
-  /* ---------- Logout ---------- */
-  document.getElementById('logout-link').addEventListener('click', e => {
-    e.preventDefault();
-    signOut(auth).then(() => location.href = 'admin_login.html');
-  });
+    // Logout
+    document.getElementById('logout-link').onclick = e => {
+        e.preventDefault();
+        signOut(auth).then(() => location.href = 'admin_login.html');
+    };
 </script>
 </body>
 </html>
