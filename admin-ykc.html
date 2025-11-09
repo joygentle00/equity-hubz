@@ -29,16 +29,22 @@
     .btn.approve{background:#00ff00;color:#000;}
     .btn.reject{background:#ff4d4d;color:#fff;}
     .btn.view{background:#00bfff;color:#fff;}
-    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);justify-content:center;align-items:center;z-index:2000;}
+    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);justify-content:center;align-items:center;z-index:2000;backdrop-filter:blur(5px);}
     .modal.show{display:flex;}
-    .modal-content{max-width:90%;max-height:90%;background:#1e293b;padding:20px;border-radius:12px;overflow:auto;}
-    .modal-close{position:absolute;top:15px;right:20px;background:none;border:none;color:#fff;font-size:24px;cursor:pointer;}
+    .modal-content{max-width:95%;max-height:95%;background:#1e293b;padding:20px;border-radius:12px;overflow:hidden;position:relative;box-shadow:0 0 30px rgba(0,255,255,.2);}
+    .modal-header{padding:16px 20px;background:#111827;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #2d3748;}
+    .modal-header h3{color:#00ffff;font-size:18px;font-weight:600;}
+    .modal-close{background:none;border:none;color:#00ffff;font-size:24px;cursor:pointer;}
+    .modal-body{padding:20px;display:flex;justify-content:center;align-items:center;min-height:500px;background:#0c1018;}
+    .loader{border:4px solid #2d3748;border-top:4px solid #00ffff;border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;}
+    @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
     @media (max-width:768px){
       .container{flex-direction:column;height:auto;}
       .sidebar{position:fixed;top:0;left:0;height:100%;transform:translateX(-100%);z-index:999;}
       .sidebar.show{transform:translateX(0);}
       .hamburger{display:block;}
       .main-content{padding:20px;}
+      .modal-content{max-width:98%;max-height:98%;}
     }
   </style>
 </head>
@@ -85,10 +91,16 @@
   </main>
 </div>
 
+<!-- MODAL FOR IMAGE/PDF VIEW -->
 <div class="modal" id="docModal">
   <div class="modal-content">
-    <button class="modal-close">×</button>
-    <iframe id="docFrame" style="width:100%;height:80vh;border:none;"></iframe>
+    <div class="modal-header">
+      <h3 data-i18n="viewing_document">Viewing ID Document</h3>
+      <button class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="modal-body">
+      <div class="loader"></div>
+    </div>
   </div>
 </div>
 
@@ -112,23 +124,25 @@
     // i18n
     i18next.init({
         lng: 'en',
-        resources: { en: { translation: {
-            admin_ykc_title: "Admin – YKC Verifications", admin_ykc: "Admin YKC",
-            user_id: "User ID", full_name: "Full Name", dob: "DOB", address: "Address",
-            id_type: "ID Type", document: "Document", status: "Status", submitted_at: "Submitted",
-            actions: "Actions", view: "View", approve: "Approve", reject: "Reject",
-            no_submissions: "No submissions yet."
-        }}}
+        resources: { 
+            en: { translation: {
+                admin_ykc_title: "Admin – YKC Verifications", admin_ykc: "Admin YKC",
+                user_id: "User ID", full_name: "Full Name", dob: "DOB", address: "Address",
+                id_type: "ID Type", document: "Document", status: "Status", submitted_at: "Submitted",
+                actions: "Actions", view: "View", approve: "Approve", reject: "Reject",
+                no_submissions: "No submissions yet.", viewing_document: "Viewing ID Document"
+            }}
+        }
     }, () => document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = i18next.t(el.dataset.i18n)));
 
-    // Auth - NO ADMIN CHECK
+    // Auth
     onAuthStateChanged(auth, user => {
         if (!user) return location.href = 'admin_login.html';
         document.getElementById('main-container').style.display = 'flex';
         loadAllSubmissions();
     });
 
-    // Load all
+    // Load all submissions
     function loadAllSubmissions() {
         onSnapshot(collection(db, 'ykc_verifications'), snap => {
             const tbody = document.querySelector('#ykcTable tbody');
@@ -137,49 +151,107 @@
             snap.forEach(d => {
                 const data = d.data();
                 const tr = document.createElement('tr');
-                const statusClass = `status-${data.status}`;
-                const statusText = data.status.charAt(0).toUpperCase() + data.status.slice(1);
-                const submitted = data.submittedAt?.toDate?.().toLocaleString() || '—';
+                const statusClass = `status-${data.status || 'pending'}`;
+                const statusText = (data.status || 'pending').charAt(0).toUpperCase() + (data.status || 'pending').slice(1);
+                const submitted = data.submittedAt?.toDate?.()?.toLocaleString() || '—';
 
                 tr.innerHTML = `
-                    <td>${data.uid}</td>
+                    <td title="${data.uid}">${data.uid.slice(0,8)}...</td>
                     <td>${data.fullName || ''}</td>
                     <td>${data.dob || ''}</td>
                     <td>${data.address || ''}</td>
                     <td>${data.idType || ''}</td>
-                    <td><button class="btn view" data-url="${data.documentURL}">View</button></td>
-                    <td class="${statusClass}">${statusText}</td>
+                    <td>
+                        ${data.documentURL ? 
+                            `<button class="btn view" data-url="${data.documentURL}" title="${i18next.t('view')}">
+                                <i class="fa-solid fa-eye"></i> View
+                             </button>` 
+                            : '—'}
+                    </td>
+                    <td class="${statusClass}"><i class="fa-solid ${data.status === 'approved' ? 'fa-check' : data.status === 'rejected' ? 'fa-xmark' : 'fa-clock'}"></i> ${statusText}</td>
                     <td>${submitted}</td>
                     <td>
                         ${data.status === 'pending' ? `
-                            <button class="btn approve" data-id="${d.id}">Approve</button>
-                            <button class="btn reject" data-id="${d.id}">Reject</button>
+                            <button class="btn approve" data-id="${d.id}" title="${i18next.t('approve')}">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                            <button class="btn reject" data-id="${d.id}" title="${i18next.t('reject')}">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
                         ` : '—'}
                     </td>`;
                 tbody.appendChild(tr);
             });
 
-            // Events
-            document.querySelectorAll('.view').forEach(b => b.onclick = () => openModal(b.dataset.url));
+            // View Document
+            document.querySelectorAll('.view').forEach(btn => {
+                btn.onclick = () => openDocumentModal(btn.dataset.url);
+            });
+
+            // Approve/Reject
             document.querySelectorAll('.approve').forEach(b => b.onclick = () => changeStatus(b.dataset.id, 'approved'));
             document.querySelectorAll('.reject').forEach(b => b.onclick = () => changeStatus(b.dataset.id, 'rejected'));
         });
     }
 
+    // Change status
     async function changeStatus(id, status) {
-        if (!confirm(`Confirm ${status}?`)) return;
-        await updateDoc(doc(db, 'ykc_verifications', id), {
-            status,
-            reviewedAt: serverTimestamp(),
-            reviewedBy: auth.currentUser.uid
-        });
+        if (!confirm(`Confirm ${status} this verification?`)) return;
+        try {
+            await updateDoc(doc(db, 'ykc_verifications', id), {
+                status,
+                reviewedAt: serverTimestamp(),
+                reviewedBy: auth.currentUser.uid
+            });
+        } catch (err) {
+            alert('Error: ' + err.message);
+        }
     }
 
-    function openModal(url) {
-        document.getElementById('docFrame').src = url;
-        document.getElementById('docModal').classList.add('show');
+    // Open Document in Modal (Image or PDF)
+    function openDocumentModal(url) {
+        const modal = document.getElementById('docModal');
+        const body = document.getElementById('modal-body');
+        body.innerHTML = '<div class="loader"></div>';
+
+        modal.classList.add('show');
+
+        const isPDF = url.toLowerCase().endsWith('.pdf');
+
+        if (isPDF) {
+            const iframe = document.createElement('iframe');
+            iframe.src = url;
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.border = 'none';
+            iframe.style.borderRadius = '8px';
+            iframe.onload = () => body.innerHTML = '';
+            iframe.onerror = () => body.innerHTML = '<p style="color:#ff4444;">Failed to load PDF</p>';
+            setTimeout(() => body.appendChild(iframe), 500);
+        } else {
+            const img = new Image();
+            img.onload = () => {
+                body.innerHTML = `<img src="${url}" style="max-width:100%;max-height:80vh;border-radius:8px;" alt="ID Document">`;
+            };
+            img.onerror = () => {
+                body.innerHTML = '<p style="color:#ff4444;">Failed to load image</p>';
+            };
+            img.src = url;
+        }
     }
-    document.querySelector('.modal-close').onclick = () => document.getElementById('docModal').classList.remove('show');
+
+    // Close Modal
+    document.querySelector('.modal-close').onclick = () => {
+        document.getElementById('docModal').classList.remove('show');
+        document.getElementById('modal-body').innerHTML = '<div class="loader"></div>';
+    };
+
+    // Close on background click
+    document.getElementById('docModal').onclick = (e) => {
+        if (e.target === document.getElementById('docModal')) {
+            document.querySelector('.modal-close').click();
+        }
+    };
 
     // Logout
     document.getElementById('logout-link').onclick = e => {

@@ -34,6 +34,36 @@
         .status-approved{color:#00ff00;}
         .status-pending{color:#ffcc00;}
         .status-rejected{color:#ff4d4d;}
+
+        /* Upload Container */
+        .upload-container {
+            background: #1e293b;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px dashed #2d3748;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: border 0.3s;
+            cursor: pointer;
+        }
+        .upload-container:hover {
+            border-color: #00ffff;
+        }
+        .upload-container input[type="file"] {
+            display: none;
+        }
+        .upload-container label {
+            color: #00ffff;
+            font-weight: 600;
+            display: block;
+            padding: 10px;
+        }
+        .upload-container .file-name {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #aaa;
+        }
+
         @media (max-width:768px){
             .container{flex-direction:column;height:auto;}
             .sidebar{position:fixed;top:0;left:0;height:100%;transform:translateX(-100%);z-index:999;}
@@ -101,10 +131,17 @@
                 <i class="fa-solid fa-check check"></i>
             </div>
 
-            <!-- Fancy file input – NO upload -->
+            <!-- REAL UPLOAD WITH CLOUDINARY -->
             <div class="field-group" id="group-document">
-                <label for="id-document" data-i18n="id_document">Upload ID Document (optional, for looks)</label>
-                <input type="file" id="id-document" accept=".jpg,.jpeg,.png,.pdf">
+                <label data-i18n="id_document">Upload ID Document</label>
+                <div class="upload-container">
+                    <input type="file" id="id-document" accept="image/*,application/pdf" required>
+                    <label for="id-document">
+                        <i class="fa-solid fa-cloud-upload-alt" style="font-size:20px;margin-right:8px;"></i>
+                        Click to Upload ID
+                    </label>
+                    <div class="file-name" id="file-name">No file chosen</div>
+                </div>
                 <i class="fa-solid fa-check check"></i>
             </div>
 
@@ -134,19 +171,32 @@
     const db   = getFirestore(app);
     let currentUser = null;
 
+    const CLOUDINARY_CLOUD_NAME = 'dredyfvhv';
+    const CLOUDINARY_UPLOAD_PRESET = 'deposit_proofs'; // SAME AS DEPOSIT
+
     /* ---------- i18n ---------- */
     i18next.init({
         lng: 'en',
-        resources: { en: { translation: {
-            ykc_verification: "YKC Verification",
-            full_name: "Full Name", date_of_birth: "Date of Birth", address: "Address",
-            id_type: "ID Type", id_document: "Upload ID Document (optional, for looks)",
-            submit_verification: "Submit Verification",
-            status_approved: "Approved! All fields verified.",
-            status_pending: "Pending admin review...",
-            status_rejected: "Rejected. Please resubmit."
-        }}}
+        resources: { 
+            en: { translation: {
+                ykc_verification: "YKC Verification",
+                full_name: "Full Name", date_of_birth: "Date of Birth", address: "Address",
+                id_type: "ID Type", id_document: "Upload ID Document",
+                submit_verification: "Submit Verification",
+                status_approved: "Approved! All fields verified.",
+                status_pending: "Pending admin review...",
+                status_rejected: "Rejected. Please resubmit.",
+                uploading: "Uploading document...",
+                upload_failed: "Upload failed. Try again."
+            }}
+        }
     }, () => document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = i18next.t(el.dataset.i18n)));
+
+    /* ---------- File Name Display ---------- */
+    document.getElementById('id-document').addEventListener('change', function() {
+        const fileName = this.files[0]?.name || 'No file chosen';
+        document.getElementById('file-name').textContent = fileName;
+    });
 
     /* ---------- Sidebar ---------- */
     document.querySelector('.hamburger').onclick = () => document.getElementById('sidebar').classList.toggle('show');
@@ -163,61 +213,92 @@
     function loadUserVerification() {
         const q = query(collection(db, 'ykc_verifications'), where('uid', '==', currentUser.uid));
         onSnapshot(q, snap => {
+            const form = document.getElementById('ykcForm');
+            const statusMsg = document.getElementById('statusMsg');
+
             if (snap.empty) {
-                document.getElementById('ykcForm').style.display = 'block';
-                document.getElementById('statusMsg').textContent = '';
+                form.style.display = 'block';
+                statusMsg.textContent = '';
                 return;
             }
 
             const data = snap.docs[0].data();
             const status = data.status || 'pending';
 
-            const msg = document.getElementById('statusMsg');
-            msg.textContent = i18next.t(`status_${status}`);
-            msg.className = `status-msg status-${status}`;
+            statusMsg.textContent = i18next.t(`status_${status}`);
+            statusMsg.className = `status-msg status-${status}`;
 
             if (status === 'approved') {
-                // Fill all fields
+                // Fill fields
                 document.getElementById('full-name').value = data.fullName || '';
                 document.getElementById('date-of-birth').value = data.dob || '';
                 document.getElementById('address').value = data.address || '';
                 document.getElementById('id-type').value = data.idType || '';
 
-                // Mark ALL fields as approved (green check + disabled)
+                // Mark all approved
                 ['name', 'dob', 'address', 'idtype', 'document'].forEach(id => {
                     const group = document.getElementById(`group-${id}`);
-                    group.classList.add('approved');
+                    if (group) group.classList.add('approved');
                 });
 
-                // Hide the form
-                document.getElementById('ykcForm').style.display = 'none';
+                form.style.display = 'none';
             } else {
-                document.getElementById('ykcForm').style.display = 'block';
+                form.style.display = 'block';
             }
         });
     }
 
-    /* ---------- Submit (NO upload) ---------- */
+    /* ---------- Submit WITH CLOUDINARY ---------- */
     document.getElementById('ykcForm').onsubmit = async e => {
         e.preventDefault();
 
+        const fileInput = document.getElementById('id-document');
+        const file = fileInput.files[0];
+        const statusMsg = document.getElementById('statusMsg');
+
+        if (!file) {
+            statusMsg.textContent = 'Please upload ID document';
+            statusMsg.style.color = '#ff4444';
+            return;
+        }
+
+        statusMsg.textContent = i18next.t('uploading');
+        statusMsg.style.color = '#00ffff';
+
         try {
+            // Upload to Cloudinary
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/upload`, {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+
+            if (!data.secure_url) throw new Error('Upload failed');
+
+            // Save to Firestore
             await addDoc(collection(db, 'ykc_verifications'), {
                 uid: currentUser.uid,
                 fullName: document.getElementById('full-name').value.trim(),
                 dob: document.getElementById('date-of-birth').value,
                 address: document.getElementById('address').value.trim(),
                 idType: document.getElementById('id-type').value,
-                documentURL: "dummy://uploaded.jpg",
+                documentURL: data.secure_url,
                 status: 'pending',
                 submittedAt: serverTimestamp()
             });
 
-            alert('Submitted! (Document is decorative only)');
+            statusMsg.textContent = 'Submitted! Awaiting approval.';
+            statusMsg.style.color = '#00ff00';
             e.target.reset();
+            document.getElementById('file-name').textContent = 'No file chosen';
         } catch (err) {
             console.error(err);
-            alert('Error: ' + err.message);
+            statusMsg.textContent = i18next.t('upload_failed');
+            statusMsg.style.color = '#ff4444';
         }
     };
 

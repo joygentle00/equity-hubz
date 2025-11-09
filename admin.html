@@ -24,8 +24,9 @@
         th,td{padding:12px;text-align:left;border-bottom:1px solid #2d3748;}
         th{background:#1e293b;color:#00ffff;font-weight:600;}
         .language-selector select{padding:8px;border-radius:4px;background:#1e293b;color:#fff;border:1px solid #2d3748;}
-        input[type=number] {background:transparent;border:none;color:#fff;width:100%;text-align:left;font-size:inherit;}
-        input[type=number]:focus {outline:2px solid #00ffff;}
+        input[type=number]{background:transparent;border:none;color:#fff;width:100%;text-align:left;font-size:inherit;}
+        input[type=number]:focus{outline:2px solid #00ffff;}
+        .balance-cell{font-weight:600;color:#00ff88;}
         @media (max-width:768px){
             .container{flex-direction:column;height:auto;}
             .sidebar{position:fixed;top:0;left:0;height:100%;transform:translateX(-100%);z-index:999;}
@@ -44,7 +45,7 @@
         <nav>
             <ul>
                 <li class="active"><a href="admin.html"><i class="fa-solid fa-user-shield icon"></i><span data-i18n="admin_dashboard">Admin Dashboard</span></a></li>
-                <li class="active"><a href="admin-ykc.html"><i class="fa-solid fa-id-card icon"></i><span data-i18n="admin-ykc">Admin KYC</span></a></li>
+                <li><a href="admin-ykc.html"><i class="fa-solid fa-id-card icon"></i><span data-i18n="admin_ykc">Admin KYC</span></a></li>
                 <li><a href="deposit-requests.html"><i class="fa-solid fa-download icon"></i><span data-i18n="deposit_requests">Deposit Requests</span></a></li>
                 <li><a href="withdraw-requests.html"><i class="fa-solid fa-upload icon"></i><span data-i18n="withdraw_requests">Withdraw Requests</span></a></li>
                 <li><a href="accounts.html"><i class="fa-solid fa-university icon"></i><span data-i18n="edit_bank">Edit Bank</span></a></li>
@@ -85,26 +86,28 @@
 </div>
 
 <script type="module">
-   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
-import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-import { getFirestore, collection, onSnapshot, doc, setDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
-    const firebaseConfig = {
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+    import { getFirestore, collection, onSnapshot, doc, setDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+
+    const app = initializeApp({
         apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
         authDomain: "investment-40343.firebaseapp.com",
         projectId: "investment-40343",
         storageBucket: "investment-40343.firebasestorage.app",
         messagingSenderId: "126093031981",
         appId: "1:126093031981:web:fd4ae73c063044693b16a4"
-    };
+    });
 
-    const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    // i18n
     const translations = {
         en: {
             admin_title: "Admin Dashboard",
             admin_dashboard: "Admin Dashboard",
+            admin_ykc: "Admin KYC",
             deposit_requests: "Deposit Requests",
             withdraw_requests: "Withdraw Requests",
             edit_bank: "Edit Bank",
@@ -117,31 +120,25 @@ import { getFirestore, collection, onSnapshot, doc, setDoc, updateDoc } from 'ht
         }
     };
 
-    i18next.init({ lng: 'en', resources: { en: { translation: translations.en } } }, updateContent);
-    function updateContent() {
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-            const key = el.getAttribute('data-i18n');
-            el.textContent = i18next.t(key);
-        });
-    }
-    document.getElementById('languageSwitcher')?.addEventListener('change', e => i18next.changeLanguage(e.target.value, updateContent));
-
-    // Sidebar
-    document.querySelector('.hamburger').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('show'));
-    document.addEventListener('click', e => {
-        const sidebar = document.getElementById('sidebar');
-        const hamburger = document.querySelector('.hamburger');
-        if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) sidebar.classList.remove('show');
+    i18next.init({ lng: 'en', resources: { en: { translation: translations.en } } }, () => {
+        document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = i18next.t(el.dataset.i18n));
     });
 
-    // AUTO-MAKE USER ADMIN ON VISIT
-    onAuthStateChanged(auth, async (user) => {
-        if (!user) {
-            location.href = 'admin_login.html';
-            return;
-        }
+    document.getElementById('languageSwitcher')?.addEventListener('change', e => {
+        i18next.changeLanguage(e.target.value, () => {
+            document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = i18next.t(el.dataset.i18n));
+        });
+    });
 
-        // ANYONE who visits this page becomes admin
+    // Sidebar toggle
+    document.querySelector('.hamburger').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('show');
+    });
+
+    // Auto-promote to admin
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) return location.href = 'admin_login.html';
+
         await setDoc(doc(db, 'admins', user.uid), {
             isAdmin: true,
             email: user.email,
@@ -149,30 +146,35 @@ import { getFirestore, collection, onSnapshot, doc, setDoc, updateDoc } from 'ht
             promotedAt: new Date().toISOString()
         }, { merge: true });
 
-        // Show dashboard
         document.getElementById('container').style.display = 'flex';
         loadUsers();
     });
 
-    // -------------------------------------------------
-    //  USER LIST + EDITABLE FIELDS
-    // -------------------------------------------------
-    async function loadUsers() {
+    // Load Users + Show Real Name
+    function loadUsers() {
         onSnapshot(collection(db, 'users'), snap => {
             const tbody = document.querySelector('#user-table tbody');
-            tbody.innerHTML = snap.empty ? `<tr><td colspan="7">${i18next.t('no_data')}</td></tr>` : '';
+            tbody.innerHTML = '';
+
+            if (snap.empty) {
+                tbody.innerHTML = `<tr><td colspan="7">${i18next.t('no_data')}</td></tr>`;
+                return;
+            }
 
             snap.forEach(d => {
                 const uid = d.id;
                 const u = d.data();
 
-                const balance = (u.totalDeposit||0) + (u.totalProfit||0) + (u.totalBonus||0) - (u.withdrawals||0);
+                // Use .name field (from your Firestore)
+                const displayName = u.name || u.email?.split('@')[0] || 'User';
+
+                const balance = (u.totalDeposit || 0) + (u.totalProfit || 0) + (u.totalBonus || 0) - (u.withdrawals || 0);
 
                 const tr = document.createElement('tr');
-                tr.dataset.uid = uid;               // keep uid for updates
+                tr.dataset.uid = uid;
 
                 tr.innerHTML = `
-                    <td>${u.displayName || 'N/A'}</td>
+                    <td><strong>${displayName}</strong></td>
                     <td>${u.email || 'N/A'}</td>
                     <td><input type="number" step="0.01" value="${(u.totalDeposit||0).toFixed(2)}" data-field="totalDeposit"></td>
                     <td><input type="number" step="0.01" value="${(u.totalProfit||0).toFixed(2)}" data-field="totalProfit"></td>
@@ -183,41 +185,40 @@ import { getFirestore, collection, onSnapshot, doc, setDoc, updateDoc } from 'ht
 
                 tbody.appendChild(tr);
 
-                // ---- attach listeners to every input ----
+                // Save on blur or Enter
                 tr.querySelectorAll('input[data-field]').forEach(inp => {
                     const field = inp.dataset.field;
-
-                    const commit = async () => {
-                        const raw = parseFloat(inp.value);
-                        const val = isNaN(raw) ? 0 : raw;
-
+                    const save = async () => {
+                        const val = parseFloat(inp.value);
+                        if (isNaN(val)) {
+                            inp.value = (u[field] || 0).toFixed(2);
+                            return;
+                        }
                         try {
                             await updateDoc(doc(db, 'users', uid), { [field]: val });
-                            // balance will be recalculated automatically by the snapshot
                         } catch (e) {
-                            console.error('Update failed', e);
-                            inp.value = (u[field] || 0).toFixed(2); // revert
+                            console.error(e);
+                            inp.value = (u[field] || 0).toFixed(2);
                         }
                     };
-
-                    inp.addEventListener('blur', commit);
-                    inp.addEventListener('keydown', e => { if (e.key === 'Enter') commit(); });
+                    inp.addEventListener('blur', save);
+                    inp.addEventListener('keydown', e => e.key === 'Enter' && save());
                 });
             });
 
-            // ---- recalc balance whenever any field changes (live) ----
-            const recalcAllBalances = () => {
-                document.querySelectorAll('#user-table tr[data-uid]').forEach(row => {
-                    const cells = row.querySelectorAll('input[data-field]');
-                    const deposit = parseFloat(cells[0].value) || 0;
-                    const profit  = parseFloat(cells[1].value) || 0;
-                    const bonus   = parseFloat(cells[2].value) || 0;
-                    const withdraw= parseFloat(cells[3].value) || 0;
+            // Live balance recalc
+            const recalcBalances = () => {
+                document.querySelectorAll('#user-table tr').forEach(row => {
+                    const inputs = row.querySelectorAll('input');
+                    const deposit = parseFloat(inputs[0].value) || 0;
+                    const profit = parseFloat(inputs[1].value) || 0;
+                    const bonus = parseFloat(inputs[2].value) || 0;
+                    const withdraw = parseFloat(inputs[3].value) || 0;
                     const bal = deposit + profit + bonus - withdraw;
                     row.querySelector('.balance-cell').textContent = `$${bal.toFixed(2)}`;
                 });
             };
-            document.querySelectorAll('input[data-field]').forEach(i => i.addEventListener('input', recalcAllBalances));
+            document.querySelectorAll('input[data-field]').forEach(i => i.addEventListener('input', recalcBalances));
         });
     }
 
