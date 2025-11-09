@@ -595,26 +595,13 @@
                     });
 
                     // Check if user is admin and add Admin Dashboard link
-                    const adminDocRef = doc(db, 'admins', userId);
-                    const adminDoc = await getDoc(adminDocRef);
-                    const isAdmin = adminDoc.exists() && adminDoc.data().isAdmin === true;
-                    if (isAdmin) {
-                        const adminDashboardLink = document.createElement('li');
-                        adminDashboardLink.innerHTML = `
-                            <a href="admin.html">
-                                <span class="icon"><i class="fa-solid fa-user-shield"></i></span>
-                                <span class="text">Admin Dashboard</span>
-                            </a>
-                        `;
-                        document.querySelector('.sidebar nav ul').prepend(adminDashboardLink);
-                    }
+                  
                 } catch (error) {
-                    console.error('Error fetching user data:', error.code, error.message);
-                    alert(`Error loading dashboard: ${error.message}`);
-                    await signOut(auth);
-                    window.location.href = 'index.html';
+                    console.error('Error fetching user data:', error);  
+                    alert('Failed to load user data. Please try again later.');
                 }
             } else {
+                // Redirect to login if not authenticated
                 window.location.href = 'index.html';
             }
         });
