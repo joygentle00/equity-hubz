@@ -27,6 +27,7 @@
         .approve{background:#00ff00;color:#000;}
         .reject{background:#ff4444;color:#fff;}
         .loading{text-align:center;color:#00ffff;padding:20px;}
+        .kyc-badge{background:#ffcc00;color:#000;padding:4px 8px;border-radius:4px;font-size:12px;}
         @media (max-width:768px){.container{flex-direction:column;height:auto;}.sidebar{position:fixed;transform:translateX(-100%);}.sidebar.show{transform:translateX(0);}.hamburger{display:block;}}
     </style>
 </head>
@@ -46,9 +47,30 @@
     </div>
 
     <main class="main-content">
-        <h1 data-i18n="withdraw_requests">Withdraw Requests</h1>
+        <h1 data-i18n="withdraw_requests">Withdraw Requests & Verification</h1>
+
+        <!-- KYC Verification Section -->
         <section class="section">
-            <div id="loading" class="loading">Loading requests...</div>
+            <h2><i class="fa-solid fa-id-card"></i> Verification Requests</h2>
+            <div id="kyc-loading" class="loading">Loading verification requests...</div>
+            <table id="kyc-table" style="display:none;">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Requested At</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <!-- Withdraw Requests Section -->
+        <section class="section">
+            <h2><i class="fa-solid fa-upload"></i> Withdraw Requests</h2>
+            <div id="loading" class="loading">Loading withdraw requests...</div>
             <table id="withdraw-table" style="display:none;">
                 <thead>
                     <tr>
@@ -68,7 +90,7 @@
 <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
     import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-    import { getFirestore, collection, onSnapshot, doc, updateDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+    import { getFirestore, collection, query, where, onSnapshot, doc, updateDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 
     const app = initializeApp({
         apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
@@ -87,7 +109,8 @@
         resources: { en: { translation: {
             withdraw_requests: "Withdraw Requests",
             user_name: "Name", amount: "Amount", method: "Method", status: "Status", actions: "Actions",
-            no_data: "No pending requests", approve_confirm: "Approve withdrawal?", reject_confirm: "Reject withdrawal?"
+            no_data: "No pending requests", approve_confirm: "Approve withdrawal?", reject_confirm: "Reject withdrawal?",
+            approve_kyc_confirm: "Approve this user's Request?", reject_kyc_confirm: "Reject this user's Request?"
         }}}
     }, () => document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = i18next.t(el.dataset.i18n)));
 
@@ -95,9 +118,74 @@
     onAuthStateChanged(auth, user => {
         if (!user) return location.href = 'admin_login.html';
         document.getElementById('container').style.display = 'flex';
+        loadKYCRequests();
         loadWithdrawals();
     });
 
+    // Load KYC Requests
+    function loadKYCRequests() {
+        const tbody = document.querySelector('#kyc-table tbody');
+        const loading = document.getElementById('kyc-loading');
+        const table = document.getElementById('kyc-table');
+
+        const q = query(collection(db, 'users'), where('verificationStatus', '==', 'pending'));
+
+        onSnapshot(q, async snap => {
+            tbody.innerHTML = '';
+            if (snap.empty) {
+                tbody.innerHTML = `<tr><td colspan="5">No pending KYC requests</td></tr>`;
+                loading.style.display = 'none';
+                table.style.display = 'table';
+                return;
+            }
+
+            for (const docSnap of snap.docs) {
+                const userData = docSnap.data();
+                const uid = docSnap.id;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${userData.name || 'N/A'}</strong></td>
+                    <td>${userData.email || 'N/A'}</td>
+                    <td>${userData.verificationRequestedAt ? new Date(userData.verificationRequestedAt.toDate()).toLocaleString() : 'N/A'}</td>
+                    <td><span class="kyc-badge">Pending Verification</span></td>
+                    <td>
+                        <button class="btn approve" data-uid="${uid}">Approve KYC</button>
+                        <button class="btn reject" data-uid="${uid}">Reject KYC</button>
+                    </td>`;
+                tbody.appendChild(tr);
+            }
+
+            loading.style.display = 'none';
+            table.style.display = 'table';
+
+            // Approve KYC
+            document.querySelectorAll('#kyc-table .approve').forEach(btn => {
+                btn.onclick = async () => {
+                    if (!confirm(i18next.t('approve_kyc_confirm'))) return;
+                    await updateDoc(doc(db, 'users', btn.dataset.uid), {
+                        verificationStatus: 'approved',
+                        verifiedAt: serverTimestamp()
+                    });
+                    alert('Request Approved!');
+                };
+            });
+
+            // Reject KYC
+            document.querySelectorAll('#kyc-table .reject').forEach(btn => {
+                btn.onclick = async () => {
+                    if (!confirm(i18next.t('reject_kyc_confirm'))) return;
+                    await updateDoc(doc(db, 'users', btn.dataset.uid), {
+                        verificationStatus: 'rejected',
+                        rejectedAt: serverTimestamp()
+                    });
+                    alert('KYC Rejected');
+                };
+            });
+        });
+    }
+
+    // Load Withdrawals (unchanged)
     async function loadWithdrawals() {
         const tbody = document.querySelector('#withdraw-table tbody');
         const loading = document.getElementById('loading');
@@ -128,7 +216,6 @@
                 const r = d.data();
                 const uid = r.uid;
 
-                // Get user name
                 let userName = 'Unknown User';
                 if (uid) {
                     const userSnap = await getDoc(doc(db, 'users', uid));
@@ -154,8 +241,8 @@
             loading.style.display = 'none';
             table.style.display = 'table';
 
-            // Approve
-            document.querySelectorAll('.approve').forEach(btn => {
+            // Approve withdrawal
+            document.querySelectorAll('#withdraw-table .approve').forEach(btn => {
                 btn.onclick = async () => {
                     if (!confirm(i18next.t('approve_confirm'))) return;
 
@@ -191,8 +278,8 @@
                 };
             });
 
-            // Reject
-            document.querySelectorAll('.reject').forEach(btn => {
+            // Reject withdrawal
+            document.querySelectorAll('#withdraw-table .reject').forEach(btn => {
                 btn.onclick = async () => {
                     if (!confirm(i18next.t('reject_confirm'))) return;
                     await updateDoc(doc(db, 'withdrawRequests', btn.dataset.id), {
