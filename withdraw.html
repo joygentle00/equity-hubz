@@ -109,6 +109,12 @@
         <div class="main-content">
             <div class="withdraw-form">
                 <h2 data-i18n="withdraw_funds">Withdraw Funds</h2>
+                <div class="info-card light-black" style="display:flex;align-items:center;gap:10px;margin-bottom:20px; background-color: #efc6ab; font-size: 1rem; color: black;">
+                    <i class="fa-solid fa-warning"></i>
+                    <p>Your Account Must be verified before you can withdraw funds. <br>Contact Admin for assistance.</p>
+                    <a id="close-btn1" href=""><i class="fa-solid fa-close" ></i></a>
+                </div>
+                
                 <form id="withdrawal-form">
                     <div class="form-group">
                         <label for="amount" data-i18n="amount">Amount (min $10)</label>
@@ -305,6 +311,7 @@
                 setTimeout(() => btn.innerHTML = '<i class="fa-regular fa-copy"></i>', 1500);
             });
         };
+        
     </script>
 
     <!-- Smartsupp Live Chat -->
