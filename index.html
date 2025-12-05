@@ -9,6 +9,57 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/jpeg" href="favicon.ico">
     <style>
+        /* Loader styles */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease-out;
+        }
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .spinner {
+            font-size: 3rem;
+            color: #007bff;
+        }
+        /* Button loading styles */
+        .popup-content button.loading {
+            position: relative;
+            color: transparent;
+            cursor: not-allowed;
+        }
+        .popup-content button.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin: -10px 0 0 -10px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        /* Error message display */
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: block;
+        }
         /* Popup styles */
         .popup {
             display: none;
@@ -51,7 +102,7 @@
             border-radius: 4px;
             cursor: pointer;
         }
-        .popup-content button:hover {
+        .popup-content button:hover:not(.loading) {
             background: #0056b3;
         }
         .close-btn {
@@ -81,12 +132,6 @@
         .popup-content a:hover {
             text-decoration: underline;
         }
-        .error-message {
-            color: red;
-            font-size: 14px;
-            margin-top: 5px;
-            display: none;
-        }
         /* Language selector styles */
         .language-selector {
             position: relative;
@@ -110,6 +155,11 @@
     </style>
 </head>
 <body>
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <i class="fa fa-spinner fa-spin spinner"></i>
+    </div>
+
     <div class="container">
         <header>
             <div class="alert-ticker-container">
@@ -172,7 +222,7 @@
                 <select id="register-country" required>
                     <option value="" disabled selected data-i18n="select_country">Select Country</option>
                     <option value="AF">Afghanistan</option>
-                    <option value="AL">Albania</option>
+                       <option value="AL">Albania</option>
                     <option value="DZ">Algeria</option>
                     <option value="AS">American Samoa</option>
                     <option value="AD">Andorra</option>
@@ -359,6 +409,7 @@
                     <option value="YE">Yemen</option>
                     <option value="ZM">Zambia</option>
                     <option value="ZW">Zimbabwe</option>
+                 
                     
                 </select>
                 <input type="tel" id="register-phone" data-i18n="[placeholder]phone" placeholder="Phone Number" required>
@@ -902,7 +953,7 @@
                 time_1min: "1 min",
                 time_5min: "5 min",
                 time_15min: "15 min",
-                disclaimer: "La compañía no proporciona servicios a ciudadanos y/o residentes de Australia, Austria, Bielorrusia, Bélgica, Bulgaria, Canadá, Croacia, República de Chipre, República Checa, Dinamarca, Estonia, Finlandia, Francia, Alemania, Grecia, Hungría, Islandia, Irán, Irlanda, Israel, Italia, Letonia, Liechtenstein, Lituania, Luxemburgo, Malta, Myanmar, Países Bajos, Nueva Zelanda, Corea del Norte, Noruega, Polonia, Portugal, Puerto Rico, Rumanía, Rusia, Singapur, Eslovaquia, Eslovenia, Sudán del Sur, España, Sudán, Suecia, Suiza, Reino Unido, Ucrania, EE.UU., Yemen."
+                disclaimer: "La compañía no proporciona servicios a ciudadanos y/o residentes de Australia, Austria, Bielorrusia, Bélgica, Bulgaria, Canadá, Croacia, República de Chipre, República Checa, Dinamarca, Estonia, Finlandia, Francia, Alemania, Grecia, Hungría, Islandia, Irán, Irlanda, Israel, Italia, Letonia, Liechtenstein, Lituania, Luxemburgo, Malta, Myanmar, Países Bajos, Nueva Zelanda, Corea del Norte, Norvège, Polonia, Portugal, Puerto Rico, Rumanía, Rusia, Singapur, Eslovaquia, Eslovenia, Sudán del Sur, España, Sudán, Suecia, Suiza, Reino Unido, Ucrania, EE.UU., Yemen."
             }
         };
 
@@ -933,7 +984,7 @@
             i18next.changeLanguage(e.target.value, updateContent);
         });
 
-        // === Popups & Auth (unchanged) ===
+        // === Popups & Auth ===
         const loginPopup = document.getElementById('login-popup');
         const registerPopup = document.getElementById('register-popup');
         const forgotPasswordPopup = document.getElementById('forgot-password-popup');
@@ -960,37 +1011,109 @@
         document.getElementById('switch-to-login')?.addEventListener('click', e => { e.preventDefault(); hidePopup(registerPopup); showPopup(loginPopup); });
         document.getElementById('switch-to-login-from-forgot')?.addEventListener('click', e => { e.preventDefault(); hidePopup(forgotPasswordPopup); showPopup(loginPopup); });
 
+        function setError(popup, message) {
+            const errEl = popup.querySelector('.error-message');
+            if (errEl) {
+                errEl.textContent = message;
+                errEl.style.display = 'block';
+            }
+        }
+
+        function clearError(popup) {
+            const errEl = popup.querySelector('.error-message');
+            if (errEl) {
+                errEl.style.display = 'none';
+            }
+        }
+
+        function setLoading(btn, loading) {
+            if (loading) {
+                btn.classList.add('loading');
+                btn.disabled = true;
+            } else {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        }
+
         document.getElementById('login-submit')?.addEventListener('click', () => {
             const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value;
-            if (!email || !password) return alert('Please fill all fields');
+            const btn = document.getElementById('login-submit');
+            if (!email || !password) {
+                setError(loginPopup, 'Please fill all fields');
+                return;
+            }
+            clearError(loginPopup);
+            setLoading(btn, true);
             signInWithEmailAndPassword(auth, email, password)
-                .then(() => hidePopup(loginPopup))
-                .catch(err => alert(err.message));
+                .then(() => {
+                    hidePopup(loginPopup);
+                })
+                .catch(err => {
+                    setError(loginPopup, err.message);
+                })
+                .finally(() => {
+                    setLoading(btn, false);
+                });
         });
 
-        document.getElementById('register-submit')?.addEventListener('click', () => {
+        document.getElementById('register-submit')?.addEventListener('click', async () => {
             const name = document.getElementById('register-name').value.trim();
             const country = document.getElementById('register-country').value;
             const phone = document.getElementById('register-phone').value.trim();
             const email = document.getElementById('register-email').value.trim();
             const password = document.getElementById('register-password').value;
             const confirm = document.getElementById('register-confirm-password').value;
-            if (!name || !country || !phone || !email || !password) return alert('All fields required');
-            if (password !== confirm) return alert('Passwords do not match');
-            createUserWithEmailAndPassword(auth, email, password)
-                .then(cred => updateProfile(cred.user, { displayName: name }))
-                .then(() => setDoc(doc(db, 'users', auth.currentUser.uid), { name, country, phone, email, createdAt: new Date().toISOString() }))
-                .then(() => hidePopup(registerPopup))
-                .catch(err => alert(err.message));
+            const btn = document.getElementById('register-submit');
+            if (!name || !country || !phone || !email || !password) {
+                setError(registerPopup, 'All fields required');
+                return;
+            }
+            if (password !== confirm) {
+                setError(registerPopup, 'Passwords do not match');
+                return;
+            }
+            clearError(registerPopup);
+            setLoading(btn, true);
+            try {
+                const cred = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(cred.user, { displayName: name });
+                await setDoc(doc(db, 'users', auth.currentUser.uid), { 
+                    name, 
+                    country, 
+                    phone, 
+                    email, 
+                    createdAt: new Date().toISOString() 
+                });
+                hidePopup(registerPopup);
+            } catch (err) {
+                setError(registerPopup, err.message);
+            } finally {
+                setLoading(btn, false);
+            }
         });
 
         document.getElementById('forgot-submit')?.addEventListener('click', () => {
             const email = document.getElementById('forgot-email').value.trim();
-            if (!email) return alert('Enter email');
+            const btn = document.getElementById('forgot-submit');
+            if (!email) {
+                setError(forgotPasswordPopup, 'Enter email');
+                return;
+            }
+            clearError(forgotPasswordPopup);
+            setLoading(btn, true);
             sendPasswordResetEmail(auth, email)
-                .then(() => alert('Reset link sent!'))
-                .catch(err => alert(err.message));
+                .then(() => {
+                    alert('Reset link sent!');
+                    hidePopup(forgotPasswordPopup);
+                })
+                .catch(err => {
+                    setError(forgotPasswordPopup, err.message);
+                })
+                .finally(() => {
+                    setLoading(btn, false);
+                });
         });
 
         onAuthStateChanged(auth, user => {
@@ -1039,7 +1162,6 @@
         }
 
         updateContent();
-       
     </script>
     <!-- Smartsupp Live Chat script -->
 <script type="text/javascript">
@@ -1070,6 +1192,21 @@ if (menuToggle && navLinks) {
     });
 }
 </script>
+<script>
+// Hide loader after page fully loads
+window.addEventListener('load', () => {
+    const loader = document.getElementById('loader');
+    if (loader) {
+        loader.classList.add('hidden');
+        setTimeout(() => {
+            loader.style.display = 'none';
+        }, 300); // Match transition duration
+    }
+});
+
+</script>
+<div class="gtranslate_wrapper"></div>
+<script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+
 </body>
 </html>
-

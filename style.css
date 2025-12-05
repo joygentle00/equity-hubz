@@ -1187,4 +1187,27 @@ footer {
     }
 }
 
-/* image background styles */
+/* Loader styles */
+.loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    display: none;
+    margin: 10px auto;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Update existing button hover to exclude disabled state */
+.popup-content button:hover:not(:disabled) {
+    background: #0056b3;
+}
+.popup-content button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
