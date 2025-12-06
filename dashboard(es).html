@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <title>User Dashboard</title>
+    <meta charset="utf-8">
+    <title>Panel de usuario</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body {
@@ -260,11 +260,11 @@
     <div class="kyc-modal" id="kycModal" style="display:none;">
         <div class="kyc-modal-content">
             <i class="fas fa-times close-icon" id="kycCloseIcon"></i>
-            <h3>KYC Verification Required</h3>
-            <p>Please verify your identity to access full features.</p>
+            <h3>Se requiere verificaci&#243;n KYC</h3>
+            <p>Verifique su identidad para acceder a todas las funciones.</p>
             <div class="btn-group">
-                <button id="goToKycBtn">Go to KYC</button>
-                <button id="kycLaterBtn" class="close-btn">Do it Later</button>
+                <button id="goToKycBtn">Ir a KYC</button>
+                <button id="kycLaterBtn" class="close-btn">H&#225;galo m&#225;s tarde</button>
             </div>
         </div>
     </div>
@@ -275,48 +275,48 @@
         <div class="sidebar" id="sidebar">
             <nav>
                 <ul>
-                    <li class="active"><a href="dashboard.html"><span class="icon"><i class="fa-solid fa-house"></i></span><span class="text">Home</span></a></li>
-                    <li><a href="ykc.html"><span class="icon"><i class="fa-solid fa-user"></i></span><span class="text">KYC</span></a></li>
-                    <li><a href="investment.html"><span class="icon"><i class="fa-solid fa-boxes-stacked"></i></span><span class="text">Packages</span></a></li>
-                    <li><a href="deposit.html"><span class="icon"><i class="fa-regular fa-credit-card"></i></span><span class="text">Deposit</span></a></li>
-                    <li><a href="withdraw.html"><span class="icon"><i class="fa-regular fa-briefcase"></i></span><span class="text">Withdraw</span></a></li>
-                    <li><a href="profile.html"><span class="icon"><i class="fa-regular fa-address-card"></i></span><span class="text">Profile</span></a></li>
+                    <li class="active"><a href="dashboard(es).html"><span class="icon"><i class="fa-solid fa-house"></i></span><span class="text">Inicio</span></a></li>
+                    <li><a href="ykc(es).html"><span class="icon"><i class="fa-solid fa-user"></i></span><span class="text">KYC</span></a></li>
+                    <li><a href="investment(es).html"><span class="icon"><i class="fa-solid fa-boxes-stacked"></i></span><span class="text">Paquetes</span></a></li>
+                    <li><a href="deposit(es).html"><span class="icon"><i class="fa-regular fa-credit-card"></i></span><span class="text">Dep&#243;sito</span></a></li>
+                    <li><a href="withdraw(es).html"><span class="icon"><i class="fa-regular fa-briefcase"></i></span><span class="text">Retirada</span></a></li>
+                    <li><a href="profile(es).html"><span class="icon"><i class="fa-regular fa-address-card"></i></span><span class="text">Perfil</span></a></li>
                     <div id="ftgug97c7g">
                    
                     </div>
-                    <li><a href="#" id="logout-link"><span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span><span class="text">Logout</span></a></li>
+                    <li><a href="#" id="logout-link"><span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span><span class="text">Cerrar sesi&#243;n</span></a></li>
                 </ul>
             </nav>
         </div>
         <main class="main-content">
             <!-- Updated welcome with dynamic name -->
-            <h1 class="welcome" id="welcome-message">Welcome, <span id="user-display-name">User</span>!</h1>
+            <h1 class="welcome" id="welcome-message">Bienvenido, <span id="user-display-name">usuario</span>!</h1>
             <section class="balance-section">
                 <div id="kycBadge" class="kyc-badge" style="display:none;"></div>
                 <div class="balance-card">
-                    <div class="balance-header">ACCOUNT BALANCE</div>
+                    <div class="balance-header">SALDO DE LA CUENTA</div>
                     <div class="balance-value" id="balance-value">$0.00</div>
-                    <div class="balance-growth"><span class="up">Up by</span> <span class="green">$0.00</span> <span>since you began investing</span></div>
+                    <div class="balance-growth"><span class="up">Aumentado en</span> <span class="green">$0.00</span> <span>desde que comenz&#243; a invertir</span></div>
                     <div class="balance-details">
                         <div class="balance-info-grid">
                             <div class="info-card light-black">
                                 <div class="info-value" id="total-deposit">$0.00</div>
-                                <div class="info-label">TOTAL DEPOSIT</div>
+                                <div class="info-label">DEP&#211;SITO TOTAL</div>
                                 <div class="info-icon"><i class="fa-solid fa-sack-dollar"></i></div>
                             </div>
                             <div class="info-card light-black">
                                 <div class="info-value" id="total-profit">$0.00</div>
-                                <div class="info-label">TOTAL PROFIT</div>
+                                <div class="info-label">BENEFICIO TOTAL</div>
                                 <div class="info-icon"><i class="fa-solid fa-seedling"></i></div>
                             </div>
                             <div class="info-card light-black">
                                 <div class="info-value" id="total-bonus">$0.00</div>
-                                <div class="info-label">TOTAL BONUS</div>
+                                <div class="info-label">BONIFICACI&#211;N TOTAL</div>
                                 <div class="info-icon"><i class="fa-solid fa-gift"></i></div>
                             </div>
                             <div class="info-card light-black">
                                 <div class="info-value" id="withdrawals">$0.00</div>
-                                <div class="info-label">WITHDRAWALS</div>
+                                <div class="info-label">RETIRADAS</div>
                                 <div class="info-icon"><i class="fa-solid fa-coins"></i></div>
                             </div>
                         </div>
@@ -325,7 +325,7 @@
                                 <div class="tradingview-widget-container">
                                     <div id="tradingview_forex_chart" class="tradingview-widget-container__widget"></div>
                                     <div class="market-widget" id="bitcoin-chart-widget">
-                                        <div class="market-widget-title">Bitcoin Candle Chart</div>
+                                        <div class="market-widget-title">Gr&#225;fico de velas de Bitcoin</div>
                                         <div class="tradingview-widget-container">
                                             <div id="tradingview_bitcoin_chart" class="tradingview-widget-container__widget"></div>
                                             <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
@@ -354,7 +354,7 @@
                                     </div>
                                     <div class="tradingview-widget-copyright">
                                         <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
-                                            <span class="blue-text">Track all markets on TradingView</span>
+                                            <span class="blue-text">Siga todos los mercados en TradingView</span>
                                         </a>
                                     </div>
                                     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
@@ -380,7 +380,7 @@
                                         });
                                     </script>
                                 </div>
-                                <div class="current-price" id="current-price">EUR/USD: Loading...</div>
+                                <div class="current-price" id="current-price">EUR/USD: Cargando...</div>
                                 <div class="time-line"></div>
                             </div>
                         </div>
@@ -389,12 +389,12 @@
             </section>
             <!-- Bitcoin News -->
             <div class="market-widget" id="bitcoin-news-widget">
-                <div class="market-widget-title">Recent Bitcoin News</div>
+                <div class="market-widget-title">Noticias recientes de Bitcoin</div>
                 <div class="custom-news">
                     <ul>
-                        <li><a href="https://www.bbc.com/news/articles/c70jw436n0yo">Bitcoin worth $14bn seized...</a> - 6 hours ago</li>
-                        <li><a href="https://news.bitcoin.com/">Bitcoin.com News</a> - N/A</li>
-                        <li><a href="https://www.youtube.com/watch?v=IldQ03YJAQM">Bitcoin slips to $113000...</a> - 15 hours ago</li>
+                        <li><a href="https://www.bbc.com/news/articles/c70jw436n0yo">Bitcoin por valor de $ 14bn incautado ...</a> - Hace 6 horas</li>
+                        <li><a href="https://news.bitcoin.com/">Noticias Bitcoin.com</a> - N/A</li>
+                        <li><a href="https://www.youtube.com/watch?v=IldQ03YJAQM">Bitcoin cae a $113000...</a> - 15 hours ago</li>
                     </ul>
                 </div>
                 <style>
@@ -425,7 +425,7 @@
                               ]
                             }
                         </script>
-                        <script src="https://s3.tradingview.com/external-embedding/embed-widget-news.js" async></script>
+                        <script src="https://s3.tradingview.com/external-embedding/embed-widget-news.js" async=""></script>
                     </div>
                 </div>
                 <div class="market-widget" id="market-news-widget">
@@ -446,7 +446,7 @@
                               ]
                             }
                         </script>
-                        <script src="https://s3.tradingview.com/external-embedding/embed-widget-news.js" async></script>
+                        <script src="https://s3.tradingview.com/external-embedding/embed-widget-news.js" async=""></script>
                     </div>
                 </div>
             </div>
@@ -555,8 +555,9 @@
       c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
     })(document);
     </script>
-    <noscript> Powered by <a href="https://www.smartsupp.com" target="_blank">Equity Hubz</a></noscript>
+    <noscript> Desarrollado por <a href="https://www.smartsupp.com" target="_blank">Equity Hubz</a></noscript>
 
     <!-- Translator Widget -->
+
 </body>
 </html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="title">Equity Hubs - Inversi&#243;n</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="investment.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
+</head>
+<body>
+    <div class="container">
+         <header>
+            <div class="alert-ticker-container">
+                <p class="ticker-content" data-i18n="alert"> ⚠️ TENGA EN CUENTA EL FRAUDE: Equityhubs **NUNCA** le pedir&#225; que env&#237;e dinero a una cuenta personal. Deposite siempre fondos a trav&#233;s de los canales seguros y verificados de la plataforma. Proteja su inversi&#243;n. </p>
+            </div>
+            <nav>
+                <div class="nav-left-mobile">
+                    <div class="menu-icon" id="menu-toggle">
+                        <div class="hamburger-lines"></div>
+                        <div class="hamburger-lines"></div>
+                        <div class="hamburger-lines"></div>
+                    </div>
+                
+                </div>
+                <div class="nav-links" id="nav-links-menu">
+                     <a href="index(es).html">Inicio</a> 
+                     <a href="about(es).html">Qui&#233;nes somos</a> 
+                     <a href="contact(es).html">Contactos</a> 
+                    <a href="investment(es).html">Inversi&#243;n</a> 
+                </div>    
+               <div class="language">
+                    <select id="language-select">
+                        <option value="index.html" selected="">INGL&#201;S</option>
+                        <option value="index(es).html">ESPA&#209;OL</option>
+                    </select>
+                </div>                
+                <div class="nav-right-buttons auth-buttons"> <a href="#" class="login-btn" data-i18n="login">Iniciar sesi&#243;n</a> <a href="#" class="register-btn" data-i18n="register">Registrarse <i class="fa-solid fa-angle-right"></i></a> </div>
+                <div class="nav-right-buttons trade-buttons" style="display: none;">
+                    <a style="background-color: rgb(4, 28, 4); text-align: white; padding: 12px; border-radius: 5px;" href="dashboard.html" class="trade-btn" data-i18n="trade">Comercio</a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Login Popup -->
+        <div id="login-popup" class="popup">
+            <div class="popup-content"> <span class="close-btn">&#215;</span> <h2 data-i18n="login_title">Iniciar sesi&#243;n</h2>&#191;<input type="email" id="login-email" data-i18n-placeholder="email_placeholder" placeholder="Correo electrónico" required="">H<input type="password" id="login-password" data-i18n-placeholder="password_placeholder" placeholder="Contraseña" required="">a<p id="login-error" class="error-message"></p> <button id="login-submit" data-i18n="login_button">Iniciar sesi&#243;n</button>o<a href="#" id="forgot-password-link" data-i18n="forgot_password">lvidado su contrase&#241;a?</a> <a href="#" id="switch-to-register" data-i18n="switch_to_register">No tiene cuenta? Registrarse</a> </div>
+        </div>
+
+        <!-- Register Popup -->
+        <div id="register-popup" class="popup">
+            <div class="popup-content"> <span class="close-btn">&#215;</span> <h2 data-i18n="create_account">Crear cuenta</h2>&#191;<input type="text" id="register-name" data-i18n-placeholder="name_placeholder" placeholder="Nombre" required="">Y<input type="email" id="register-email" data-i18n-placeholder="email_placeholder" placeholder="Correo electrónico" required="">a<input type="password" id="register-password" data-i18n-placeholder="password_placeholder" placeholder="Contraseña" required=""> <input type="password" id="register-confirm-password" data-i18n-placeholder="confirm_password_placeholder" placeholder="Confirmar Contraseña" required="">t<p id="register-error" class="error-message"></p>i<button id="register-submit" data-i18n="register_button">Registrarse</button>e<a href="#" id="switch-to-login" data-i18n="switch_to_login">ne una cuenta? Iniciar sesi&#243;n</a> </div>
+        </div>
+
+        <!-- Forgot Password Popup -->
+        <div id="forgot-password-popup" class="popup">
+            <div class="popup-content"> <span class="close-btn">&#215;</span><h2 data-i18n="forgot_password_title">Contrase&#241;a olvidada</h2><input type="email" id="forgot-email" data-i18n-placeholder="email_placeholder" placeholder="Correo electrónico" required=""><p id="forgot-error" class="error-message"></p><button id="forgot-submit" data-i18n="send_reset_link">Enviar enlace de restablecimiento</button> <a href="#" id="switch-to-login-from-forgot" data-i18n="back_to_login">Volver al inicio de sesi&#243;n</a> </div>
+        </div>
+
+        <main>
+            <section class="investment-section">
+                <h1 data-i18n="investment_opportunities">Oportunidades de inversi&#243;n</h1>
+                <p data-i18n="investment_description">Explore nuestra gama de planes de inversi&#243;n dise&#241;ados para ayudarle a aumentar su patrimonio. Elija un plan que se adapte a sus objetivos financieros y empiece a invertir hoy mismo.</p>
+                <div class="investment-plans">
+                    <div class="investment-plan">
+                        <h2 data-i18n="basic_plan">Plan B&#225;sico</h2>
+                        <p data-i18n="basic_min_investment">Inversi&#243;n m&#237;nima: 100</p>
+                        <p data-i18n="basic_return">Rentabilidad: 5% mensual</p>
+                        <p data-i18n="basic_duration">Duraci&#243;n: 6 meses 6 Meses</p>
+                        <button class="invest-btn" data-plan="Basic" data-i18n="invest_now">Invertir ahora</button>
+                    </div>
+                    <div class="investment-plan">
+                        <h2 data-i18n="standard_plan">Plan Est&#225;ndar</h2>
+                        <p data-i18n="standard_min_investment">Inversi&#243;n m&#237;nima: 500</p>
+                        <p data-i18n="standard_return">Rentabilidad: 7% Mensual</p>
+                        <p data-i18n="standard_duration">Duraci&#243;n: 12 meses 12 Meses</p>
+                        <button class="invest-btn" data-plan="Standard" data-i18n="invest_now">Invertir ahora</button>
+                    </div>
+                    <div class="investment-plan">
+                        <h2 data-i18n="premium_plan">Plan Premium</h2>
+                        <p data-i18n="premium_min_investment">Inversi&#243;n m&#237;nima: $1000</p>
+                        <p data-i18n="premium_return">Rentabilidad: 10% Mensual</p>
+                        <p data-i18n="premium_duration">Duraci&#243;n: 24 meses</p>
+                        <button class="invest-btn" data-plan="Premium" data-i18n="invest_now">Invertir ahora</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-col disclaimer-col">
+                    <div class="footer-logo"> Equity Hubs </div>
+                    <p class="disclaimer-text" data-i18n="disclaimer"> La empresa no presta servicios a ciudadanos y/o residentes de Alemania, Australia, Austria, Bielorrusia, B&#233;lgica, Bulgaria, Canad&#225;, Corea del Norte, Croacia, Dinamarca, Eslovaquia, Eslovenia, Espa&#241;a, Estados Unidos, Estonia, Finlandia, Francia, Grecia, Hungr&#237;a, Ir&#225;n, Irlanda, Islandia, Israel, Italia, Letonia, Liechtenstein, Lituania, Luxemburgo, Malta, Myanmar, Noruega, Nueva Zelanda, Pa&#237;ses Bajos, Polonia, Portugal, Puerto Rico, Reino Unido, Rep&#250;blica Checa, Rep&#250;blica de Chipre, Ruman&#237;a, Rusia, Singapur, Sud&#225;n del Sur, Suecia, Suiza, Ucrania y Yemen. </p>
+                </div>
+                <div class="footer-col link-group">
+                    <h4 data-i18n="home">Inicio</h4>
+                    <ul>
+                        <li><a href="index(es).html">Inicio</a></li>
+                        <li><a href="about(es).html">La Empresa</a></li>
+                        <li><a href="contact(es).html">Contactos</a></li>
+                        <li><a href="investment(es).html">Inversi&#243;n</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col link-group">
+                    <h4 data-i18n="contacts">Contactos</h4>
+                    <p data-i18n="email">Correo electr&#243;nico: contact@equityhubz.org</p>
+                    <p data-i18n="phone">Tel&#233;fono: +16066020676</p>
+                    <p data-i18n="address">Direcci&#243;n: 123 Finance St, Nueva York, NY</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+                <p data-i18n="copyright">2010 Equity Hubs. Todos los derechos reservados.</p>
+            </div>
+        </footer>
+    </div>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, updateProfile } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
+            authDomain: "investment-40343.firebaseapp.com",
+            projectId: "investment-40343",
+            storageBucket: "investment-40343.firebasestorage.app",
+            messagingSenderId: "126093031981",
+            appId: "1:126093031981:web:fd4ae73c063044693b16a4",
+            measurementId: "G-SXL6ZGL49W"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const loginPopup = document.getElementById('login-popup');
+        const registerPopup = document.getElementById('register-popup');
+        const forgotPasswordPopup = document.getElementById('forgot-password-popup');
+        const loginBtn = document.querySelector('.login-btn');
+        const registerBtn = document.querySelector('.register-btn');
+        const authButtons = document.querySelector('.auth-buttons');
+        const tradeButtons = document.querySelector('.trade-buttons');
+        const closeButtons = document.querySelectorAll('.close-btn');
+        const switchToRegister = document.getElementById('switch-to-register');
+        const switchToLogin = document.getElementById('switch-to-login');
+        const forgotPasswordLink = document.getElementById('forgot-password-link');
+        const switchToLoginFromForgot = document.getElementById('switch-to-login-from-forgot');
+        const loginError = document.getElementById('login-error');
+        const registerError = document.getElementById('register-error');
+        const forgotError = document.getElementById('forgot-error');
+        const languageSwitcher = document.getElementById('languageSwitcher');
+
+
+        async function translateText(text, targetLang) {
+            try {
+                const response = await fetch('https://libretranslate.de/translate', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        q: text,
+                        source: 'auto',
+                        target: targetLang,
+                        format: 'text'
+                    }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await response.json();
+                return data.translatedText || text;
+            } catch (error) {
+                console.error('Translation failed:', error);
+                return text;
+            }
+        }
+
+        async function updateContent() {
+            document.querySelectorAll('[data-i18n]').forEach(async el => {
+                const key = el.getAttribute('data-i18n');
+                let text = i18next.t(key);
+                if (text === key) {
+                    text = await translateText(key, currentLang);
+                }
+                el.textContent = text;
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(async el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                let text = i18next.t(key);
+                if (text === key) {
+                    text = await translateText(key, currentLang);
+                }
+                el.placeholder = text;
+            });
+            document.title = i18next.t('title');
+
+            const errorElements = [loginError, registerError, forgotError];
+            errorElements.forEach(async el => {
+                if (el.textContent && el.style.display !== 'none') {
+                    el.textContent = await translateText(el.textContent, currentLang);
+                }
+            });
+        }
+
+        languageSwitcher.addEventListener('change', async (e) => {
+            currentLang = e.target.value;
+            i18next.changeLanguage(currentLang, updateContent);
+        });
+
+        function showPopup(popup) {
+            popup.style.display = 'flex';
+        }
+
+        function hidePopup(popup) {
+            popup.style.display = 'none';
+            popup.querySelectorAll('input').forEach(input => input.value = '');
+            popup.querySelector('.error-message').style.display = 'none';
+        }
+
+        loginBtn.addEventListener('click', () => showPopup(loginPopup));
+        registerBtn.addEventListener('click', () => showPopup(registerPopup));
+        forgotPasswordLink.addEventListener('click', () => {
+            hidePopup(loginPopup);
+            showPopup(forgotPasswordPopup);
+        });
+        switchToRegister.addEventListener('click', () => {
+            hidePopup(loginPopup);
+            showPopup(registerPopup);
+        });
+        switchToLogin.addEventListener('click', () => {
+            hidePopup(registerPopup);
+            showPopup(loginPopup);
+        });
+        switchToLoginFromForgot.addEventListener('click', () => {
+            hidePopup(forgotPasswordPopup);
+            showPopup(loginPopup);
+        });
+
+        closeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                hidePopup(btn.closest('.popup'));
+            });
+        });
+
+        document.getElementById('login-submit').addEventListener('click', async () => {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                hidePopup(loginPopup);
+                window.location.href = 'deposit.html';
+            } catch (error) {
+                loginError.textContent = await translateText(error.message, currentLang);
+                loginError.style.display = 'block';
+            }
+        });
+
+        document.getElementById('register-submit').addEventListener('click', async () => {
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+
+            if (!name) {
+                registerError.textContent = await translateText('Name is required', currentLang);
+                registerError.style.display = 'block';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                registerError.textContent = await translateText('Passwords do not match', currentLang);
+                registerError.style.display = 'block';
+                return;
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(userCredential.user, { displayName: name });
+                hidePopup(registerPopup);
+                window.location.href = 'deposit.html';
+            } catch (error) {
+                registerError.textContent = await translateText(error.message, currentLang);
+                registerError.style.display = 'block';
+            }
+        });
+
+        document.getElementById('forgot-submit').addEventListener('click', async () => {
+            const email = document.getElementById('forgot-email').value;
+            try {
+                await sendPasswordResetEmail(auth, email);
+                forgotError.textContent = await translateText('Password reset email sent!', currentLang);
+                forgotError.style.color = 'green';
+                forgotError.style.display = 'block';
+            } catch (error) {
+                forgotError.textContent = await translateText(error.message, currentLang);
+                forgotError.style.color = 'red';
+                forgotError.style.display = 'block';
+            }
+        });
+
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                authButtons.style.display = 'none';
+                tradeButtons.style.display = 'block';
+            } else {
+                authButtons.style.display = 'block';
+                tradeButtons.style.display = 'none';
+            }
+
+            document.querySelectorAll('.invest-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (user) {
+                        window.location.href = 'deposit.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                });
+            });
+        });
+
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links-menu');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
+    </script>
+    <!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '7f2bba33007b0ceba9ef214c29b3c6dcb2c1112d';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript> Desarrollado por <a href="“https://www.smartsupp.com”" target="“_blank”">Smartsupp</a></noscript>
+
+</body>
+</html>

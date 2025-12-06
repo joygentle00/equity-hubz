@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <title>Deposit Funds</title>
+    <meta charset="utf-8">
+    <title>Depositar fondos</title>
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self';
         script-src 'self' https://s3.tradingview.com https://www.tradingview.com https://www.gstatic.com https://apis.google.com https://www.smartsuppchat.com 'unsafe-inline';
@@ -13,7 +13,7 @@
         img-src 'self' data: https://*.firebaseio.com https://res.cloudinary.com;
     ">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
         body{background:#0c1018;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow-x:hidden;}
@@ -145,27 +145,27 @@
         <div class="sidebar" id="sidebar">
             <nav>
                 <ul>
-                    <li><a href="dashboard.html"><span class="icon"><i class="fa-solid fa-house"></i></span><span class="text">Home</span></a></li>
-                    <li><a href="investment.html"><span class="icon"><i class="fa-solid fa-boxes-stacked"></i></span><span class="text">Packages</span></a></li>
-                    <li class="active"><a href="deposit.html"><span class="icon"><i class="fa-regular fa-credit-card"></i></span><span class="text">Deposit</span></a></li>
-                    <li><a href="withdraw.html"><span class="icon"><i class="fa-regular fa-briefcase"></i></span><span class="text">Withdraw</span></a></li>
-                    <li><a href="profile.html"><span class="icon"><i class="fa-regular fa-address-card"></i></span><span class="text">Profile</span></a></li>
-                    <li><a href="#" id="logout-link"><span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span><span class="text">Logout</span></a></li>
+                    <li><a href="dashboard(es).html"><span class="icon"><i class="fa-solid fa-house"></i></span><span class="text">Inicio</span></a></li>
+                    <li><a href="investment(es).html"><span class="icon"><i class="fa-solid fa-boxes-stacked"></i></span><span class="text">Paquetes</span></a></li>
+                    <li class="active"><a href="deposit(es).html"><span class="icon"><i class="fa-regular fa-credit-card"></i></span><span class="text">Depositar</span></a></li>
+                    <li><a href="withdraw(es).html"><span class="icon"><i class="fa-regular fa-briefcase"></i></span><span class="text">Retirar</span></a></li>
+                    <li><a href="profile(es).html"><span class="icon"><i class="fa-regular fa-address-card"></i></span><span class="text">Perfil</span></a></li>
+                    <li><a href="#" id="logout-link"><span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span><span class="text">Cerrar sesi&#243;n</span></a></li>
                 </ul>
             </nav>
         </div>
 
         <main class="main-content">
-            <h1 class="welcome" id="welcome-message">Welcome, User!</h1>
+            <h1 class="welcome" id="welcome-message">Bienvenido, usuario!</h1>
 
             <div class="payment-method">
-                <h2>Deposit Funds</h2>
-                <button class="deposit-button" id="popup-wallets">Deposit Now!</button>
+                <h2>Depositar fondos</h2>
+                <button class="deposit-button" id="popup-wallets">Depositar ahora!</button>
             </div>
 
             <!-- DEPOSIT HISTORY -->
             <div class="payment-method" id="deposit-history-section" style="display:none;">
-                <h2 style="color:#00ffff;margin-bottom:20px;text-align:center;font-weight:600;letter-spacing:1px;">Deposit History</h2>
+                <h2 style="color:#00ffff;margin-bottom:20px;text-align:center;font-weight:600;letter-spacing:1px;">Historial de dep&#243;sitos</h2>
                 <div id="history-list" style="display:flex;flex-direction:column;gap:12px;max-height:400px;overflow-y:auto;padding:10px;background:#111827;border-radius:12px;">
                     <!-- History items will be injected here -->
                 </div>
@@ -174,7 +174,7 @@
             <!-- Market Widgets -->
             <div class="market-widgets-row">
                 <div class="market-widget" id="market-overview-widget">
-                    <div class="market-widget-title">Market Overview</div>
+                    <div class="market-widget-title">Visi&#243;n general del mercado</div>
                     <div class="tradingview-widget-container">
                         <div class="tradingview-widget-container__widget"></div>
                         <script type="application/json" id="market-overview-config">
@@ -198,11 +198,11 @@
                             "colorTheme": "dark"
                         }
                         </script>
-                        <script src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async></script>
+                        <script src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async=""></script>
                     </div>
                 </div>
                 <div class="market-widget" id="market-news-widget">
-                    <div class="market-widget-title">Market News</div>
+                    <div class="market-widget-title">Noticias del mercado</div>
                     <div class="tradingview-widget-container">
                         <div class="tradingview-widget-container__widget"></div>
                         <script type="application/json" id="market-news-config">
@@ -220,7 +220,7 @@
                             ]
                         }
                         </script>
-                        <script src="https://s3.tradingview.com/external-embedding/embed-widget-news.js" async></script>
+                        <script src="https://s3.tradingview.com/external-embedding/embed-widget-news.js" async=""></script>
                     </div>
                 </div>
             </div>
@@ -233,39 +233,28 @@
             <button id="close-deposit-popup" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#00ffff;font-size:22px;cursor:pointer;">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <h2 style="color:#00ffff;text-align:center;margin-bottom:18px;">Deposit Funds</h2>
+            <h2 style="color:#00ffff;text-align:center;margin-bottom:18px;">Depositar fondos</h2>
 
             <form id="depositForm">
                 <!-- Wallets -->
                 <div class="field-group" id="group-wallet">
-                    <label>Select Payment Method</label>
+                    <label>Seleccionar m&#233;todo de pago</label>
                     <div style="display:flex;flex-direction:column;gap:8px;">
-                        <div class="wallet-row"><i class="fa-brands fa-bitcoin"></i> Bitcoin: <span class="wallet-address" id="btc-wallet">Loading...</span>
-                            <button type="button" class="copy-btn" onclick="copyWallet('btc-wallet', this)"><i class="fa-regular fa-copy"></i></button></div>
-                        <div class="wallet-row"><i class="fa-brands fa-ethereum"></i> Ethereum: <span class="wallet-address" id="eth-wallet">Loading...</span>
-                            <button type="button" class="copy-btn" onclick="copyWallet('eth-wallet', this)"><i class="fa-regular fa-copy"></i></button></div>
-                        <div class="wallet-row"><i class="fa-brands fa-usd-coin"></i> USDC: <span class="wallet-address" id="usdc-wallet">Loading...</span>
-                            <button type="button" class="copy-btn" onclick="copyWallet('usdc-wallet', this)"><i class="fa-regular fa-copy"></i></button></div>
-                        <div class="wallet-row"><i class="fa-brands fa-tether"></i> USDT: <span class="wallet-address" id="usdt-wallet">Loading...</span>
-                            <button type="button" class="copy-btn" onclick="copyWallet('usdt-wallet', this)"><i class="fa-regular fa-copy"></i></button></div>
-                        <div class="wallet-row"><i class="fa-solid fa-building-columns"></i> Bank: 
-                            <div class="bank-details">
-                                <span class="wallet-address" id="bank-name">Loading...</span>
-                                <span class="wallet-address" id="account-number">Loading...</span>
-                                <span class="wallet-address" id="routing-number">Loading...</span>
-                            </div>
-                            <button type="button" class="copy-btn" onclick="copyWallet('bank-details', this)"><i class="fa-regular fa-copy"></i></button>
-                        </div>
+                        <div class="wallet-row"><i class="fa-brands fa-bitcoin"></i> Bitcoin: <span class="wallet-address" id="btc-wallet">Cargando...</span> <button type="button" class="copy-btn" onclick="copyWallet('btc-wallet', this)"><i class="fa-regular fa-copy"></i></button></div>
+                        <div class="wallet-row"><i class="fa-brands fa-ethereum"></i> Ethereum: <span class="wallet-address" id="eth-wallet">Cargando...</span> <button type="button" class="copy-btn" onclick="copyWallet('eth-wallet', this)"><i class="fa-regular fa-copy"></i></button></div>
+                        <div class="wallet-row"><i class="fa-brands fa-usd-coin"></i> USDC: <span class="wallet-address" id="usdc-wallet">Cargando...</span> <button type="button" class="copy-btn" onclick="copyWallet('usdc-wallet', this)"><i class="fa-regular fa-copy"></i></button></div>
+                        <div class="wallet-row"><i class="fa-brands fa-tether"></i> USDT: <span class="wallet-address" id="usdt-wallet">Cargando...</span> <button type="button" class="copy-btn" onclick="copyWallet('usdt-wallet', this)"><i class="fa-regular fa-copy"></i></button></div>
+                        <div class="wallet-row"><i class="fa-solid fa-building-columns"></i> Bank: <div class="bank-details"> <span class="wallet-address" id="bank-name">Cargando...</span> <span class="wallet-address" id="account-number">Cargando...</span> <span class="wallet-address" id="routing-number">Cargando...</span> </div> <button type="button" class="copy-btn" onclick="copyWallet('bank-details', this)"><i class="fa-regular fa-copy"></i></button> </div>
                     </div>
                     <i class="fa-solid fa-check check"></i>
                 </div>
 
                 <!-- Amount -->
                 <div class="field-group" id="group-amount">
-                    <label>Enter Amount (USD)</label>
+                    <label>Introducir importe (USD)</label>
                     <div class="amount-input-wrapper">
                         <i class="fa-solid fa-dollar-sign dollar-icon"></i>
-                        <input type="number" id="deposit-amount" min="10" placeholder="10.00" required>
+                        <input type="number" id="deposit-amount" min="10" placeholder="10.00" required="">
                     </div>
                     <i class="fa-solid fa-check check"></i>
                 </div>
@@ -273,19 +262,14 @@
                 <!-- Upload Proof -->
                 <div class="field-group" id="group-proof">
                     <div class="upload-container">
-                        <input type="file" id="payment-receipt" accept="image/*,application/pdf" required>
-                        <label for="payment-receipt">
-                            <i class="fa-solid fa-cloud-upload-alt" style="font-size:20px;margin-right:8px;"></i>
-                            Click to Upload Proof
-                        </label>
-                        <div class="file-name" id="file-name">No file chosen</div>
+                        <input type="file" id="payment-receipt" accept="image/*,application/pdf" required="">
+                        <label for="payment-receipt"> <i class="fa-solid fa-cloud-upload-alt" style="font-size:20px;margin-right:8px;"></i> Haga clic para cargar la prueba </label>
+                        <div class="file-name" id="file-name">Ning&#250;n archivo elegido</div>
                     </div>
                     <i class="fa-solid fa-check check"></i>
                 </div>
 
-                <button type="submit" style="margin-top:20px;width:100%;padding:14px;background:#00ff88;color:#000;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;">
-                    Submit Deposit Request
-                </button>
+                <button type="submit" style="margin-top:20px;width:100%;padding:14px;background:#00ff88;color:#000;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;"> Enviar solicitud de dep&#243;sito </button>
             </form>
 
             <div class="status-msg" id="deposit-status"></div>
@@ -580,7 +564,7 @@ window.smartsupp||(function(d) {
   c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
 })(document);
 </script>
-<noscript> Powered by <a href=“https://www.smartsupp.com” target=“_blank”>Smartsupp</a></noscript>
+<noscript> Desarrollado por <a href="“https://www.smartsupp.com”" target="“_blank”">Smartsupp</a></noscript>
 
 </body>
 </html>

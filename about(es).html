@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equity Hubs</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="about.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+    <div class="container">
+         <header>
+            <div class="alert-ticker-container">
+                <p class="ticker-content"> ⚠️ TENGA EN CUENTA EL FRAUDE: Equityhubs **NUNCA** le pedir&#225; que env&#237;e dinero a una cuenta personal. Deposite siempre fondos a trav&#233;s de los canales seguros y verificados de la plataforma. Proteja su inversi&#243;n. </p>
+            </div>
+            <nav>
+                <div class="nav-left-mobile">
+                    <div class="menu-icon" id="menu-toggle">
+                        <div class="hamburger-lines"></div>
+                        <div class="hamburger-lines"></div>
+                        <div class="hamburger-lines"></div>
+                    </div>
+                </div>
+                <div class="nav-links" id="nav-links-menu">
+                     <a href="index(es).html">Inicio</a> 
+                     <a href="about(es).html">Qui&#233;nes somos</a> 
+                     <a href="contact(es).html">Contactos</a> 
+                    <a href="investment(es).html">Inversi&#243;n</a> 
+                </div>    
+               <div class="language">
+                    <select id="language-select">
+                        <option value="index.html" selected="">INGL&#201;S</option>
+                        <option value="index(es).html">ESPA&#209;OL</option>
+                    </select>
+                </div>                 
+                <div class="nav-right-buttons auth-buttons"> <a href="#" class="login-btn">Inicio de sesi&#243;n</a> <a href="#" class="register-btn">Registro <i class="fa-solid fa-angle-right"></i></a> </div>
+                <div class="nav-right-buttons trade-buttons" style="display: none;">
+                    <a style="background-color: rgb(4, 28, 4); text-align: white; padding: 12px; border-radius: 5px;" href="dashboard.html" class="trade-btn">Comercio</a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Login Popup -->
+        <div id="login-popup" class="popup">
+            <div class="popup-content"> <span class="close-btn">&#215;</span> <h2>Inicio de sesi&#243;n</h2>&#191;<input type="email" id="login-email" placeholder="Correo electrónico" required="">H<input type="password" id="login-password" placeholder="Contraseña" required="">a<p id="login-error" class="error-message"></p> <button id="login-submit">Inicio de sesi&#243;n</button>o<a href="#" id="forgot-password-link">lvidado su contrase&#241;a?</a> <a href="#" id="switch-to-register">&#191;No tiene cuenta? Reg&#237;strese en</a> </div>
+        </div>
+
+        <!-- Register Popup -->
+        <div id="register-popup" class="popup">
+            <div class="popup-content"> <span class="close-btn">&#215;</span> <h2>Crear una cuenta</h2>&#191;<input type="text" id="register-name" placeholder="Nombre" required="">Y<input type="email" id="register-email" placeholder="Correo electrónico" required="">a<input type="password" id="register-password" placeholder="Contraseña" required=""> <input type="password" id="register-confirm-password" placeholder="Confirmar contraseña" required="">t<p id="register-error" class="error-message"></p>i<button id="register-submit">Reg&#237;strese en</button>e<a href="#" id="switch-to-login">ne una cuenta? Inicio de sesi&#243;n</a> </div>
+        </div>
+
+        <!-- Forgot Password Popup -->
+        <div id="forgot-password-popup" class="popup">
+            <div class="popup-content"> <span class="close-btn">&#215;</span><h2>Contrase&#241;a olvidada</h2><input type="email" id="forgot-email" placeholder="Correo electrónico" required=""><p id="forgot-error" class="error-message"></p><button id="forgot-submit">Enviar enlace de restablecimiento</button> <a href="#" id="switch-to-login-from-forgot">Volver al inicio de sesi&#243;n</a> </div>
+        </div>
+
+        <main>
+            <section class="about-us">
+                <div class="about-content">
+                    <h1>Acerca de los Equity Hubs</h1>
+                    <p>En Equity Hubs, nos dedicamos a proporcionar una plataforma segura y f&#225;cil de usar para todas sus necesidades de inversi&#243;n. Nuestra misi&#243;n es ayudar a las personas a tomar las riendas de su futuro financiero mediante estrategias de inversi&#243;n inteligentes y tecnolog&#237;a punta.</p>
+                    <p>Fundada en 2020, Equity Hubs ha crecido r&#225;pidamente hasta convertirse en un nombre de confianza en la comunidad inversora. Ofrecemos una amplia gama de opciones de inversi&#243;n, como acciones, bonos, fondos de inversi&#243;n y ETF, todas ellas dise&#241;adas para ayudarle a alcanzar sus objetivos financieros.</p>
+                    <p>Nuestro equipo de profesionales experimentados se compromete a prestar un servicio y una asistencia excepcionales a nuestros clientes. Creemos en la transparencia, la integridad y en anteponer los intereses de nuestros clientes.</p>
+                    <p>Tanto si es un inversor experimentado como si acaba de empezar, Equity Hubs le ofrece las herramientas y los recursos que necesita para triunfar en el din&#225;mico mercado actual. &#218;nase a nosotros hoy mismo y d&#233; el primer paso hacia un futuro financiero m&#225;s brillante.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Sobre nosotros Imagen">
+                </div>
+            </section>
+        </main>
+
+        <section class="testimonial-section">
+            <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+            <div class="carousel-container">
+                <div class="testimonials-wrapper" id="testimonials-wrapper">
+                    <div class="testimonial-slide">
+                        <div class="quote-icon">❝</div>
+                        <p class="quote-text">&quot;He probado varias plataformas de negociaci&#243;n, pero la velocidad de ejecuci&#243;n de Equity Hub es inigualable. El proceso de retirada es incre&#237;blemente r&#225;pido, lo que me da una gran tranquilidad. Muy recomendable para comerciantes serios&quot;.</p>
+                        <div class="client-info"> <span class="client-name">Alex M.</span> <span class="client-location">Londres, Reino Unido</span> </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="quote-icon">❝</div>
+                        <p class="quote-text">&quot;Como principiante, los recursos de aprendizaje de este centro han cambiado las reglas del juego. La plataforma es intuitiva y me encanta tener acceso a tantos activos diferentes. Realmente simplific&#243; mi entrada en la inversi&#243;n&quot;.</p>
+                        <div class="client-info"> <span class="client-name">Sofia R.</span> <span class="client-location">Toronto, Canad&#225;</span> </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="quote-icon">❝</div>
+                        <p class="quote-text">&quot;La baja estructura de comisiones es fant&#225;stica para la negociaci&#243;n de alta frecuencia. Agradezco la transparencia y el chat de asistencia en directo, que siempre responde. Una plataforma s&#243;lida en todos los sentidos&quot;.</p>
+                        <div class="client-info"> <span class="client-name">Chen W.</span> <span class="client-location">Singapur</span> </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="quote-icon">❝</div>
+                        <p class="quote-text">&quot;Operar &#39;en segundos&#39; es absolutamente exacto. La precisi&#243;n y la rapidez de su interfaz han mejorado mucho mis resultados desde que cambi&#233;. Adem&#225;s, el tema oscuro es agradable a la vista&quot;.</p>
+                        <div class="client-info"> <span class="client-name">David H.</span> <span class="client-location">Sydney, Australia</span> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-dots" id="carousel-dots">
+                <span class="dot active" data-slide="0"></span>
+                <span class="dot" data-slide="1"></span>
+                <span class="dot" data-slide="2"></span>
+                <span class="dot" data-slide="3"></span>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-col disclaimer-col">
+                    <div class="footer-logo">Equity Hubs</div>
+                    <p class="disclaimer-text"> La Empresa no presta servicios a ciudadanos y/o residentes de Alemania, Australia, Austria, Bielorrusia, B&#233;lgica, Bulgaria, Canad&#225;, Corea del Norte, Croacia, Dinamarca, Eslovaquia, Eslovenia, Espa&#241;a, Estados Unidos, Estonia, Finlandia, Francia, Grecia, Hungr&#237;a, Ir&#225;n, Irlanda, Islandia, Israel, Italia, Letonia, Liechtenstein, Lituania, Luxemburgo, Malta, Myanmar, Noruega, Nueva Zelanda, Pa&#237;ses Bajos, Polonia, Portugal, Puerto Rico, Reino Unido, Rep&#250;blica Checa, Rep&#250;blica de Chipre, Ruman&#237;a, Rusia, Singapur, Sud&#225;n del Sur, Suecia, Suiza, Ucrania y Yemen. </p>
+                </div>
+                <div class="footer-col link-group">
+                    <h4>Inicio</h4>
+                    <ul>
+                        <li><a href="index(es).html">Inicio</a></li>
+                        <li><a href="about(es).html">La Empresa</a></li>
+                        <li><a href="contact(es).html">Contactos</a></li>
+                        <li><a href="investment(es).html">Inversi&#243;n</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col link-group">
+                    <h4>Contactos</h4>
+                    <p>Correo electr&#243;nico: contact@equityhubz.org</p>
+                    <p>Tel&#233;fono: +16066020676</p>
+                    <p>Direcci&#243;n: 123 Finance St, Nueva York, NY</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+                <p>2010 Equity Hubs. Todos los derechos reservados.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="index.js"></script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, updateProfile } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
+            authDomain: "investment-40343.firebaseapp.com",
+            projectId: "investment-40343",
+            storageBucket: "investment-40343.firebasestorage.app",
+            messagingSenderId: "126093031981",
+            appId: "1:126093031981:web:fd4ae73c063044693b16a4",
+            measurementId: "G-SXL6ZGL49W"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const loginPopup = document.getElementById('login-popup');
+        const registerPopup = document.getElementById('register-popup');
+        const forgotPasswordPopup = document.getElementById('forgot-password-popup');
+        const loginBtn = document.querySelector('.login-btn');
+        const registerBtn = document.querySelector('.register-btn');
+        const authButtons = document.querySelector('.auth-buttons');
+        const tradeButtons = document.querySelector('.trade-buttons');
+        const closeButtons = document.querySelectorAll('.close-btn');
+        const switchToRegister = document.getElementById('switch-to-register');
+        const switchToLogin = document.getElementById('switch-to-login');
+        const forgotPasswordLink = document.getElementById('forgot-password-link');
+        const switchToLoginFromForgot = document.getElementById('switch-to-login-from-forgot');
+        const loginError = document.getElementById('login-error');
+        const registerError = document.getElementById('register-error');
+        const forgotError = document.getElementById('forgot-error');
+
+        function showPopup(popup) {
+            popup.style.display = 'flex';
+        }
+
+        function hidePopup(popup) {
+            popup.style.display = 'none';
+            popup.querySelectorAll('input').forEach(input => input.value = '');
+            popup.querySelector('.error-message').style.display = 'none';
+        }
+
+        loginBtn.addEventListener('click', () => showPopup(loginPopup));
+        registerBtn.addEventListener('click', () => showPopup(registerPopup));
+        forgotPasswordLink.addEventListener('click', () => {
+            hidePopup(loginPopup);
+            showPopup(forgotPasswordPopup);
+        });
+        switchToRegister.addEventListener('click', () => {
+            hidePopup(loginPopup);
+            showPopup(registerPopup);
+        });
+        switchToLogin.addEventListener('click', () => {
+            hidePopup(registerPopup);
+            showPopup(loginPopup);
+        });
+        switchToLoginFromForgot.addEventListener('click', () => {
+            hidePopup(forgotPasswordPopup);
+            showPopup(loginPopup);
+        });
+
+        closeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                hidePopup(btn.closest('.popup'));
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('popup')) {
+                hidePopup(e.target);
+            }
+        });
+
+        document.getElementById('login-submit').addEventListener('click', async () => {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                hidePopup(loginPopup);
+            } catch (error) {
+                loginError.textContent = error.message;
+                loginError.style.display = 'block';
+            }
+        });
+
+        document.getElementById('register-submit').addEventListener('click', async () => {
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+
+            if (!name) {
+                registerError.textContent = 'Name is required';
+                registerError.style.display = 'block';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                registerError.textContent = 'Passwords do not match';
+                registerError.style.display = 'block';
+                return;
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(userCredential.user, { displayName: name });
+                hidePopup(registerPopup);
+            } catch (error) {
+                registerError.textContent = error.message;
+                registerError.style.display = 'block';
+            }
+        });
+
+        document.getElementById('forgot-submit').addEventListener('click', async () => {
+            const email = document.getElementById('forgot-email').value;
+            try {
+                await sendPasswordResetEmail(auth, email);
+                alert('Password reset email sent!');
+                hidePopup(forgotPasswordPopup);
+            } catch (error) {
+                forgotError.textContent = error.message;
+                forgotError.style.display = 'block';
+            }
+        });
+
+        document.getElementById('menu-toggle').addEventListener('click', () => {
+            const navLinksMenu = document.getElementById('nav-links-menu');
+            navLinksMenu.classList.toggle('active');
+        });
+
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                authButtons.style.display = 'none';
+                tradeButtons.style.display = 'block';
+            } else {
+                authButtons.style.display = 'block';
+                tradeButtons.style.display = 'none';
+            }
+        });
+    </script>
+
+    <!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '7f2bba33007b0ceba9ef214c29b3c6dcb2c1112d';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript> Desarrollado por <a href="https://www.smartsupp.com" target="_blank">Equity Hubz</a></noscript>
+</body>
+</html>
