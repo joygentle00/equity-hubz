@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title data-i18n="user_dashboard_title">User Dashboard</title>
+    <title>User Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body {
@@ -87,7 +86,6 @@
         .kyc-approved { background: #00ff00; color: #000; }
         .kyc-pending { background: #ffcc00; color: #000; }
         .kyc-rejected { background: #ff4d4d; color: #fff; }
-
         .balance-card { text-align: center; }
         .balance-header { font-size: 14px; color: #00ffff; margin-bottom: 10px; letter-spacing: 1px; font-weight: 600; }
         .balance-value { font-size: 36px; font-weight: bold; margin-bottom: 10px; }
@@ -146,17 +144,6 @@
             position: absolute; bottom: 0; left: 0; width: 100%; height: 20px;
             background: linear-gradient(to right, #333, #555); z-index: 5; pointer-events: none;
         }
-        .language-selector {
-            margin: 10px 0;
-        }
-        .language-selector select {
-            padding: 8px;
-            border-radius: 4px;
-            background: #1e293b;
-            color: #fff;
-            border: 1px solid #2d3748;
-        }
-
         /* KYC Modal */
         .kyc-modal {
             position: fixed;
@@ -224,10 +211,8 @@
         .kyc-modal-content .close-icon:hover {
             color: #fff;
         }
-
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { transform: translateY(50px); } to { transform: translateY(0); } }
-
         @media (max-width: 900px) {
             .market-widgets-row { flex-direction: column; gap: 20px; }
             .market-widget { max-width: 100%; }
@@ -271,88 +256,73 @@
     </style>
 </head>
 <body>
-
     <!-- KYC Modal -->
     <div class="kyc-modal" id="kycModal" style="display:none;">
         <div class="kyc-modal-content">
             <i class="fas fa-times close-icon" id="kycCloseIcon"></i>
-            <h3 data-i18n="kyc_required">KYC Verification Required</h3>
-            <p data-i18n="kyc_message">Please verify your identity to access full features.</p>
+            <h3>KYC Verification Required</h3>
+            <p>Please verify your identity to access full features.</p>
             <div class="btn-group">
-                <button id="goToKycBtn" data-i18n="go_to_kyc">Go to KYC</button>
-                <button id="kycLaterBtn" class="close-btn" data-i18n="kyc_later">Do it Later</button>
+                <button id="goToKycBtn">Go to KYC</button>
+                <button id="kycLaterBtn" class="close-btn">Do it Later</button>
             </div>
         </div>
     </div>
-
     <div class="container" id="main-container" style="display:none;">
-        <button class="hamburger" aria-label="Toggle Sidebar" data-i18n="[aria-label]toggle_sidebar">
+        <button class="hamburger" aria-label="Toggle Sidebar">
             <i class="fa-solid fa-bars"></i>
         </button>
-
         <div class="sidebar" id="sidebar">
             <nav>
                 <ul>
-                    <li class="active"><a href="dashboard.html"><span class="icon"><i class="fa-solid fa-house"></i></span><span class="text" data-i18n="home">Home</span></a></li>
-                    <li><a href="ykc.html"><span class="icon"><i class="fa-solid fa-user"></i></span><span class="text" data-i18n="KYC">KYC</span></a></li>
-                    <li><a href="investment.html"><span class="icon"><i class="fa-solid fa-boxes-stacked"></i></span><span class="text" data-i18n="packages">Packages</span></a></li>
-                    <li><a href="deposit.html"><span class="icon"><i class="fa-regular fa-credit-card"></i></span><span class="text" data-i18n="deposit">Deposit</span></a></li>
-                    <li><a href="withdraw.html"><span class="icon"><i class="fa-regular fa-briefcase"></i></span><span class="text" data-i18n="withdraw">Withdraw</span></a></li>
-                    <li><a href="profile.html"><span class="icon"><i class="fa-regular fa-address-card"></i></span><span class="text" data-i18n="profile">Profile</span></a></li>
-                    <li><a href="#" id="logout-link"><span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span><span class="text" data-i18n="logout">Logout</span></a></li>
+                    <li class="active"><a href="dashboard.html"><span class="icon"><i class="fa-solid fa-house"></i></span><span class="text">Home</span></a></li>
+                    <li><a href="ykc.html"><span class="icon"><i class="fa-solid fa-user"></i></span><span class="text">KYC</span></a></li>
+                    <li><a href="investment.html"><span class="icon"><i class="fa-solid fa-boxes-stacked"></i></span><span class="text">Packages</span></a></li>
+                    <li><a href="deposit.html"><span class="icon"><i class="fa-regular fa-credit-card"></i></span><span class="text">Deposit</span></a></li>
+                    <li><a href="withdraw.html"><span class="icon"><i class="fa-regular fa-briefcase"></i></span><span class="text">Withdraw</span></a></li>
+                    <li><a href="profile.html"><span class="icon"><i class="fa-regular fa-address-card"></i></span><span class="text">Profile</span></a></li>
+                    <li><a href="#" id="logout-link"><span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span><span class="text">Logout</span></a></li>
                 </ul>
             </nav>
-            <div class="language-selector">
-                <select id="languageSwitcher">
-                    <option value="en">English</option>
-                    <option value="fr">Français</option>
-                    <option value="es">Español</option>
-                </select>
-            </div>
         </div>
-
         <main class="main-content">
             <!-- Updated welcome with dynamic name -->
             <h1 class="welcome" id="welcome-message">Welcome, <span id="user-display-name">User</span>!</h1>
-
             <section class="balance-section">
                 <div id="kycBadge" class="kyc-badge" style="display:none;"></div>
-
                 <div class="balance-card">
-                    <div class="balance-header" data-i18n="account_balance">ACCOUNT BALANCE</div>
+                    <div class="balance-header">ACCOUNT BALANCE</div>
                     <div class="balance-value" id="balance-value">$0.00</div>
-                    <div class="balance-growth"><span class="up" data-i18n="up_by">Up by</span> <span class="green">$0.00</span> <span data-i18n="since_investing">since you began investing</span></div>
-
+                    <div class="balance-growth"><span class="up">Up by</span> <span class="green">$0.00</span> <span>since you began investing</span></div>
                     <div class="balance-details">
                         <div class="balance-info-grid">
                             <div class="info-card light-black">
                                 <div class="info-value" id="total-deposit">$0.00</div>
-                                <div class="info-label" data-i18n="total_deposit">TOTAL DEPOSIT</div>
+                                <div class="info-label">TOTAL DEPOSIT</div>
                                 <div class="info-icon"><i class="fa-solid fa-sack-dollar"></i></div>
                             </div>
                             <div class="info-card light-black">
                                 <div class="info-value" id="total-profit">$0.00</div>
-                                <div class="info-label" data-i18n="total_profit">TOTAL PROFIT</div>
+                                <div class="info-label">TOTAL PROFIT</div>
                                 <div class="info-icon"><i class="fa-solid fa-seedling"></i></div>
                             </div>
                             <div class="info-card light-black">
                                 <div class="info-value" id="total-bonus">$0.00</div>
-                                <div class="info-label" data-i18n="total_bonus">TOTAL BONUS</div>
+                                <div class="info-label">TOTAL BONUS</div>
                                 <div class="info-icon"><i class="fa-solid fa-gift"></i></div>
                             </div>
                             <div class="info-card light-black">
                                 <div class="info-value" id="withdrawals">$0.00</div>
-                                <div class="info-label" data-i18n="withdrawals">WITHDRAWALS</div>
+                                <div class="info-label">WITHDRAWALS</div>
                                 <div class="info-icon"><i class="fa-solid fa-coins"></i></div>
                             </div>
                         </div>
-
                         <div class="balance-chart">
                             <div class="chart-box">
                                 <div class="tradingview-widget-container">
                                     <div id="tradingview_forex_chart" class="tradingview-widget-container__widget"></div>
                                     <div class="market-widget" id="bitcoin-chart-widget">
-                                        <div class="market-widget-title" data-i18n="bitcoin_chart">Bitcoin Candle Chart</div>
+                                        <div class="market-widget-title">Bitcoin Candle Chart</div>
                                         <div class="tradingview-widget-container">
                                             <div id="tradingview_bitcoin_chart" class="tradingview-widget-container__widget"></div>
                                             <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
@@ -381,7 +351,7 @@
                                     </div>
                                     <div class="tradingview-widget-copyright">
                                         <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
-                                            <span class="blue-text" data-i18n="track_markets">Track all markets on TradingView</span>
+                                            <span class="blue-text">Track all markets on TradingView</span>
                                         </a>
                                     </div>
                                     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
@@ -414,15 +384,14 @@
                     </div>
                 </div>
             </section>
-
             <!-- Bitcoin News -->
             <div class="market-widget" id="bitcoin-news-widget">
-                <div class="market-widget-title" data-i18n="bitcoin_news">Recent Bitcoin News</div>
+                <div class="market-widget-title">Recent Bitcoin News</div>
                 <div class="custom-news">
                     <ul>
-                        <li><a href="https://www.bbc.com/news/articles/c70jw436n0yo" data-i18n="bitcoin_news_1">Bitcoin worth $14bn seized...</a> - 6 hours ago</li>
-                        <li><a href="https://news.bitcoin.com/" data-i18n="bitcoin_news_2">Bitcoin.com News</a> - N/A</li>
-                        <li><a href="https://www.youtube.com/watch?v=IldQ03YJAQM" data-i18n="bitcoin_news_3">Bitcoin slips to $113000...</a> - 15 hours ago</li>
+                        <li><a href="https://www.bbc.com/news/articles/c70jw436n0yo">Bitcoin worth $14bn seized...</a> - 6 hours ago</li>
+                        <li><a href="https://news.bitcoin.com/">Bitcoin.com News</a> - N/A</li>
+                        <li><a href="https://www.youtube.com/watch?v=IldQ03YJAQM">Bitcoin slips to $113000...</a> - 15 hours ago</li>
                     </ul>
                 </div>
                 <style>
@@ -433,37 +402,27 @@
                     .custom-news a:hover { text-decoration: underline; }
                 </style>
             </div>
-
             <!-- Market Widgets -->
             <div class="market-widgets-row">
-                <div class="market-widget" id="market-overview-widget">
-                    <div class="market-widget-title" data-i18n="market_overview">Market Overview</div>
+                <div class="market-widget" id="forex-market-widget">
                     <div class="tradingview-widget-container">
                         <div class="tradingview-widget-container__widget"></div>
-                        <script type="application/json" id="market-overview-config">
+                        <script type="application/json" id="forex-market-config">
                             {
-                              "title": "Market Overview",
-                              "tabs": [
-                                {
-                                  "title": "Crypto",
-                                  "symbols": [
-                                    {"s": "BINANCE:BTCUSDT", "d": "Bitcoin"},
-                                    {"s": "BINANCE:ETHUSDT", "d": "Ethereum"},
-                                    {"s": "CRYPTOCAP:USDT.D", "d": "USDT Dominance"},
-                                    {"s": "BINANCE:BNBUSDT", "d": "BNB"},
-                                    {"s": "CRYPTOCAP:USDC", "d": "USDC"},
-                                    {"s": "BINANCE:XRPUSDT", "d": "XRP"}
-                                  ]
-                                }
-                              ],
+                              "feedMode": "market",
+                              "market": "forex",
                               "width": "100%",
                               "height": "400",
                               "locale": "en",
-                              "showSymbolLogo": true,
-                              "colorTheme": "dark"
+                              "colorTheme": "dark",
+                              "symbols": [
+                                {"proName": "FX:EURUSD"},
+                                {"proName": "FX:GBPUSD"},
+                                {"proName": "FX:USDJPY"}
+                              ]
                             }
                         </script>
-                        <script src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async></script>
+                        <script src="https://s3.tradingview.com/external-embedding/embed-widget-news.js" async></script>
                     </div>
                 </div>
                 <div class="market-widget" id="market-news-widget">
@@ -490,12 +449,14 @@
             </div>
         </main>
     </div>
-
+    <script>
+        // Firebase SDKs will be loaded in the module script below
+        
+    </script>
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
         import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
         import { getFirestore, doc, onSnapshot, collection, query, where, getDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
-
         const app = initializeApp({
             apiKey: "AIzaSyDnEbph9IMZuJ3REbfTsocV-g7APCrE-1w",
             authDomain: "investment-40343.firebaseapp.com",
@@ -504,57 +465,17 @@
             messagingSenderId: "126093031981",
             appId: "1:126093031981:web:fd4ae73c063044693b16a4"
         });
-
         const auth = getAuth(app);
         const db = getFirestore(app);
-
-        // Translations
-        const translations = {
-            en: {
-                user_dashboard_title: "User Dashboard", toggle_sidebar: "Toggle Sidebar", home: "Home", YKC: "YKC", packages: "Packages", deposit: "Deposit", withdraw: "Withdraw", profile: "Profile", logout: "Logout",
-                welcome_user: "Welcome, {name}!", account_balance: "ACCOUNT BALANCE", up_by: "Up by", since_investing: "since you began investing",
-                total_deposit: "TOTAL DEPOSIT", total_profit: "TOTAL PROFIT", total_bonus: "TOTAL BONUS", withdrawals: "WITHDRAWALS",
-                bitcoin_chart: "Bitcoin Candle Chart", track_markets: "Track all markets on TradingView", bitcoin_news: "Recent Bitcoin News",
-                bitcoin_news_1: "Bitcoin worth $14bn seized...", bitcoin_news_2: "Bitcoin.com News", bitcoin_news_3: "Bitcoin slips to $113000...",
-                market_overview: "Market Overview", english: "English", french: "French", spanish: "Spanish",
-                kyc_required: "KYC Verification Required", kyc_message: "Please verify your identity to access full features.", 
-                go_to_kyc: "Go to KYC", kyc_later: "Do it Later",
-                kyc_approved: "KYC Approved", kyc_pending: "KYC Pending", kyc_rejected: "KYC Rejected"
-            },
-            fr: { /* ... */ },
-            es: { /* ... */ }
-        };
-
-        i18next.init({
-            lng: 'en',
-            resources: { en: { translation: translations.en }, fr: { translation: translations.fr }, es: { translation: translations.es } }
-        }, updateContent);
-
-        function updateContent() {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.dataset.i18n;
-                if (key.includes('{name}')) return;
-                if (key.startsWith('[aria-label]')) {
-                    el.setAttribute('aria-label', i18next.t(key.slice(12)));
-                } else {
-                    el.textContent = i18next.t(key);
-                }
-            });
-        }
-
-        document.getElementById('languageSwitcher').addEventListener('change', e => i18next.changeLanguage(e.target.value, updateContent));
-
         // KYC Modal
         function closeKycModal() {
             document.getElementById('kycModal').style.display = 'none';
         }
-
         function checkKyc(userId) {
             const q = query(collection(db, 'ykc_verifications'), where('uid', '==', userId));
             const unsubscribe = onSnapshot(q, snap => {
                 const modal = document.getElementById('kycModal');
                 const badge = document.getElementById('kycBadge');
-
                 if (snap.empty) {
                     modal.style.display = 'flex';
                     badge.style.display = 'none';
@@ -562,27 +483,22 @@
                     modal.style.display = 'none';
                     const data = snap.docs[0].data();
                     const status = data.status || 'pending';
-                    badge.textContent = i18next.t(`kyc_${status}`);
+                    badge.textContent = `KYC ${status.charAt(0).toUpperCase() + status.slice(1)}`;
                     badge.className = `kyc-badge kyc-${status}`;
                     badge.style.display = 'block';
                 }
             });
             return unsubscribe;
         }
-
         document.getElementById('goToKycBtn').onclick = () => location.href = 'ykc.html';
         document.getElementById('kycLaterBtn').onclick = closeKycModal;
         document.getElementById('kycCloseIcon').onclick = closeKycModal;
         document.getElementById('kycModal').addEventListener('click', e => e.target === e.currentTarget && closeKycModal());
-
         // Auth & Load
         onAuthStateChanged(auth, async (user) => {
             if (!user) return location.href = 'index.html';
-
             document.getElementById('main-container').style.display = 'flex';
-
             let displayName = 'User';
-
             try {
                 const userRef = doc(db, 'users', user.uid);
                 const userSnap = await getDoc(userRef);
@@ -594,27 +510,17 @@
             } catch (error) {
                 console.error("Name fetch failed:", error);
             }
-
-            const updateName = () => {
-                const nameSpan = document.getElementById('user-display-name');
-                if (nameSpan) nameSpan.textContent = displayName;
-            };
-
-            if (i18next.isInitialized) updateName();
-            else i18next.on('initialized', updateName);
-            document.getElementById('languageSwitcher').addEventListener('change', updateName);
-
+            const nameSpan = document.getElementById('user-display-name');
+            if (nameSpan) nameSpan.textContent = displayName;
             loadUserData(user.uid);
             checkKyc(user.uid);
             fetchMarketPrice();
         });
-
         function loadUserData(uid) {
             const unsubscribe = onSnapshot(doc(db, 'users', uid), snap => {
                 if (!snap.exists()) return;
                 const d = snap.data();
                 const balance = (d.totalDeposit || 0) + (d.totalProfit || 0) + (d.totalBonus || 0) - (d.withdrawals || 0);
-
                 document.getElementById('balance-value').textContent = `$${balance.toFixed(2)}`;
                 document.getElementById('total-deposit').textContent = `$${ (d.totalDeposit || 0).toFixed(2) }`;
                 document.getElementById('total-profit').textContent = `$${ (d.totalProfit || 0).toFixed(2) }`;
@@ -624,21 +530,17 @@
             });
             return unsubscribe;
         }
-
         function fetchMarketPrice() {
             document.getElementById('current-price').textContent = 'EUR/USD: 1.1800';
         }
-
         document.getElementById('logout-link').onclick = e => {
             e.preventDefault();
             signOut(auth).then(() => location.href = 'index.html');
         };
-
         document.querySelector('.hamburger').onclick = () => {
             document.getElementById('sidebar').classList.toggle('show');
         };
     </script>
-
     <!-- Smartsupp Live Chat -->
     <script type="text/javascript">
     var _smartsupp = _smartsupp || {};
@@ -653,5 +555,73 @@
     <noscript> Powered by <a href="https://www.smartsupp.com" target="_blank">Equity Hubz</a></noscript>
 <div data-key="Translator Dropdown" class="ft" id="ftgug97c7g"></div>
 <script src="https://wdg.fouita.com/widgets/0x36a32f.js"></script>
+<script>
+  // Improved script to handle translator language persistence more reliably
+  (function() {
+    const TRANSLATOR_ID = '#ftgug97c7g';
+    const STORAGE_KEY = 'selectedLanguage';
+    let hasInitialized = false;
+
+    function saveLanguage(lang) {
+      localStorage.setItem(STORAGE_KEY, lang);
+      console.log('Language saved:', lang);
+    }
+
+    function loadAndApplyLanguage() {
+      const savedLang = localStorage.getItem(STORAGE_KEY);
+      if (!savedLang || hasInitialized) return;
+
+      const select = document.querySelector(TRANSLATOR_ID + ' select');
+      if (select && select.value !== savedLang) {
+        select.value = savedLang;
+        // Dispatch change event to trigger translation
+        const event = new Event('change', { bubbles: true });
+        select.dispatchEvent(event);
+        hasInitialized = true;
+        console.log('Translator language restored to:', savedLang);
+      }
+    }
+
+    function initializeTranslator() {
+      const select = document.querySelector(TRANSLATOR_ID + ' select');
+      if (!select) return false;
+
+      // Add change listener if not already added
+      if (!select.dataset.listenerAdded) {
+        select.addEventListener('change', function() {
+          saveLanguage(this.value);
+        });
+        select.dataset.listenerAdded = 'true';
+      }
+
+      // Apply saved language if available
+      loadAndApplyLanguage();
+
+      return true;
+    }
+
+    // Poll for the select element until it's available (widget loaded)
+    const pollInterval = setInterval(() => {
+      if (initializeTranslator()) {
+        clearInterval(pollInterval);
+      }
+    }, 500); // Check every 500ms
+
+    // Fallback: stop polling after 10 seconds to avoid infinite loop
+    setTimeout(() => {
+      clearInterval(pollInterval);
+      if (!hasInitialized) {
+        console.warn('Translator widget not found after polling; persistence may not work.');
+      }
+    }, 10000);
+
+    // Also try on DOMContentLoaded and window load as backup
+    ['DOMContentLoaded', 'load'].forEach(event => {
+      document.addEventListener(event, () => {
+        setTimeout(initializeTranslator, 1000);
+      });
+    });
+  })();
+</script>
 </body>
 </html>

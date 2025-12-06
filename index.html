@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<title data-fouita="translate">Equity Hubs</title>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -193,7 +193,7 @@
                 <select id="register-country" required>
                     <option value="" disabled selected>Select Country</option>
                     <option value="AF">Afghanistan</option>
-                       <option value="AL">Albania</option>
+                     <option value="AL">Albania</option>
                     <option value="DZ">Algeria</option>
                     <option value="AS">American Samoa</option>
                     <option value="AD">Andorra</option>
@@ -380,7 +380,7 @@
                     <option value="YE">Yemen</option>
                     <option value="ZM">Zambia</option>
                     <option value="ZW">Zimbabwe</option>
-                
+            
                    
                 </select>
                 <input type="tel" id="register-phone" placeholder="Phone Number" required>
@@ -873,8 +873,67 @@ window.addEventListener('load', () => {
     }
 });
 </script>
-<div data-key="Translator Dropdown" class="ft" id="ftgug97c7g"></div>
-<script src="https://wdg.fouita.com/widgets/0x36a32f.js"></script>
 
+<!-- Translator Widget -->
+    <div data-key="Translator Dropdown" class="ft" id="ftgug97c7g"></div>
+    <script src="https://wdg.fouita.com/widgets/0x36a32f.js"></script>
+
+    <!-- Fixed Translator Script -->
+    <script>
+        (function() {
+            const TRANSLATOR_ID = '#ftgug97c7g';
+            const STORAGE_KEY = 'selectedLanguage';
+            let hasInitialized = false;
+
+            function saveLanguage(lang) {
+                localStorage.setItem(STORAGE_KEY, lang);
+            }
+
+            function loadAndApplyLanguage() {
+                const savedLang = localStorage.getItem(STORAGE_KEY);
+                if (!savedLang || hasInitialized) return;
+
+                const select = document.querySelector(TRANSLATOR_ID + ' select');
+                if (select && select.value !== savedLang) {
+                    select.value = savedLang;
+                    select.dispatchEvent(new Event('change', { bubbles: true }));
+                    hasInitialized = true;
+                    console.log('Language restored to:', savedLang);
+                }
+            }
+
+            function setupLanguageListener() {
+                const select = document.querySelector(TRANSLATOR_ID + ' select');
+                if (select && !select.dataset.listenerAdded) {
+                    select.addEventListener('change', function() {
+                        saveLanguage(this.value);
+                        console.log('Language saved:', this.value);
+                    });
+                    select.dataset.listenerAdded = 'true';
+                }
+            }
+
+            // Poll until translator dropdown exists
+            const interval = setInterval(() => {
+                const select = document.querySelector(TRANSLATOR_ID + ' select');
+                if (select) {
+                    clearInterval(interval);
+                    setupLanguageListener();
+                    loadAndApplyLanguage();
+                }
+            }, 200);
+
+            // Backup: try on DOMContentLoaded and window load
+            ['DOMContentLoaded', 'load'].forEach(event => {
+                document.addEventListener(event, () => {
+                    setTimeout(() => {
+                        setupLanguageListener();
+                        loadAndApplyLanguage();
+                    }, 200);
+                });
+            });
+
+        })();
+    </script>
 </body>
 </html>
