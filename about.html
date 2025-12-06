@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="title">Equity Hubs</title>
+    <title>Equity Hubs</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="about.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
 </head>
 <body>
     <div class="container">
          <header>
             <div class="alert-ticker-container">
-                <p class="ticker-content" data-i18n="alert">
+                <p class="ticker-content">
                     ⚠️ BE AWARE OF FRAUD: Equityhubs will **NEVER** ask you to send money to a personal account. Always deposit funds through the secure, verified platform channels. Protect your investment.
                 </p>
             </div>
@@ -25,27 +24,20 @@
                         <div class="hamburger-lines"></div>
                         <div class="hamburger-lines"></div>
                     </div>
-                
                 </div>
                 <div class="nav-links" id="nav-links-menu">
-                    <a href="index.html" data-i18n="nav_home">Home</a>
-                    <a href="about.html" data-i18n="nav_about">About Us</a>
-                    <a href="contact.html" data-i18n="nav_contacts">Contacts</a>
-                    <a href="investment.html" data-i18n="nav_investment">Investment</a>
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About Us</a>
+                    <a href="contact.html">Contacts</a>
+                    <a href="investment.html">Investment</a>
                 </div>
-                <div class="language-selector">
-                        <select id="languageSwitcher">
-                            <option value="en">English </option>
-                            <option value="fr">Français</option>
-                            <option value="es">Spanish</option>
-                        </select>
-                    </div>
+                 
                 <div class="nav-right-buttons auth-buttons">
-                    <a href="#" class="login-btn" data-i18n="login">Login</a>
-                    <a href="#" class="register-btn" data-i18n="register">Register <i class="fa-solid fa-angle-right"></i></a>
+                    <a href="#" class="login-btn">Login</a>
+                    <a href="#" class="register-btn">Register <i class="fa-solid fa-angle-right"></i></a>
                 </div>
                 <div class="nav-right-buttons trade-buttons" style="display: none;">
-                    <a style="background-color: rgb(4, 28, 4); text-align: white; padding: 12px; border-radius: 5px;" href="dashboard.html" class="trade-btn" data-i18n="trade">Trade</a>
+                    <a style="background-color: rgb(4, 28, 4); text-align: white; padding: 12px; border-radius: 5px;" href="dashboard.html" class="trade-btn">Trade</a>
                 </div>
             </nav>
         </header>
@@ -54,13 +46,13 @@
         <div id="login-popup" class="popup">
             <div class="popup-content">
                 <span class="close-btn">&times;</span>
-                <h2 data-i18n="login_title">Login</h2>
-                <input type="email" id="login-email" data-i18n-placeholder="email_placeholder" placeholder="Email" required>
-                <input type="password" id="login-password" data-i18n-placeholder="password_placeholder" placeholder="Password" required>
+                <h2>Login</h2>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
                 <p id="login-error" class="error-message"></p>
-                <button id="login-submit" data-i18n="login_button">Login</button>
-                <a href="#" id="forgot-password-link" data-i18n="forgot_password">Forgot Password?</a>
-                <a href="#" id="switch-to-register" data-i18n="switch_to_register">Don't have an account? Register</a>
+                <button id="login-submit">Login</button>
+                <a href="#" id="forgot-password-link">Forgot Password?</a>
+                <a href="#" id="switch-to-register">Don't have an account? Register</a>
             </div>
         </div>
 
@@ -68,14 +60,14 @@
         <div id="register-popup" class="popup">
             <div class="popup-content">
                 <span class="close-btn">&times;</span>
-                <h2 data-i18n="create_account">Create Account</h2>
-                <input type="text" id="register-name" data-i18n-placeholder="name_placeholder" placeholder="Name" required>
-                <input type="email" id="register-email" data-i18n-placeholder="email_placeholder" placeholder="Email" required>
-                <input type="password" id="register-password" data-i18n-placeholder="password_placeholder" placeholder="Password" required>
-                <input type="password" id="register-confirm-password" data-i18n-placeholder="confirm_password_placeholder" placeholder="Confirm Password" required>
+                <h2>Create Account</h2>
+                <input type="text" id="register-name" placeholder="Name" required>
+                <input type="email" id="register-email" placeholder="Email" required>
+                <input type="password" id="register-password" placeholder="Password" required>
+                <input type="password" id="register-confirm-password" placeholder="Confirm Password" required>
                 <p id="register-error" class="error-message"></p>
-                <button id="register-submit" data-i18n="register_button">Register</button>
-                <a href="#" id="switch-to-login" data-i18n="switch_to_login">Already have an account? Login</a>
+                <button id="register-submit">Register</button>
+                <a href="#" id="switch-to-login">Already have an account? Login</a>
             </div>
         </div>
 
@@ -83,22 +75,22 @@
         <div id="forgot-password-popup" class="popup">
             <div class="popup-content">
                 <span class="close-btn">&times;</span>
-                <h2 data-i18n="forgot_password_title">Forgot Password</h2>
-                <input type="email" id="forgot-email" data-i18n-placeholder="email_placeholder" placeholder="Email" required>
+                <h2>Forgot Password</h2>
+                <input type="email" id="forgot-email" placeholder="Email" required>
                 <p id="forgot-error" class="error-message"></p>
-                <button id="forgot-submit" data-i18n="send_reset_link">Send Reset Link</button>
-                <a href="#" id="switch-to-login-from-forgot" data-i18n="back_to_login">Back to Login</a>
+                <button id="forgot-submit">Send Reset Link</button>
+                <a href="#" id="switch-to-login-from-forgot">Back to Login</a>
             </div>
         </div>
 
         <main>
             <section class="about-us">
                 <div class="about-content">
-                    <h1 data-i18n="about_title">About Equity Hubs</h1>
-                    <p data-i18n="about_p1">At Equity Hubs, we are dedicated to providing a secure and user-friendly platform for all your investment needs. Our mission is to empower individuals to take control of their financial future through smart investment strategies and cutting-edge technology.</p>
-                    <p data-i18n="about_p2">Founded in 2020, Equity Hubs has quickly grown to become a trusted name in the investment community. We offer a wide range of investment options, including stocks, bonds, mutual funds, and ETFs, all designed to help you achieve your financial goals.</p>
-                    <p data-i18n="about_p3">Our team of experienced professionals is committed to delivering exceptional service and support to our clients. We believe in transparency, integrity, and putting our clients' interests first.</p>
-                    <p data-i18n="about_p4">Whether you're a seasoned investor or just starting out, Equity Hubs provides the tools and resources you need to succeed in today's dynamic market. Join us today and take the first step towards a brighter financial future.</p>
+                    <h1>About Equity Hubs</h1>
+                    <p>At Equity Hubs, we are dedicated to providing a secure and user-friendly platform for all your investment needs. Our mission is to empower individuals to take control of their financial future through smart investment strategies and cutting-edge technology.</p>
+                    <p>Founded in 2020, Equity Hubs has quickly grown to become a trusted name in the investment community. We offer a wide range of investment options, including stocks, bonds, mutual funds, and ETFs, all designed to help you achieve your financial goals.</p>
+                    <p>Our team of experienced professionals is committed to delivering exceptional service and support to our clients. We believe in transparency, integrity, and putting our clients' interests first.</p>
+                    <p>Whether you're a seasoned investor or just starting out, Equity Hubs provides the tools and resources you need to succeed in today's dynamic market. Join us today and take the first step towards a brighter financial future.</p>
                 </div>
                 <div class="about-image">
                     <img src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="About Us Image">
@@ -107,39 +99,39 @@
         </main>
 
         <section class="testimonial-section">
-            <h2 class="section-title" data-i18n="testimonials_title">What Our Clients Say</h2>
+            <h2 class="section-title">What Our Clients Say</h2>
             <div class="carousel-container">
                 <div class="testimonials-wrapper" id="testimonials-wrapper">
                     <div class="testimonial-slide">
                         <div class="quote-icon">❝</div>
-                        <p class="quote-text" data-i18n="testimonial_1">"I've tried several trading platforms, but Equity Hub's execution speed is unmatched. The withdrawal process is incredibly fast, which gives me great peace of mind. Highly recommend for serious traders."</p>
+                        <p class="quote-text">"I've tried several trading platforms, but Equity Hub's execution speed is unmatched. The withdrawal process is incredibly fast, which gives me great peace of mind. Highly recommend for serious traders."</p>
                         <div class="client-info">
-                            <span class="client-name" data-i18n="client_name_1">Alex M.</span>
-                            <span class="client-location" data-i18n="client_location_1">London, UK</span>
+                            <span class="client-name">Alex M.</span>
+                            <span class="client-location">London, UK</span>
                         </div>
                     </div>
                     <div class="testimonial-slide">
                         <div class="quote-icon">❝</div>
-                        <p class="quote-text" data-i18n="testimonial_2">"As a beginner, the learning resources here were a game-changer. The platform is intuitive, and I love having access to so many different assets. It truly simplified my entry into investing."</p>
+                        <p class="quote-text">"As a beginner, the learning resources here were a game-changer. The platform is intuitive, and I love having access to so many different assets. It truly simplified my entry into investing."</p>
                         <div class="client-info">
-                            <span class="client-name" data-i18n="client_name_2">Sofia R.</span>
-                            <span class="client-location" data-i18n="client_location_2">Toronto, Canada</span>
+                            <span class="client-name">Sofia R.</span>
+                            <span class="client-location">Toronto, Canada</span>
                         </div>
                     </div>
                     <div class="testimonial-slide">
                         <div class="quote-icon">❝</div>
-                        <p class="quote-text" data-i18n="testimonial_3">"The low commission structure is fantastic for high-frequency trading. I appreciate the transparency and the live support chat, which is always responsive. A solid platform all around."</p>
+                        <p class="quote-text">"The low commission structure is fantastic for high-frequency trading. I appreciate the transparency and the live support chat, which is always responsive. A solid platform all around."</p>
                         <div class="client-info">
-                            <span class="client-name" data-i18n="client_name_3">Chen W.</span>
-                            <span class="client-location" data-i18n="client_location_3">Singapore</span>
+                            <span class="client-name">Chen W.</span>
+                            <span class="client-location">Singapore</span>
                         </div>
                     </div>
                     <div class="testimonial-slide">
                         <div class="quote-icon">❝</div>
-                        <p class="quote-text" data-i18n="testimonial_4">"Trading 'in seconds' is absolutely accurate. I've seen major improvements in my returns since switching due to the precision and speed of their interface. Plus, the dark theme is easy on the eyes."</p>
+                        <p class="quote-text">"Trading 'in seconds' is absolutely accurate. I've seen major improvements in my returns since switching due to the precision and speed of their interface. Plus, the dark theme is easy on the eyes."</p>
                         <div class="client-info">
-                            <span class="client-name" data-i18n="client_name_4">David H.</span>
-                            <span class="client-location" data-i18n="client_location_4">Sydney, Australia</span>
+                            <span class="client-name">David H.</span>
+                            <span class="client-location">Sydney, Australia</span>
                         </div>
                     </div>
                 </div>
@@ -155,28 +147,25 @@
         <footer>
             <div class="footer-content">
                 <div class="footer-col disclaimer-col">
-                    <div class="footer-logo">
-            
-                        Equity Hubs
-                    </div>
-                    <p class="disclaimer-text" data-i18n="disclaimer">
+                    <div class="footer-logo">Equity Hubs</div>
+                    <p class="disclaimer-text">
                         The Company does not provide services to citizens and/or residents of Australia, Austria, Belarus, Belgium, Bulgaria, Canada, Croatia, Republic of Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Iceland, Iran, Ireland, Israel, Italy, Latvia, Liechtenstein, Lithuania, Luxembourg, Malta, Myanmar, Netherlands, New Zealand, North Korea, Norway, Poland, Portugal, Puerto Rico, Romania, Russia, Singapore, Slovakia, Slovenia, South Sudan, Spain, Sudan, Sweden, Switzerland, UK, Ukraine, the USA, Yemen.
                     </p>
                 </div>
                 <div class="footer-col link-group">
-                    <h4 data-i18n="home">Home</h4>
+                    <h4>Home</h4>
                     <ul>
-                        <li><a href="index.html" data-i18n="nav_home">Home</a></li>
-                        <li><a href="about.html" data-i18n="nav_about">About Us</a></li>
-                        <li><a href="contact.html" data-i18n="nav_contacts">Contacts</a></li>
-                        <li><a href="investment.html" data-i18n="nav_investment">Investment</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contacts</a></li>
+                        <li><a href="investment.html">Investment</a></li>
                     </ul>
                 </div>
                 <div class="footer-col link-group">
-                    <h4 data-i18n="contacts">Contacts</h4>
-                    <p data-i18n="email">Email: contact@equityhubz.org</p>
-                    <p data-i18n="phone">Phone: +16066020676</p>
-                    <p data-i18n="address">Address: 123 Finance St, New York, NY</p>
+                    <h4>Contacts</h4>
+                    <p>Email: contact@equityhubz.org</p>
+                    <p>Phone: +16066020676</p>
+                    <p>Address: 123 Finance St, New York, NY</p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -186,10 +175,11 @@
                     <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                     <a href="#"><i class="fa-brands fa-instagram"></i></a>
                 </div>
-                <p data-i18n="copyright">&copy; 2010 Equity Hubs. All rights reserved.</p>
+                <p>&copy; 2010 Equity Hubs. All rights reserved.</p>
             </div>
         </footer>
     </div>
+
     <script src="index.js"></script>
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
@@ -223,225 +213,6 @@
         const loginError = document.getElementById('login-error');
         const registerError = document.getElementById('register-error');
         const forgotError = document.getElementById('forgot-error');
-        const languageSwitcher = document.getElementById('languageSwitcher');
-
-        let currentLang = 'en';
-
-        const translations = {
-            en: {
-                title: "Equity Hubs",
-                alert: "⚠️ BE AWARE OF FRAUD: Equity Hubs will **NEVER** ask you to send money to a personal account. Always deposit funds through the secure, verified platform channels. Protect your investment.",
-                nav_home: "Home",
-                nav_about: "About Us",
-                nav_contacts: "Contacts",
-                nav_investment: "Investment",
-                login: "Login",
-                register: "Register",
-                trade: "Trade",
-                login_title: "Login",
-                email_placeholder: "Email",
-                password_placeholder: "Password",
-                login_button: "Login",
-                forgot_password: "Forgot Password?",
-                switch_to_register: "Don't have an account? Register",
-                create_account: "Create Account",
-                name_placeholder: "Name",
-                confirm_password_placeholder: "Confirm Password",
-                register_button: "Register",
-                switch_to_login: "Already have an account? Login",
-                forgot_password_title: "Forgot Password",
-                send_reset_link: "Send Reset Link",
-                back_to_login: "Back to Login",
-                about_title: "About Equity Hubs",
-                about_p1: "At Equity Hubs, we are dedicated to providing a secure and user-friendly platform for all your investment needs. Our mission is to empower individuals to take control of their financial future through smart investment strategies and cutting-edge technology.",
-                about_p2: "Founded in 2020, Equity Hubs has quickly grown to become a trusted name in the investment community. We offer a wide range of investment options, including stocks, bonds, mutual funds, and ETFs, all designed to help you achieve your financial goals.",
-                about_p3: "Our team of experienced professionals is committed to delivering exceptional service and support to our clients. We believe in transparency, integrity, and putting our clients' interests first.",
-                about_p4: "Whether you're a seasoned investor or just starting out, Equity Hubs provides the tools and resources you need to succeed in today's dynamic market. Join us today and take the first step towards a brighter financial future.",
-                testimonials_title: "What Our Clients Say",
-                testimonial_1: "I've tried several trading platforms, but Equity Hub's execution speed is unmatched. The withdrawal process is incredibly fast, which gives me great peace of mind. Highly recommend for serious traders.",
-                client_name_1: "Alex M.",
-                client_location_1: "London, UK",
-                testimonial_2: "As a beginner, the learning resources here were a game-changer. The platform is intuitive, and I love having access to so many different assets. It truly simplified my entry into investing.",
-                client_name_2: "Sofia R.",
-                client_location_2: "Toronto, Canada",
-                testimonial_3: "The low commission structure is fantastic for high-frequency trading. I appreciate the transparency and the live support chat, which is always responsive. A solid platform all around.",
-                client_name_3: "Chen W.",
-                client_location_3: "Singapore",
-                testimonial_4: "Trading 'in seconds' is absolutely accurate. I've seen major improvements in my returns since switching due to the precision and speed of their interface. Plus, the dark theme is easy on the eyes.",
-                client_name_4: "David H.",
-                client_location_4: "Sydney, Australia",
-                disclaimer: "The Company does not provide services to citizens and/or residents of Australia, Austria, Belarus, Belgium, Bulgaria, Canada, Croatia, Republic of Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Iceland, Iran, Ireland, Israel, Italy, Latvia, Liechtenstein, Lithuania, Luxembourg, Malta, Myanmar, Netherlands, New Zealand, North Korea, Norway, Poland, Portugal, Puerto Rico, Romania, Russia, Singapore, Slovakia, Slovenia, South Sudan, Spain, Sudan, Sweden, Switzerland, UK, Ukraine, the USA, Yemen.",
-                home: "Home",
-                contacts: "Contacts",
-                email: "Email: contact@equityhubz.org",
-                phone: "Phone: +16066020676",
-                address: "Address: 123 Finance St, New York, NY",
-                copyright: "&copy; 2010 Equity Hubs. All rights reserved."
-            },
-            fr: {
-                title: "Equity Hubs",
-                alert: "⚠️ ATTENTION AUX FRAUDES : Equity Hubs ne vous demandera **JAMAIS** d'envoyer de l'argent sur un compte personnel. Déposez toujours vos fonds via les canaux sécurisés et vérifiés de la plateforme. Protégez votre investissement.",
-                nav_home: "Accueil",
-                nav_about: "À propos de nous",
-                nav_contacts: "Contacts",
-                nav_investment: "Investissement",
-                login: "Connexion",
-                register: "Inscription",
-                trade: "Trader",
-                login_title: "Connexion",
-                email_placeholder: "Email",
-                password_placeholder: "Mot de passe",
-                login_button: "Connexion",
-                forgot_password: "Mot de passe oublié ?",
-                switch_to_register: "Vous n'avez pas de compte ? Inscrivez-vous",
-                create_account: "Créer un compte",
-                name_placeholder: "Nom",
-                confirm_password_placeholder: "Confirmer le mot de passe",
-                register_button: "Inscription",
-                switch_to_login: "Vous avez déjà un compte ? Connexion",
-                forgot_password_title: "Mot de passe oublié",
-                send_reset_link: "Envoyer le lien de réinitialisation",
-                back_to_login: "Retour à la connexion",
-                about_title: "À propos d'Equity Hubs",
-                about_p1: "Chez Equity Hubs, nous nous engageons à fournir une plateforme sécurisée et conviviale pour tous vos besoins d'investissement. Notre mission est de permettre aux individus de prendre le contrôle de leur avenir financier grâce à des stratégies d'investissement intelligentes et une technologie de pointe.",
-                about_p2: "Fondé en 2020, Equity Hubs est rapidement devenu un nom de confiance dans la communauté des investisseurs. Nous proposons une large gamme d'options d'investissement, y compris des actions, des obligations, des fonds communs de placement et des ETF, tous conçus pour vous aider à atteindre vos objectifs financiers.",
-                about_p3: "Notre équipe de professionnels expérimentés s'engage à offrir un service et un soutien exceptionnels à nos clients. Nous croyons en la transparence, l'intégrité et la priorité donnée aux intérêts de nos clients.",
-                about_p4: "Que vous soyez un investisseur chevronné ou que vous débutiez, Equity Hubs fournit les outils et les ressources nécessaires pour réussir dans le marché dynamique d'aujourd'hui. Rejoignez-nous dès aujourd'hui et faites le premier pas vers un avenir financier plus brillant.",
-                testimonials_title: "Ce que disent nos clients",
-                testimonial_1: "J'ai essayé plusieurs plateformes de trading, mais la vitesse d'exécution d'Equity Hubs est inégalée. Le processus de retrait est incroyablement rapide, ce qui me procure une grande tranquillité d'esprit. Je recommande vivement pour les traders sérieux.",
-                client_name_1: "Alex M.",
-                client_location_1: "Londres, Royaume-Uni",
-                testimonial_2: "En tant que débutant, les ressources d'apprentissage ici ont changé la donne. La plateforme est intuitive, et j'apprécie d'avoir accès à autant d'actifs différents. Cela a vraiment simplifié mon entrée dans l'investissement.",
-                client_name_2: "Sofia R.",
-                client_location_2: "Toronto, Canada",
-                testimonial_3: "La structure de commissions faibles est fantastique pour le trading à haute fréquence. J'apprécie la transparence et le chat de support en direct, toujours réactif. Une plateforme solide dans l'ensemble.",
-                client_name_3: "Chen W.",
-                client_location_3: "Singapour",
-                testimonial_4: "Trader 'en quelques secondes' est absolument exact. J'ai vu des améliorations majeures dans mes rendements depuis que j'ai changé grâce à la précision et la vitesse de leur interface. De plus, le thème sombre est agréable pour les yeux.",
-                client_name_4: "David H.",
-                client_location_4: "Sydney, Australie",
-                disclaimer: "La société ne fournit pas de services aux citoyens et/ou résidents de l'Australie, l'Autriche, la Biélorussie, la Belgique, la Bulgarie, le Canada, la Croatie, la République de Chypre, la République tchèque, le Danemark, l'Estonie, la Finlande, la France, l'Allemagne, la Grèce, la Hongrie, l'Islande, l'Iran, l'Irlande, Israël, l'Italie, la Lettonie, le Liechtenstein, la Lituanie, le Luxembourg, Malte, le Myanmar, les Pays-Bas, la Nouvelle-Zélande, la Corée du Nord, la Norvège, la Pologne, le Portugal, Porto Rico, la Roumanie, la Russie, Singapour, la Slovaquie, la Slovénie, le Soudan du Sud, l'Espagne, le Soudan, la Suède, la Suisse, le Royaume-Uni, l'Ukraine, les États-Unis, le Yémen.",
-                home: "Accueil",
-                contacts: "Contacts",
-                email: "Email : contact@equityhubz.org",
-                phone: "Téléphone : +16066020676",
-                address: "Adresse : 123 Finance St, New York, NY",
-                copyright: "&copy; 2010 Equity Hubs. Tous droits réservés."
-            },
-            es: {
-                title: "Equity Hubs",
-                alert: "⚠️ CUIDADO CON EL FRAUDE: Equity Hubs **NUNCA** te pedirá que envíes dinero a una cuenta personal. Siempre deposita fondos a través de los canales seguros y verificados de la plataforma. Protege tu inversión.",
-                nav_home: "Inicio",
-                nav_about: "Sobre nosotros",
-                nav_contacts: "Contactos",
-                nav_investment: "Inversión",
-                login: "Iniciar sesión",
-                register: "Registrarse",
-                trade: "Operar",
-                login_title: "Iniciar sesión",
-                email_placeholder: "Correo electrónico",
-                password_placeholder: "Contraseña",
-                login_button: "Iniciar sesión",
-                forgot_password: "¿Olvidaste tu contraseña?",
-                switch_to_register: "¿No tienes una cuenta? Regístrate",
-                create_account: "Crear cuenta",
-                name_placeholder: "Nombre",
-                confirm_password_placeholder: "Confirmar contraseña",
-                register_button: "Registrarse",
-                switch_to_login: "¿Ya tienes una cuenta? Inicia sesión",
-                forgot_password_title: "Olvidé mi contraseña",
-                send_reset_link: "Enviar enlace de restablecimiento",
-                back_to_login: "Volver al inicio de sesión",
-                about_title: "Sobre Equity Hubs",
-                about_p1: "En Equity Hubs, estamos dedicados a proporcionar una plataforma segura y fácil de usar para todas tus necesidades de inversión. Nuestra misión es empoderar a los individuos para que tomen el control de su futuro financiero a través de estrategias de inversión inteligentes y tecnología de vanguardia.",
-                about_p2: "Fundado en 2020, Equity Hubs se ha convertido rápidamente en un nombre de confianza en la comunidad de inversores. Ofrecemos una amplia gama de opciones de inversión, incluyendo acciones, bonos, fondos mutuos y ETFs, todos diseñados para ayudarte a alcanzar tus objetivos financieros.",
-                about_p3: "Nuestro equipo de profesionales experimentados está comprometido a ofrecer un servicio y soporte excepcionales a nuestros clientes. Creemos en la transparencia, la integridad y en poner los intereses de nuestros clientes en primer lugar.",
-                about_p4: "Ya seas un inversor experimentado o estés empezando, Equity Hubs proporciona las herramientas y recursos que necesitas para tener éxito en el mercado dinámico de hoy. Únete a nosotros hoy y da el primer paso hacia un futuro financiero más brillante.",
-                testimonials_title: "Lo que dicen nuestros clientes",
-                testimonial_1: "He probado varias plataformas de trading, pero la velocidad de ejecución de Equity Hubs es inigualable. El proceso de retiro es increíblemente rápido, lo que me da gran tranquilidad. Muy recomendable para traders serios.",
-                client_name_1: "Alex M.",
-                client_location_1: "Londres, Reino Unido",
-                testimonial_2: "Como principiante, los recursos de aprendizaje aquí fueron un cambio de juego. La plataforma es intuitiva y me encanta tener acceso a tantos activos diferentes. Realmente simplificó mi entrada en la inversión.",
-                client_name_2: "Sofia R.",
-                client_location_2: "Toronto, Canadá",
-                testimonial_3: "La estructura de comisiones bajas es fantástica para el trading de alta frecuencia. Aprecio la transparencia y el chat de soporte en vivo, que siempre es receptivo. Una plataforma sólida en general.",
-                client_name_3: "Chen W.",
-                client_location_3: "Singapur",
-                testimonial_4: "Operar 'en segundos' es absolutamente preciso. He visto mejoras importantes en mis retornos desde que cambié debido a la precisión y velocidad de su interfaz. Además, el tema oscuro es agradable para los ojos.",
-                client_name_4: "David H.",
-                client_location_4: "Sydney, Australia",
-                disclaimer: "La compañía no proporciona servicios a ciudadanos y/o residentes de Australia, Austria, Bielorrusia, Bélgica, Bulgaria, Canadá, Croacia, República de Chipre, República Checa, Dinamarca, Estonia, Finlandia, Francia, Alemania, Grecia, Hungría, Islandia, Irán, Irlanda, Israel, Italia, Letonia, Liechtenstein, Lituania, Luxemburgo, Malta, Myanmar, Países Bajos, Nueva Zelanda, Corea del Norte, Noruega, Polonia, Portugal, Puerto Rico, Rumania, Rusia, Singapur, Eslovaquia, Eslovenia, Sudán del Sur, España, Sudán, Suecia, Suiza, Reino Unido, Ucrania, Estados Unidos, Yemen.",
-                home: "Inicio",
-                contacts: "Contactos",
-                email: "Correo electrónico: contact@equityhubz.org",
-                phone: "Teléfono: +16066020676",
-                address: "Dirección: 123 Finance St, New York, NY",
-                copyright: "&copy; 2010 Equity Hubs. Todos los derechos reservados."
-            }
-        };
-
-        i18next.init({
-            lng: 'en',
-            resources: {
-                en: { translation: translations.en },
-                fr: { translation: translations.fr },
-                es: { translation: translations.es }
-            }
-        }, function(err, t) {
-            updateContent();
-        });
-
-        async function translateText(text, targetLang) {
-            try {
-                const response = await fetch('https://libretranslate.de/translate', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        q: text,
-                        source: 'auto',
-                        target: targetLang,
-                        format: 'text'
-                    }),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                const data = await response.json();
-                return data.translatedText || text;
-            } catch (error) {
-                console.error('Translation failed:', error);
-                return text;
-            }
-        }
-
-        async function updateContent() {
-            document.querySelectorAll('[data-i18n]').forEach(async el => {
-                const key = el.getAttribute('data-i18n');
-                let text = i18next.t(key);
-                if (text === key) {
-                    text = await translateText(key, currentLang);
-                }
-                el.textContent = text;
-            });
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(async el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                let text = i18next.t(key);
-                if (text === key) {
-                    text = await translateText(key, currentLang);
-                }
-                el.placeholder = text;
-            });
-            document.title = i18next.t('title');
-
-            const errorElements = [loginError, registerError, forgotError];
-            errorElements.forEach(async el => {
-                if (el.textContent && el.style.display !== 'none') {
-                    el.textContent = await translateText(el.textContent, currentLang);
-                }
-            });
-        }
-
-        languageSwitcher.addEventListener('change', async (e) => {
-            currentLang = e.target.value;
-            i18next.changeLanguage(currentLang, updateContent);
-        });
 
         function showPopup(popup) {
             popup.style.display = 'flex';
@@ -491,7 +262,7 @@
                 await signInWithEmailAndPassword(auth, email, password);
                 hidePopup(loginPopup);
             } catch (error) {
-                loginError.textContent = await translateText(error.message, currentLang);
+                loginError.textContent = error.message;
                 loginError.style.display = 'block';
             }
         });
@@ -503,13 +274,13 @@
             const confirmPassword = document.getElementById('register-confirm-password').value;
 
             if (!name) {
-                registerError.textContent = await translateText('Name is required', currentLang);
+                registerError.textContent = 'Name is required';
                 registerError.style.display = 'block';
                 return;
             }
 
             if (password !== confirmPassword) {
-                registerError.textContent = await translateText('Passwords do not match', currentLang);
+                registerError.textContent = 'Passwords do not match';
                 registerError.style.display = 'block';
                 return;
             }
@@ -519,7 +290,7 @@
                 await updateProfile(userCredential.user, { displayName: name });
                 hidePopup(registerPopup);
             } catch (error) {
-                registerError.textContent = await translateText(error.message, currentLang);
+                registerError.textContent = error.message;
                 registerError.style.display = 'block';
             }
         });
@@ -528,10 +299,10 @@
             const email = document.getElementById('forgot-email').value;
             try {
                 await sendPasswordResetEmail(auth, email);
-                alert(await translateText('Password reset email sent!', currentLang));
+                alert('Password reset email sent!');
                 hidePopup(forgotPasswordPopup);
             } catch (error) {
-                forgotError.textContent = await translateText(error.message, currentLang);
+                forgotError.textContent = error.message;
                 forgotError.style.display = 'block';
             }
         });
@@ -550,8 +321,8 @@
                 tradeButtons.style.display = 'none';
             }
         });
-        </script>
     </script>
+
     <!-- Smartsupp Live Chat script -->
 <script type="text/javascript">
 var _smartsupp = _smartsupp || {};
@@ -563,7 +334,10 @@ window.smartsupp||(function(d) {
   c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
 })(document);
 </script>
-<noscript> Powered by <a href=“https://www.smartsupp.com” target=“_blank”>Equity Hubz</a></noscript>
+<noscript> Powered by <a href="https://www.smartsupp.com" target="_blank">Equity Hubz</a></noscript>
 
+<div data-key="Translator Dropdown" class="ft" id="ftgug97c7g"></div>
+    <script src="https://wdg.fouita.com/widgets/0x36a32f.js"></script>
+    <script src="language.js"></script>
 </body>
 </html>

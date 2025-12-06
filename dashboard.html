@@ -281,6 +281,9 @@
                     <li><a href="deposit.html"><span class="icon"><i class="fa-regular fa-credit-card"></i></span><span class="text">Deposit</span></a></li>
                     <li><a href="withdraw.html"><span class="icon"><i class="fa-regular fa-briefcase"></i></span><span class="text">Withdraw</span></a></li>
                     <li><a href="profile.html"><span class="icon"><i class="fa-regular fa-address-card"></i></span><span class="text">Profile</span></a></li>
+                    <div id="ftgug97c7g">
+                   
+                    </div>
                     <li><a href="#" id="logout-link"><span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span><span class="text">Logout</span></a></li>
                 </ul>
             </nav>
@@ -553,75 +556,13 @@
     })(document);
     </script>
     <noscript> Powered by <a href="https://www.smartsupp.com" target="_blank">Equity Hubz</a></noscript>
+
+    <!-- Translator Widget -->
 <div data-key="Translator Dropdown" class="ft" id="ftgug97c7g"></div>
 <script src="https://wdg.fouita.com/widgets/0x36a32f.js"></script>
-<script>
-  // Improved script to handle translator language persistence more reliably
-  (function() {
-    const TRANSLATOR_ID = '#ftgug97c7g';
-    const STORAGE_KEY = 'selectedLanguage';
-    let hasInitialized = false;
 
-    function saveLanguage(lang) {
-      localStorage.setItem(STORAGE_KEY, lang);
-      console.log('Language saved:', lang);
-    }
+<!-- Persistent Language Script -->
+<script src="language.js"></script>
 
-    function loadAndApplyLanguage() {
-      const savedLang = localStorage.getItem(STORAGE_KEY);
-      if (!savedLang || hasInitialized) return;
-
-      const select = document.querySelector(TRANSLATOR_ID + ' select');
-      if (select && select.value !== savedLang) {
-        select.value = savedLang;
-        // Dispatch change event to trigger translation
-        const event = new Event('change', { bubbles: true });
-        select.dispatchEvent(event);
-        hasInitialized = true;
-        console.log('Translator language restored to:', savedLang);
-      }
-    }
-
-    function initializeTranslator() {
-      const select = document.querySelector(TRANSLATOR_ID + ' select');
-      if (!select) return false;
-
-      // Add change listener if not already added
-      if (!select.dataset.listenerAdded) {
-        select.addEventListener('change', function() {
-          saveLanguage(this.value);
-        });
-        select.dataset.listenerAdded = 'true';
-      }
-
-      // Apply saved language if available
-      loadAndApplyLanguage();
-
-      return true;
-    }
-
-    // Poll for the select element until it's available (widget loaded)
-    const pollInterval = setInterval(() => {
-      if (initializeTranslator()) {
-        clearInterval(pollInterval);
-      }
-    }, 500); // Check every 500ms
-
-    // Fallback: stop polling after 10 seconds to avoid infinite loop
-    setTimeout(() => {
-      clearInterval(pollInterval);
-      if (!hasInitialized) {
-        console.warn('Translator widget not found after polling; persistence may not work.');
-      }
-    }, 10000);
-
-    // Also try on DOMContentLoaded and window load as backup
-    ['DOMContentLoaded', 'load'].forEach(event => {
-      document.addEventListener(event, () => {
-        setTimeout(initializeTranslator, 1000);
-      });
-    });
-  })();
-</script>
 </body>
 </html>
