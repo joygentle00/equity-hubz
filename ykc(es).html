@@ -166,23 +166,7 @@
     const CLOUDINARY_UPLOAD_PRESET = 'deposit_proofs'; // SAME AS DEPOSIT
 
     /* ---------- i18n ---------- */
-    i18next.init({
-        lng: 'en',
-        resources: { 
-            en: { translation: {
-                ykc_verification: "YKC Verification",
-                full_name: "Full Name", date_of_birth: "Date of Birth", address: "Address",
-                id_type: "ID Type", id_document: "Upload ID Document",
-                submit_verification: "Submit Verification",
-                status_approved: "Approved! All fields verified.",
-                status_pending: "Pending admin review...",
-                status_rejected: "Rejected. Please resubmit.",
-                uploading: "Uploading document...",
-                upload_failed: "Upload failed. Try again."
-            }}
-        }
-    }, () => document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = i18next.t(el.dataset.i18n)));
-
+   
     /* ---------- File Name Display ---------- */
     document.getElementById('id-document').addEventListener('change', function() {
         const fileName = this.files[0]?.name || 'No file chosen';

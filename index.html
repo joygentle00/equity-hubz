@@ -130,8 +130,19 @@
         }
         .popup-content a:hover {
             text-decoration: underline;
+        }   
+        .language{
+            margin-left: 20px;
         }
+        #language-select{
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 10px;
+        }
+
     </style>
+
 </head>
 <body>
     <!-- Loader -->
@@ -160,7 +171,7 @@
                     <a href="investment.html">Investment</a>
                 </div>    
                <div class="language">
-                    <select id="language-select" >
+                    <select id="language-select" onchange="changeLanguage(this.value)" >
                         <option value="index.html" selected>ENGLISH </option>
                         <option value="index(es).html">SPANISH</option>
     
