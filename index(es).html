@@ -246,6 +246,81 @@
 .language-dropdown.open .lang-menu {
     display: block;
 }
+.btc-calculator{
+  box-sizing: border-box;
+  width: 320px;                 /* adjust as needed */
+  max-width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  backdrop-filter: blur(6px);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.04);
+  color: #e6eef8;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+/* Small structural helpers that belong to the calculator block */
+.btc-calculator .row{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.btc-calculator label{
+  font-size: 0.79rem;
+  opacity: 0.9;
+}
+
+.btc-calculator .value{
+  font-weight:600;
+  font-size:1.05rem;
+  text-align:right;
+}
+
+/* Inputs styled to look native but consistent */
+.btc-calculator input[type="number"],
+.btc-calculator input[type="text"],
+.btc-calculator select{
+  width:100%;
+  padding:8px 10px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.06);
+  background: rgba(0,0,0,0.28);
+  color:inherit;
+  font-size:0.95rem;
+  outline:none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+/* Primary action style (for a button inside the block if added) */
+.btc-calculator .btn{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  justify-content:center;
+  padding:10px 14px;
+  border-radius:10px;
+  border: none;
+  cursor:pointer;
+  font-weight:600;
+  background: linear-gradient(90deg,#f7931a,#ffb84d); /* BTC-like accent */
+  color:#08101a;
+  box-shadow: 0 6px 14px rgba(247,147,26,0.18);
+}
+
+/* Compact responsive tweak */
+@media (max-width: 420px){
+  .btc-calculator{ padding:12px; width:100%;}
+  .btc-calculator .row{ flex-direction:column; align-items:stretch; }
+  .btc-calculator .value{ text-align:left; }
+}
+
     </style>
 
 </head>
@@ -518,34 +593,32 @@
                     </div>
                 </div>
             </main>
-        </section>
-        <div class="hero-image-section">
-            <div class="trading-mockup">
-                <h1 style="font-size: 2rem;">Conversor de divisas</h1>
-                <header class="mockup-asset-info"> <span class="mockup-asset-name">EUR/USD</span> <span id="current-price" class="mockup-current-price">1,09540</span> </header>
-                <div id="chart-container" class="mockup-chart-container"></div>
-                <div class="mockup-controls-panel">
-                    <div class="mockup-control-group">
-                        <label for="expiry-time">Tiempo</label>
-                        <select id="expiry-time">
-                            <option value="60">1 minuto</option>
-                            <option value="300" selected="">5 minutos</option>
-                            <option value="900">15 minutos</option>
-                        </select>
-                    </div>
-                    <div class="mockup-control-group">
-                        <label for="investment-amount">Importe ($)</label>
-                        <input type="number" id="investment-amount" value="100" min="10">
-                    </div>
-                </div>
-                <div class="mockup-trade-buttons">
-                    <button id="call-button" class="mockup-trade-button mockup-call">LLAMADA (Superior)</button>
-                    <button id="put-button" class="mockup-trade-button mockup-put">PUT (Inferior)</button>
-                </div>
-                <div id="results-log" class="mockup-results-log">
-                    <p>Bit&#225;cora comercial:</p>
-                </div>
+<div class="hero-image-section">
+            <div class="btc-calculator">
+            <h2>Bitcoin Calculator</h2>
+
+            <div class="row">
+                <label>Amount in BTC:</label>
+                <input type="number" id="btcInput" placeholder="Enter BTC" step="0.000001">
             </div>
+
+            <div class="row">
+                <label>Select Currency:</label>
+                <select id="currencySelect">
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                    <option value="NGN">NGN</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <label>Converted Value:</label>
+                <div class="value" id="result">0.00</div>
+            </div>
+
+            <button class="btn" onclick="convertBTC()">Convert</button>
+        </div>
         </div>
         <section class="how-it-works-section">
             <h2 class="section-title">C&#243;mo funciona</h2>
@@ -1021,5 +1094,62 @@ setInterval(() => {
 })();
 
 </script>
+<script>
+async function convertBTC() {
+    const btc = parseFloat(document.getElementById("btcInput").value);
+    const currency = document.getElementById("currencySelect").value;
+
+    if (isNaN(btc)) {
+        document.getElementById("result").innerText = "Enter a valid BTC amount";
+        return;
+    }
+
+    // Fetch BTC price
+    const url = `https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${currency}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const price = data.bitcoin[currency.toLowerCase()];
+        const converted = btc * price;
+
+        document.getElementById("result").innerText =
+            converted.toLocaleString(undefined, { maximumFractionDigits: 2 }) +
+            " " + currency;
+
+    } catch (error) {
+        document.getElementById("result").innerText = "Error fetching price";
+    }
+}
+</script>
+<script>
+async function convertBTC() {
+    const btc = parseFloat(document.getElementById("btcInput").value);
+    const currency = document.getElementById("currencySelect").value;
+
+    if (isNaN(btc)) {
+        document.getElementById("result").innerText = "Enter a valid BTC amount";
+        return;
+    }
+
+    // Fetch BTC price
+    const url = `https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${currency}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const price = data.bitcoin[currency.toLowerCase()];
+        const converted = btc * price;
+
+        document.getElementById("result").innerText =
+            converted.toLocaleString(undefined, { maximumFractionDigits: 2 }) +
+            " " + currency;
+
+    } catch (error) {
+        document.getElementById("result").innerText = "Error fetching price";
+    }
+}
+</script>
+
 </body>
 </html>
