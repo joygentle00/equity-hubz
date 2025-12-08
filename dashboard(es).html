@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Panel de usuario</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo.jpg" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
@@ -538,7 +539,7 @@
         }
         document.getElementById('logout-link').onclick = e => {
             e.preventDefault();
-            signOut(auth).then(() => location.href = 'index.html');
+            signOut(auth).then(() => location.href = 'index(es).html');
         };
         document.querySelector('.hamburger').onclick = () => {
             document.getElementById('sidebar').classList.toggle('show');

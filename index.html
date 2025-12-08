@@ -6,7 +6,7 @@
     <title>Equity Hubs</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/jpeg" href="favicon.ico">
+    <link rel="icon" href="logo.jpg" type="image/x-icon">
     <style>
         /* Loader styles */
         .loader {
@@ -140,6 +140,56 @@
             border: 1px solid #ccc;
             font-size: 10px;
         }
+        .language-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.lang-btn {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 6px;
+    gap: 8px;
+}
+
+.lang-btn img {
+    width: 22px;
+}
+
+.lang-menu {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    border-radius: 6px;
+    display: none;
+    width: 150px;
+    z-index: 10;
+}
+
+.lang-menu .lang-option {
+    padding: 8px;
+    display: flex;
+    cursor: pointer;
+    gap: 8px;
+    align-items: center;
+}
+
+.lang-menu .lang-option img {
+    width: 20px;
+}
+
+.lang-menu .lang-option:hover {
+    background: #eee;
+}
+
+.language-dropdown.open .lang-menu {
+    display: block;
+}
 
     </style>
 
@@ -170,13 +220,24 @@
                     <a href="contact.html">Contacts</a>
                     <a href="investment.html">Investment</a>
                 </div>    
-               <div class="language">
-                    <select id="language-select" onchange="changeLanguage(this.value)" >
-                        <option value="index.html" selected>ENGLISH </option>
-                        <option value="index(es).html">SPANISH</option>
-    
-                    </select>
+               <div class="language-dropdown">
+                 <button id="current-language" class="lang-btn">
+                        <img id="current-flag" src="uk.svg" alt=""> 
+                        <span id="current-text">English</span>
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+
+                    <div class="lang-menu">
+                        <div class="lang-option" data-lang="index.html" data-flag="uk.svg" data-name="English">
+                            <img src="uk.svg"> English
+                        </div>
+
+                        <div class="lang-option" data-lang="index(es).html" data-flag="spanish.png" data-name="Spanish">
+                            <img src="spanish.png"> Spanish
+                        </div>
+                    </div>
                 </div>
+
                 <div class="nav-right-buttons auth-buttons">
                     <a href="#" class="login-btn">Login</a>
                     <a href="#" class="register-btn">Register <i class="fa-solid fa-angle-right"></i></a>
@@ -443,32 +504,8 @@
         <div class="hero-image-section">
             <div class="trading-mockup">
                 <h1 style="font-size: 2rem;">Currency Converter</h1>
-                <header class="mockup-asset-info">
-                    <span class="mockup-asset-name">EUR/USD</span>
-                    <span id="current-price" class="mockup-current-price">1.09540</span>
-                </header>
-                <div id="chart-container" class="mockup-chart-container"></div>
-                <div class="mockup-controls-panel">
-                    <div class="mockup-control-group">
-                        <label for="expiry-time">Time</label>
-                        <select id="expiry-time">
-                            <option value="60">1 Min</option>
-                            <option value="300" selected>5 Min</option>
-                            <option value="900">15 Min</option>
-                        </select>
-                    </div>
-                    <div class="mockup-control-group">
-                        <label for="investment-amount">Amount ($)</label>
-                        <input type="number" id="investment-amount" value="100" min="10">
-                    </div>
-                </div>
-                <div class="mockup-trade-buttons">
-                    <button id="call-button" class="mockup-trade-button mockup-call">CALL (Higher)</button>
-                    <button id="put-button" class="mockup-trade-button mockup-put">PUT (Lower)</button>
-                </div>
-                <div id="results-log" class="mockup-results-log">
-                    <p>Trade Log:</p>
-                </div>
+
+                <iframe src="https://www.exchangerate-widget.com/widget/ER2.php?l=en&f=1&t=1&v=0&d=0&from=USD&to=EUR,GBP,CAD,AUD,JPY,CHF,CNY,INR" width="100%" height="400" frameborder="0" scrolling="no"></iframe>
             </div>
         </div>
         <section class="how-it-works-section">
@@ -889,24 +926,87 @@ window.addEventListener('load', () => {
 });
 </script>
 <script>
-    // Get the dropdown
-    const languageSelect = document.getElementById('language-select');
-
-    // Load saved language from previous visit
-    const savedLang = localStorage.getItem('selectedLanguage');
-    if (savedLang) {
-        languageSelect.value = savedLang;
+// Testimonial Carousel
+const testimonialsWrapper = document.getElementById('testimonials-wrapper');
+const dots = document.getElementById('carousel-dots').getElementsByClassName('dot');
+let currentSlide = 0;
+function showSlide(index) {
+    const offset = -index * 100;
+    testimonialsWrapper.style.transform = `translateX(${offset}%)`;
+    for (let i = 0; i < dots.length; i++) {
+        dots[i].classList.toggle('active', i === index);
     }
-
-    // Redirect when language changes and save selection
-    languageSelect.addEventListener('change', function() {
-        const selectedPage = this.value;
-        localStorage.setItem('selectedLanguage', selectedPage);
-        if (selectedPage) {
-            window.location.href = selectedPage;
-        }
+    currentSlide = index;
+}
+for (let i = 0; i < dots.length; i++) {
+    dots[i].addEventListener('click', () => {
+        showSlide(i);
     });
+}
+// Auto-advance slides every 10 seconds
+setInterval(() => {
+    let nextSlide = (currentSlide + 1) % dots.length;
+    showSlide(nextSlide);
+}, 10000);
+
 </script>
 
+
+</script>
+<script>
+    (function () {
+    const STORAGE_KEY = "preferredLanguage";
+    const dropdown = document.querySelector(".language-dropdown");
+    const currentFlag = document.getElementById("current-flag");
+    const currentText = document.getElementById("current-text");
+
+    // Determine current page file
+    let currentPage = location.pathname.split("/").pop();
+    if (!currentPage) currentPage = "index.html"; // treat root as index.html
+
+    // Load saved language safely
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved && saved !== currentPage) {
+        // Check if an element with this language exists
+        const savedOption = document.querySelector(`.lang-option[data-lang="${saved}"]`);
+        if (savedOption) {
+            // Only redirect if not already on root vs saved page
+            if (!(currentPage === "index.html" && saved === "index.html")) {
+                location.href = saved;
+                return;
+            }
+        }
+    }
+
+    // Set current language visually
+    document.querySelectorAll(".lang-option").forEach(option => {
+        const file = option.dataset.lang;
+        const flag = option.dataset.flag;
+        const name = option.dataset.name;
+
+        if (file === currentPage) {
+            currentFlag.src = "flags/" + flag; // Make sure flags exist
+            currentText.textContent = name;
+        }
+
+        option.addEventListener("click", () => {
+            if (file !== currentPage) {
+                localStorage.setItem(STORAGE_KEY, file);
+                location.href = file;
+            }
+        });
+    });
+
+    // Toggle dropdown
+    document.getElementById("current-language")
+        .addEventListener("click", () => dropdown.classList.toggle("open"));
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", e => {
+        if (!dropdown.contains(e.target)) dropdown.classList.remove("open");
+    });
+})();
+
+</script>
 </body>
 </html>

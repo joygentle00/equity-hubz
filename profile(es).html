@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Panel de usuario</title>
+        <link rel="icon" href="logo.jpg" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
@@ -596,7 +597,7 @@
         logoutLink.addEventListener('click', (e) => {
             e.preventDefault();
             signOut(auth).then(() => {
-                window.location.href = 'index.html';
+                window.location.href = 'index(es).html';
             }).catch((error) => {
                 console.error('Logout failed:', error.message);
                 alert('Logout failed. Please try again.');

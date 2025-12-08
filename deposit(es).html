@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Depositar fondos</title>
+        <link rel="icon" href="logo.jpg" type="image/x-icon">
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self';
         script-src 'self' https://s3.tradingview.com https://www.tradingview.com https://www.gstatic.com https://apis.google.com https://www.smartsuppchat.com 'unsafe-inline';
@@ -326,7 +327,7 @@
 
             // Auth
             onAuthStateChanged(auth, async user => {
-                if (!user) return location.href = 'index.html';
+                if (!user) return location.href = 'index(es).html';
                 currentUser = user;
                 const welcomeEl = document.getElementById('welcome-message');
                 if (welcomeEl) welcomeEl.textContent = `Welcome, ${user.displayName || 'User'}!`;
