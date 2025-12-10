@@ -130,8 +130,64 @@
         }
         .popup-content a:hover {
             text-decoration: underline;
-        }   
-        .language{
+        }
+         .language{
+            margin-left: 20px;
+        }
+        #language-select{
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 10px;
+        }
+        .language-dropdown {
+    position: relative;
+    width: 150px;
+    font-family: Arial;
+}
+
+.lang-btn {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lang-btn img {
+    width: 20px;
+}
+
+.lang-menu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    display: none;
+    z-index: 10;
+}
+
+.lang-option {
+    padding: 8px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lang-option img {
+    width: 20px;
+}
+
+.lang-option:hover {
+    background: #f0f0f0;
+}
+ .language{
             margin-left: 20px;
         }
         #language-select{
@@ -190,81 +246,6 @@
 .language-dropdown.open .lang-menu {
     display: block;
 }
-.btc-calculator{
-  box-sizing: border-box;
-  width: 320px;                 /* adjust as needed */
-  max-width: 100%;
-  padding: 16px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  backdrop-filter: blur(6px);
-  box-shadow: 0 6px 18px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.04);
-  color: #e6eef8;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  display: grid;
-  gap: 10px;
-  grid-template-columns: 1fr;
-  align-items: center;
-}
-
-/* Small structural helpers that belong to the calculator block */
-.btc-calculator .row{
-  display:flex;
-  gap:8px;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.btc-calculator label{
-  font-size: 0.79rem;
-  opacity: 0.9;
-}
-
-.btc-calculator .value{
-  font-weight:600;
-  font-size:1.05rem;
-  text-align:right;
-}
-
-/* Inputs styled to look native but consistent */
-.btc-calculator input[type="number"],
-.btc-calculator input[type="text"],
-.btc-calculator select{
-  width:100%;
-  padding:8px 10px;
-  border-radius:8px;
-  border:1px solid rgba(255,255,255,0.06);
-  background: rgba(0,0,0,0.28);
-  color:inherit;
-  font-size:0.95rem;
-  outline:none;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
-}
-
-/* Primary action style (for a button inside the block if added) */
-.btc-calculator .btn{
-  display:inline-flex;
-  gap:8px;
-  align-items:center;
-  justify-content:center;
-  padding:10px 14px;
-  border-radius:10px;
-  border: none;
-  cursor:pointer;
-  font-weight:600;
-  background: linear-gradient(90deg,#f7931a,#ffb84d); /* BTC-like accent */
-  color:#08101a;
-  box-shadow: 0 6px 14px rgba(247,147,26,0.18);
-}
-
-/* Compact responsive tweak */
-@media (max-width: 420px){
-  .btc-calculator{ padding:12px; width:100%;}
-  .btc-calculator .row{ flex-direction:column; align-items:stretch; }
-  .btc-calculator .value{ text-align:left; }
-}
-
     </style>
 
 </head>
@@ -276,7 +257,7 @@
     <div class="container">
         <header>
             <div class="alert-ticker-container">
-                <p class="ticker-content"> TENGA EN CUENTA EL FRAUDE: Equity Hubs **NUNCA** le pedir&#225; que env&#237;e dinero a una cuenta personal. Deposite siempre fondos a trav&#233;s de los canales seguros y verificados de la plataforma. Proteja su inversi&#243;n. </p>
+                <p class="ticker-content"> TENGA CUIDADO CON EL FRAUDE: Equity Hubs **NUNCA** le pedir&#225; que env&#237;e dinero a una cuenta personal. Deposita siempre fondos a trav&#233;s de los canales seguros y verificados de la plataforma. Proteja su inversi&#243;n. </p>
             </div>
             <nav>
                 <div class="nav-left-mobile">
@@ -286,24 +267,32 @@
                         <div class="hamburger-lines"></div>
                     </div>
                 </div>
-                <div class="nav-links" id="nav-links-menu"> <a href="index.html">Inicio</a> <a href="about.html">Qui&#233;nes somos</a> <a href="contact.html">Contactos</a> <a href="investment.html">Inversi&#243;n</a> </div>    
-               <div class="language-dropdown">
+                <div class="nav-links" id="nav-links-menu">
+                     <a href="index(es).html">Inicio</a> 
+                     <a href="about(es).html">Qui&#233;nes somos</a> 
+                     <a href="contact(es).html">Contactos</a> 
+                    <a href="investment(es).html">Inversi&#243;n</a> 
+                </div>    
+              <div class="language-dropdown">
                  <button id="current-language" class="lang-btn">
                         <img id="current-flag" src="uk.svg" alt=""> 
-                        <span id="current-text">Ingl&#233;s</span>
+                        <span id="current-text">English</span>
                         <i class="fa fa-caret-down"></i>
                     </button>
 
                     <div class="lang-menu">
-                        <div class="lang-option" data-lang="index.html" data-flag="uk.svg" data-name="English"> <img src="uk.svg"> Ingl&#233;s </div>
+                        <div class="lang-option" data-lang="index.html" data-flag="uk.svg" data-name="English">
+                            <img src="uk.svg"> English
+                        </div>
 
-                        <div class="lang-option" data-lang="index(es).html" data-flag="spanish.png" data-name="Spanish"> <img src="spanish.png"> Espa&#241;ol </div>
+                        <div class="lang-option" data-lang="index(es).html" data-flag="spanish.png" data-name="Spanish">
+                            <img src="spanish.png"> Spanish
+                        </div>
                     </div>
                 </div>
-
-                <div class="nav-right-buttons auth-buttons"> <a href="#" class="login-btn">Inicio de sesi&#243;n</a> <a href="#" class="register-btn">Registro <i class="fa-solid fa-angle-right"></i></a> </div>
+                <div class="nav-right-buttons auth-buttons"> <a href="#" class="login-btn">Login</a> <a href="#" class="register-btn">Registro <i class="fa-solid fa-angle-right"></i></a> </div>
                 <div class="nav-right-buttons trade-buttons" style="display: none;">
-                    <a style="background-color: rgb(4, 28, 4); color: white; padding: 12px; border-radius: 5px;" href="dashboard.html" class="trade-btn">Comercio</a>
+                    <a style="background-color: rgb(4, 28, 4); color: white; padding: 12px; border-radius: 5px;" href="dashboard(es).html" class="trade-btn">Comercio</a>
                 </div>
             </nav>
         </header>
@@ -311,11 +300,11 @@
       
         <!-- Login Popup -->
         <div id="login-popup" class="popup">
-            <div class="popup-content"> <span class="close-btn">&#215;</span> <h2>Inicio de sesi&#243;n</h2>&#191;<input type="email" id="login-email" placeholder="Correo electrónico" required="">H<input type="password" id="login-password" placeholder="Contraseña" required="">a<p id="login-error" class="error-message"></p> <button id="login-submit">Inicio de sesi&#243;n</button>o<a href="#" id="forgot-password-link">lvidado su contrase&#241;a?</a> <a href="#" id="switch-to-register">&#191;No tiene cuenta? Reg&#237;strese en</a> </div>
+            <div class="popup-content"> <span class="close-btn">&#215;</span> <h2>Iniciar sesi&#243;n</h2>&#191;<input type="email" id="login-email" placeholder="Correo electrónico" required="">O<input type="password" id="login-password" placeholder="Contraseña" required="">l<p id="login-error" class="error-message"></p>v<button id="login-submit">Iniciar sesi&#243;n</button>i<a href="#" id="forgot-password-link">d&#243; su contrase&#241;a?</a> <a href="#" id="switch-to-register">No tiene una cuenta? Registrarse</a> </div>
         </div>
         <!-- Register Popup -->
         <div id="register-popup" class="popup">
-            <div class="popup-content"> <span class="close-btn">&#215;</span> <h2>Crear una cuenta</h2>&#191;<input type="text" id="register-name" placeholder="Nombre" required="">Y<select id="register-country" required="">
+            <div class="popup-content"> <span class="close-btn">&#215;</span> <h2>Crear cuenta</h2>&#191;<input type="text" id="register-name" placeholder="Nombre" required="">Y<select id="register-country" required="">
                     <option value="" disabled="" selected="">Seleccionar pa&#237;s</option>
                     <option value="AF">Afganist&#225;n</option>
                      <option value="AL">Albania</option>
@@ -338,7 +327,7 @@
                     <option value="BJ">Ben&#237;n</option>
                     <option value="BT">But&#225;n</option>
                     <option value="BO">Bolivia</option>
-                    <option value="BA">Bosnia y Herzegovina</option>
+                    <option value="BA">Bosnia y Hercegovina</option>
                     <option value="BW">Botsuana</option>
                     <option value="BR">Brasil</option>
                     <option value="BN">Brunei</option>
@@ -400,7 +389,7 @@
                     <option value="IT">Italia</option>
                     <option value="JM">Jamaica</option>
                     <option value="JP">Jap&#243;n</option>
-                    <option value="JO">Jordan</option>
+                    <option value="JO">Jordania</option>
                     <option value="KZ">Kazajst&#225;n</option>
                     <option value="KE">Kenia</option>
                     <option value="KI">Kiribati</option>
@@ -416,10 +405,10 @@
                     <option value="LT">Lituania</option>
                     <option value="LU">Luxemburgo</option>
                     <option value="MG">Madagascar</option>
-                    <option value="MW">Malawi</option>
+                    <option value="MW">Malaui</option>
                     <option value="MY">Malasia</option>
                     <option value="MV">Maldivas</option>
-                    <option value="ML">Mali</option>
+                    <option value="ML">Mal&#237;</option>
                     <option value="MT">Malta</option>
                     <option value="MH">Islas Marshall</option>
                     <option value="MR">Mauritania</option>
@@ -505,7 +494,7 @@
                     <option value="YE">Yemen</option>
                     <option value="ZM">Zambia</option>
                     <option value="ZW">Zimbabue</option>
-                </select>a<input type="tel" id="register-phone" placeholder="Número de teléfono" required=""> <input type="text" id="register-referral" placeholder="Código de referencia (opcional)">t<input type="email" id="register-email" placeholder="Correo electrónico" required="">i<input type="password" id="register-password" placeholder="Contraseña" required="">e<input type="password" id="register-confirm-password" placeholder="Confirmar contraseña" required="">n<p id="register-error" class="error-message"></p>e<button id="register-submit">Reg&#237;strese en</button> <a href="#" id="switch-to-login">una cuenta? Inicio de sesi&#243;n</a> </div>
+                </select>a<input type="tel" id="register-phone" placeholder="Número de teléfono" required=""> <input type="text" id="register-referral" placeholder="Código de referencia (opcional)">t<input type="email" id="register-email" placeholder="Correo electrónico" required="">i<input type="password" id="register-password" placeholder="Contraseña" required="">e<input type="password" id="register-confirm-password" placeholder="Confirmar contraseña" required="">n<p id="register-error" class="error-message"></p>e<button id="register-submit">Reg&#237;strese en</button> <a href="#" id="switch-to-login">una cuenta? Iniciar sesi&#243;n</a> </div>
         </div>
         <!-- Forgot Password Popup -->
         <div id="forgot-password-popup" class="popup">
@@ -531,32 +520,32 @@
             </main>
         </section>
         <div class="hero-image-section">
-            <div class="btc-calculator">
-            <h2>Calculadora Bitcoin</h2>
-
-            <div class="row">
-                <label>Importe en BTC:</label>
-                <input type="number" id="btcInput" placeholder="Introduzca BTC" step="0.000001">
+            <div class="trading-mockup">
+                <h1 style="font-size: 2rem;">Conversor de divisas</h1>
+                <header class="mockup-asset-info"> <span class="mockup-asset-name">EUR/USD</span> <span id="current-price" class="mockup-current-price">1,09540</span> </header>
+                <div id="chart-container" class="mockup-chart-container"></div>
+                <div class="mockup-controls-panel">
+                    <div class="mockup-control-group">
+                        <label for="expiry-time">Tiempo</label>
+                        <select id="expiry-time">
+                            <option value="60">1 minuto</option>
+                            <option value="300" selected="">5 minutos</option>
+                            <option value="900">15 minutos</option>
+                        </select>
+                    </div>
+                    <div class="mockup-control-group">
+                        <label for="investment-amount">Importe ($)</label>
+                        <input type="number" id="investment-amount" value="100" min="10">
+                    </div>
+                </div>
+                <div class="mockup-trade-buttons">
+                    <button id="call-button" class="mockup-trade-button mockup-call">LLAMADA (Superior)</button>
+                    <button id="put-button" class="mockup-trade-button mockup-put">PUT (Inferior)</button>
+                </div>
+                <div id="results-log" class="mockup-results-log">
+                    <p>Bit&#225;cora comercial:</p>
+                </div>
             </div>
-
-            <div class="row">
-                <label>Seleccione la moneda:</label>
-                <select id="currencySelect">
-                    <option value="USD">USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="GBP">GBP</option>
-                    <option value="NGN">NGN</option>
-                </select>
-            </div>
-
-            <div class="row">
-                <label>Valor convertido:</label>
-                <div class="value" id="result">0.00</div>
-            </div>
-
-            <button class="btn" onclick="convertBTC()">Convertir</button>
-        </div>
-
         </div>
         <section class="how-it-works-section">
             <h2 class="section-title">C&#243;mo funciona</h2>
@@ -587,7 +576,7 @@
                 <div class="platform-award-card">
                     <div class="award-icon"><i class="fa-solid fa-trophy"></i></div>
                     <h3>Mejor plataforma de negociaci&#243;n</h3>
-                    <p>Galardonado en la China Trading Expo Shenzhen, 6-7 de mayo de 2017.</p>
+                    <p>Ganador del premio en la China Trading Expo Shenzhen, 6-7 de mayo de 2017.</p>
                 </div>
             </div>
         </section>
@@ -687,10 +676,10 @@
                 <div class="footer-col link-group">
                     <h4>Inicio</h4>
                     <ul>
-                        <li><a href="index.html">Inicio</a></li>
-                        <li><a href="about.html">Qui&#233;nes somos</a></li>
-                        <li><a href="contact.html">Contactos</a></li>
-                        <li><a href="investment.html">Inversi&#243;n</a></li>
+                        <li><a href="index(es).html">Inicio</a></li>
+                        <li><a href="about(es).html">Qui&#233;nes somos</a></li>
+                        <li><a href="contact(es).html">Contactos</a></li>
+                        <li><a href="investment(es).html">Inversi&#243;n</a></li>
                     </ul>
                 </div>
                 <div class="footer-col link-group">
@@ -976,7 +965,7 @@ setInterval(() => {
 </script>
 
 
-
+</script>
 <script>
     (function () {
     const STORAGE_KEY = "preferredLanguage";
@@ -1032,33 +1021,5 @@ setInterval(() => {
 })();
 
 </script>
-<script>
-async function convertBTC() {
-    const btc = parseFloat(document.getElementById("btcInput").value);
-    const currency = document.getElementById("currencySelect").value;
-
-    if (isNaN(btc)) {
-        document.getElementById("result").innerText = "Enter a valid BTC amount";
-        return;
-    }
-
-    // Fetch BTC price
-    const url = `https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${currency}`;
-
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        const price = data.bitcoin[currency.toLowerCase()];
-        const converted = btc * price;
-
-        document.getElementById("result").innerText =
-            converted.toLocaleString(undefined, { maximumFractionDigits: 2 }) +
-            " " + currency;
-
-    } catch (error) {
-        document.getElementById("result").innerText = "Error fetching price";
-    }
-}
-</script>
-
 </body>
+</html>
