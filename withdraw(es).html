@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="es" dir="ltr">
 <head>
     <meta charset="utf-8">
     <title>Panel de usuario</title>
-        <link rel="icon" href="logo.jpg" type="image/x-icon">
+    <link rel="icon" href="logo.jpg" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
@@ -94,36 +94,37 @@
                 <ul>
                     <li><a href="dashboard(es).html"><span class="icon"><i class="fa-solid fa-house"></i></span><span class="text">Inicio</span></a></li>
                     <li><a href="investment(es).html"><span class="icon"><i class="fa-solid fa-boxes-stacked"></i></span><span class="text">Paquetes</span></a></li>
-                    <li class="active"><a href="deposit(es).html"><span class="icon"><i class="fa-regular fa-credit-card"></i></span><span class="text">Depositar</span></a></li>
-                    <li><a href="withdraw(es).html"><span class="icon"><i class="fa-regular fa-briefcase"></i></span><span class="text">Retirar</span></a></li>
+                    <li><a href="deposit(es).html"><span class="icon"><i class="fa-regular fa-credit-card"></i></span><span class="text">Depositar</span></a></li>
+                    <li class="active"><a href="withdraw(es).html"><span class="icon"><i class="fa-regular fa-briefcase"></i></span><span class="text">Retirar</span></a></li>
                     <li><a href="profile(es).html"><span class="icon"><i class="fa-regular fa-address-card"></i></span><span class="text">Perfil</span></a></li>
-                    <li><a href="#" id="logout-link"><span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span><span class="text">Cerrar sesi&#243;n</span></a></li>
+                    <li><a href="#" id="logout-link"><span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span><span class="text">Cerrar sesión</span></a></li>
                 </ul>
             </nav>
         </div>
 
         <div class="main-content">
             <div class="withdraw-form">
-                <h2 data-i18n="withdraw_funds">Retirar fondos</h2>
+                <h2>Retirar fondos</h2>
                 
-                <div class="info-card light-black" id="verification-warning" style="display:flex;align-items:center;gap:15px;margin-bottom:20px; background-color: #efc6ab; font-size: 1rem; color: black; padding:15px; border-radius:8px; position:relative;">
+                <!-- Aviso de verificación - OCULTO por defecto -->
+                <div class="info-card light-black" id="verification-warning" style="display:none;align-items:center;gap:15px;margin-bottom:20px;background-color:#efc6ab;font-size:1rem;color:black;padding:15px;border-radius:8px;position:relative;">
                     <i class="fa-solid fa-warning" style="font-size:24px;"></i>
                     <div>
                         <p id="verification-message" style="margin:0 0 12px 0;">Su cuenta debe ser verificada antes de poder retirar fondos.</p>
-                        <button id="request-verification-btn" style="padding:10px 20px; background:#00ffff; color:#000; border:none; border-radius:8px; cursor:pointer; font-weight:600;">Solicitar verificaci&#243;n</button>
+                        <button id="request-verification-btn" style="padding:10px 20px;background:#00ffff;color:#000;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Solicitar verificación</button>
                     </div>
                     <a id="close-btn1" style="position:absolute;top:8px;right:8px;color:black;" href="#"><i class="fa-solid fa-xmark"></i></a>
                 </div>
                 
                 <form id="withdrawal-form">
                     <div class="form-group">
-                        <label for="amount" data-i18n="amount">Importe (min $10)</label>
-                        <input type="number" id="amount" min="10" step="0.01" placeholder="Introduzca el importe" required="">
+                        <label for="amount">Importe (mín. $10)</label>
+                        <input type="number" id="amount" min="10" step="0.01" placeholder="Introduzca el importe" required>
                     </div>
                     <div class="form-group">
-                        <label for="method" data-i18n="method">M&#233;todo de retirada</label>
-                        <select id="method" required="">
-                            <option value="" disabled="" selected="">Seleccione el m&#233;todo</option>
+                        <label for="method">Método de retirada</label>
+                        <select id="method" required>
+                            <option value="" disabled selected>Seleccione el método</option>
                             <option value="bitcoin">Bitcoin</option>
                             <option value="ethereum">Ethereum</option>
                             <option value="usdc">USDC</option>
@@ -132,62 +133,39 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="wallet" data-i18n="wallet">Detalles de la Cartera / Banco</label>
-                        <textarea style="width: 100%; padding: 20px; border: none; border-radius: 8px; background:#1e293b; color:#fff;" id="wallet" placeholder="Enter wallet or bank info" required=""></textarea>
+                        <label for="wallet">Detalles de la Cartera / Banco</label>
+                        <textarea style="width:100%;padding:20px;border:none;border-radius:8px;background:#1e293b;color:#fff;" id="wallet" placeholder="Introduzca los datos de la cartera o banco" required></textarea>
                     </div>
-                    <button type="submit" class="submit-btn" data-i18n="submit">Enviar solicitud</button>
+                    <button type="submit" class="submit-btn">Enviar solicitud</button>
                 </form>
                 <div class="status-msg" id="status-msg"></div>
-            </div> 
+            </div>
 
             <div class="market-widgets-row">
                 <div class="market-widget" id="market-overview-widget">
-                    <div class="market-widget-title" data-i18n="Market Overview">Visi&#243;n general del mercado</div>
+                    <div class="market-widget-title">Visión general del mercado</div>
                     <div class="tradingview-widget-container" style="height:500px;width:100%">
                         <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async="">
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
                         var widgetConfig = {
                           "colorTheme": "dark",
                           "dateRange": "12M",
                           "showChart": true,
-                          "locale": "en",
+                          "locale": "es",
                           "width": "100%",
                           "height": "100%",
                           "largeChartUrl": "",
                           "isTransparent": false,
                           "showSymbolLogo": true,
                           "showFloatingTooltip": false,
-                          "tabs": [
-                            {
-                              "title": "Crypto",
-                              "symbols": [
-                                {
-                                  "s": "BINANCE:BTCUSDT",
-                                  "d": "Bitcoin / TetherUS"
-                                },
-                                {
-                                  "s": "BINANCE:ETHUSDT",
-                                  "d": "Ethereum / TetherUS"
-                                },
-                                {
-                                  "s": "CRYPTOCAP:USDT.D",
-                                  "d": "USDT Dominance %"
-                                },
-                                {
-                                  "s": "BINANCE:BNBUSDT",
-                                  "d": "Binance Coin / TetherUS"
-                                },
-                                {
-                                  "s": "CRYPTOCAP:USDC",
-                                  "d": "Market Cap USDC $"
-                                },
-                                {
-                                  "s": "BINANCE:XRPUSDT",
-                                  "d": "XRP / TetherUS"
-                                }
-                              ]
-                            }
-                          ]
+                          "tabs": [{ "title": "Crypto", "symbols": [
+                            { "s": "BINANCE:BTCUSDT", "d": "Bitcoin / TetherUS" },
+                            { "s": "BINANCE:ETHUSDT", "d": "Ethereum / TetherUS" },
+                            { "s": "CRYPTOCAP:USDT.D", "d": "USDT Dominance %" },
+                            { "s": "BINANCE:BNBUSDT", "d": "Binance Coin / TetherUS" },
+                            { "s": "CRYPTOCAP:USDC", "d": "Market Cap USDC $" },
+                            { "s": "BINANCE:XRPUSDT", "d": "XRP / TetherUS" }
+                          ]}]
                         };
                         </script>
                     </div>
@@ -202,15 +180,15 @@
                 <button id="close-deposit-popup" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#00ffff;font-size:22px;cursor:pointer;">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
-                <h2 data-i18n="deposit_funds">Depositar fondos</h2>
-                <p data-i18n="select_payment_method">Seleccione su m&#233;todo de pago:</p>
+                <h2>Depositar fondos</h2>
+                <p>Seleccione su método de pago:</p>
                 <div style="display:flex;flex-direction:column;gap:12px;">
-                    <div class="wallet-row"> <i class="fa-brands fa-bitcoin"></i> <span data-i18n="bitcoin">Bitcoin:</span> <span class="wallet-address" id="btc-wallet">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</span> <button class="copy-btn" onclick="copyWallet('btc-wallet', this)" title="Copiar"><i class="fa-regular fa-copy"></i></button> </div>
-                    <div class="wallet-row"> <i class="fa-brands fa-ethereum"></i> <span data-i18n="ethereum">Ethereum:</span> <span class="wallet-address" id="eth-wallet">0x1234567890abcdef1234567890abcdef12345678</span> <button class="copy-btn" onclick="copyWallet('eth-wallet', this)" title="Copiar"><i class="fa-regular fa-copy"></i></button> </div>
-                    <div class="wallet-row"> <i class="fa-brands fa-usdc"></i> <span data-i18n="usdc">USDC:</span> <span class="wallet-address" id="usdc-wallet">0x9876543210fedcba9876543210fedcba98765432</span> <button class="copy-btn" onclick="copyWallet('usdc-wallet', this)" title="Copiar"><i class="fa-regular fa-copy"></i></button> </div>
-                    <div class="wallet-row"> <i class="fa-brands fa-tether"></i> <span data-i18n="usdt">USDT:</span> <span class="wallet-address" id="usdt-wallet">T1234567890abcdef1234567890abcdef1234567</span> <button class="copy-btn" onclick="copyWallet('usdt-wallet', this)" title="Copiar"><i class="fa-regular fa-copy"></i></button> </div>
+                    <div class="wallet-row"><i class="fa-brands fa-bitcoin"></i><span>Bitcoin:</span><span class="wallet-address" id="btc-wallet">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</span><button class="copy-btn" onclick="copyWallet('btc-wallet', this)" title="Copiar"><i class="fa-regular fa-copy"></i></button></div>
+                    <div class="wallet-row"><i class="fa-brands fa-ethereum"></i><span>Ethereum:</span><span class="wallet-address" id="eth-wallet">0x1234567890abcdef1234567890abcdef12345678</span><button class="copy-btn" onclick="copyWallet('eth-wallet', this)" title="Copiar"><i class="fa-regular fa-copy"></i></button></div>
+                    <div class="wallet-row"><i class="fa-brands fa-usdc"></i><span>USDC:</span><span class="wallet-address" id="usdc-wallet">0x9876543210fedcba9876543210fedcba98765432</span><button class="copy-btn" onclick="copyWallet('usdc-wallet', this)" title="Copiar"><i class="fa-regular fa-copy"></i></button></div>
+                    <div class="wallet-row"><i class="fa-brands fa-tether"></i><span>USDT:</span><span class="wallet-address" id="usdt-wallet">T1234567890abcdef1234567890abcdef1234567</span><button class="copy-btn" onclick="copyWallet('usdt-wallet', this)" title="Copiar"><i class="fa-regular fa-copy"></i></button></div>
                     <div class="pload-payment-receipt">
-                        <label for="payment-receipt" data-i18n="upload_payment_receipt">Cargar recibo de pago:</label>
+                        <label for="payment-receipt">Cargar recibo de pago:</label>
                         <input type="file" id="payment-receipt" accept="image/*,application/pdf" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;background:#222;color:#fff;">
                     </div>
                 </div>
@@ -222,10 +200,10 @@
                 <button id="close-verification-popup" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#00ffff;font-size:22px;cursor:pointer;">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
-                <h2>Solicitar verificaci&#243;n de cuenta </h2>
-                <p>Su cuenta debe ser verificada para permitir retiros. Haga clic en el bot&#243;n de abajo para enviar una solicitud de verificaci&#243;n al administrador.</p>
-                <p>Si lo desea, puede chatear a trav&#233;s del chat en directo.</p>
-                <button id="send-verification-request" style="width:100%;margin-top:20px;padding:14px;background:#00ffff;color:#000;border:none;border-radius:12px;font-weight:600;cursor:pointer;">Enviar solicitud de verificaci&#243;n</button>
+                <h2>Solicitar verificación de cuenta</h2>
+                <p>Su cuenta debe ser verificada para permitir retiros. Haga clic en el botón de abajo para enviar una solicitud de verificación al administrador.</p>
+                <p>Si lo desea, puede chatear a través del chat en directo.</p>
+                <button id="send-verification-request" style="width:100%;margin-top:20px;padding:14px;background:#00ffff;color:#000;border:none;border-radius:12px;font-weight:600;cursor:pointer;">Enviar solicitud de verificación</button>
                 <div id="verification-status" style="margin-top:15px;text-align:center;font-weight:600;"></div>
             </div>
         </div>
@@ -250,62 +228,63 @@
         const db = getFirestore(app);
         let currentUser = null;
         let isVerified = false;
-        const userDocRef = null; // will be set when user logs in
 
-        // i18n 
-        i18next.init({
-            lng: 'en',
-            resources: { en: { translation: {
-                nav_home: "Home", nav_packages: "Packages", nav_deposit: "Deposit", nav_withdraw: "Withdraw", nav_profile: "Profile", nav_logout: "Logout",
-                withdraw_funds: "Withdraw Funds", amount: "Amount (min $10)", method: "Withdrawal Method", wallet: "Wallet / Bank Details", submit: "Submit Request",
-                success: "Withdrawal request submitted!", error: "Failed to submit. Try again."
-            }}}
-        }, () => document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = i18next.t(el.dataset.i18n)));
-
-        // Auth state
+        // Estado de autenticación
         onAuthStateChanged(auth, async user => {
-            if (!user) return location.href = 'index.html';
+            if (!user) return location.href = 'index(es).html';
             currentUser = user;
             document.getElementById('main-container').style.display = 'flex';
 
             const userDocRef = doc(db, 'users', user.uid);
             const snap = await getDoc(userDocRef);
             const data = snap.data() || {};
+            const verificationStatus = data.verificationStatus || 'none';
 
-            const verificationStatus = data.verificationStatus;
+            // Siempre ocultar el aviso al cargar la página
+            document.getElementById('verification-warning').style.display = 'none';
+
+            // Establecer bandera de verificación
+            isVerified = (verificationStatus === 'approved');
+        });
+
+        // Envío del formulario de retiro
+        document.getElementById('withdrawal-form').onsubmit = async e => {
+            e.preventDefault();
 
             const warningCard = document.getElementById('verification-warning');
             const messageP = document.getElementById('verification-message');
             const reqBtn = document.getElementById('request-verification-btn');
-
-            if (verificationStatus === 'approved') {
-                warningCard.style.display = 'none';
-                isVerified = true;
-            } else if (verificationStatus === 'pending') {
-                messageP.innerHTML = 'Verification request is pending.<br>Awaiting admin approval.';
-                reqBtn.style.display = 'none';
-                isVerified = false;
-            } else {
-                messageP.innerHTML = 'Your Account Must be verified before you can withdraw funds.';
-                reqBtn.style.display = 'block';
-                isVerified = false;
-            }
-        });
-
-        // Submit Withdrawal
-        document.getElementById('withdrawal-form').onsubmit = async e => {
-            e.preventDefault();
+            const statusMsg = document.getElementById('status-msg');
 
             if (!isVerified) {
-                document.getElementById('status-msg').textContent = 'Account verification required before withdrawal.';
-                document.getElementById('status-msg').className = 'status-msg status-rejected';
-                document.getElementById('verification-popup').style.display = 'flex';
+                // Mostrar el aviso SOLO ahora
+                warningCard.style.display = 'flex';
+
+                // Consultar estado actual para mostrar mensaje correcto
+                const userDocRef = doc(db, 'users', currentUser.uid);
+                const snap = await getDoc(userDocRef);
+                const verificationStatus = (snap.data() || {}).verificationStatus || 'none';
+
+                if (verificationStatus === 'pending') {
+                    messageP.innerHTML = 'La solicitud de verificación está pendiente.<br>Esperando aprobación del administrador.';
+                    reqBtn.style.display = 'none';
+                } else {
+                    messageP.innerHTML = 'Su cuenta debe ser verificada antes de poder retirar fondos.';
+                    reqBtn.style.display = 'block';
+                }
+
+                statusMsg.textContent = 'Es necesaria la verificación de la cuenta antes de retirar fondos.';
+                statusMsg.className = 'status-msg status-rejected';
+
+                // Desplazamiento suave al aviso
+                warningCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
                 return;
             }
 
-            const status = document.getElementById('status-msg');
-            status.textContent = 'Submitting...';
-            status.className = 'status-msg status-pending';
+            // Si está verificado, proceder
+            statusMsg.textContent = 'Enviando solicitud...';
+            statusMsg.className = 'status-msg status-pending';
 
             try {
                 await addDoc(collection(db, 'withdrawRequests'), {
@@ -318,21 +297,21 @@
                     submittedAt: serverTimestamp()
                 });
 
-                status.textContent = i18next.t('success');
-                status.className = 'status-msg status-approved';
+                statusMsg.textContent = '¡Solicitud de retiro enviada correctamente!';
+                statusMsg.className = 'status-msg status-approved';
                 e.target.reset();
             } catch (err) {
-                status.textContent = i18next.t('error');
-                status.className = 'status-msg status-rejected';
+                statusMsg.textContent = 'Error al enviar la solicitud. Inténtelo de nuevo.';
+                statusMsg.className = 'status-msg status-rejected';
                 console.error(err);
             }
         };
 
-        // Verification popup logic - NOW USES USER DOCUMENT (no permission issues)
+        // Popup de solicitud de verificación
         const verificationPopup = document.getElementById('verification-popup');
         const closeVerificationPopup = document.getElementById('close-verification-popup');
         const sendRequestBtn = document.getElementById('send-verification-request');
-        const verificationStatus = document.getElementById('verification-status');
+        const verificationStatusDiv = document.getElementById('verification-status');
 
         document.getElementById('request-verification-btn')?.addEventListener('click', () => {
             verificationPopup.style.display = 'flex';
@@ -347,8 +326,8 @@
         });
 
         sendRequestBtn?.addEventListener('click', async () => {
-            verificationStatus.textContent = 'Sending request...';
-            verificationStatus.style.color = '#ffcc00';
+            verificationStatusDiv.textContent = 'Enviando solicitud...';
+            verificationStatusDiv.style.color = '#ffcc00';
 
             try {
                 const userDocRef = doc(db, 'users', currentUser.uid);
@@ -357,45 +336,50 @@
                     verificationRequestedAt: serverTimestamp() 
                 }, { merge: true });
 
-                verificationStatus.textContent = 'Verification request sent! Awaiting admin approval.';
-                verificationStatus.style.color = '#00ff00';
+                verificationStatusDiv.textContent = '¡Solicitud de verificación enviada! Esperando aprobación del administrador.';
+                verificationStatusDiv.style.color = '#00ff00';
 
-                // Update warning card instantly
-                document.getElementById('verification-message').innerHTML = 'Verification request is pending.<br>Awaiting admin approval.';
+                // Actualizar aviso inmediatamente
+                document.getElementById('verification-message').innerHTML = 'La solicitud de verificación está pendiente.<br>Esperando aprobación del administrador.';
                 document.getElementById('request-verification-btn').style.display = 'none';
                 isVerified = false;
 
                 setTimeout(() => verificationPopup.style.display = 'none', 3000);
             } catch (err) {
-                verificationStatus.textContent = `Error: ${err.message}`;
-                verificationStatus.style.color = '#ff4d4d';
-                console.error('Verification request error:', err);
+                verificationStatusDiv.textContent = `Error: ${err.message}`;
+                verificationStatusDiv.style.color = '#ff4d4d';
+                console.error('Error al enviar solicitud de verificación:', err);
             }
         });
 
-        // Logout
+        // Cerrar sesión
         document.getElementById('logout-link').onclick = e => {
             e.preventDefault();
             signOut(auth).then(() => location.href = 'index(es).html');
         };
 
-        // Hamburger
-        document.querySelector('.hamburger').onclick = () => document.getElementById('sidebar').classList.toggle('show');
+        // Menú hamburguesa
+        document.querySelector('.hamburger').onclick = () => {
+            document.getElementById('sidebar').classList.toggle('show');
+        };
 
-        // Deposit popup
-        document.querySelector('a[href="deposit.html"]').addEventListener('click', e => {
+        // Popup de depósito (ajustado selector)
+        document.querySelector('a[href="deposit(es).html"]')?.addEventListener('click', e => {
             e.preventDefault();
             document.getElementById('deposit-popup').style.display = 'flex';
         });
+
         document.getElementById('close-deposit-popup').onclick = () => {
             document.getElementById('deposit-popup').style.display = 'none';
         };
+
         document.getElementById('deposit-popup').onclick = e => {
             if (e.target === document.getElementById('deposit-popup')) {
                 document.getElementById('deposit-popup').style.display = 'none';
             }
         };
 
+        // Copiar dirección
         window.copyWallet = (id, btn) => {
             const text = document.getElementById(id).textContent.trim();
             navigator.clipboard.writeText(text).then(() => {
@@ -404,15 +388,14 @@
             });
         };
 
-        // Close warning card
+        // Cerrar aviso manualmente
         document.getElementById('close-btn1')?.addEventListener('click', e => {
             e.preventDefault();
             document.getElementById('verification-warning').style.display = 'none';
         });
-        
     </script>
 
-    <!-- Smartsupp Live Chat (403 is normal if key not registered to your domain - ignore or register the key at smartsupp.com) -->
+    <!-- Smartsupp Live Chat -->
     <script type="text/javascript">
         var _smartsupp = _smartsupp || {};
         _smartsupp.key = '7f2bba33007b0ceba9ef214c29b3c6dcb2c1112d';
