@@ -291,13 +291,6 @@
         .popup-content a:hover {
             text-decoration: underline;
         }
-        .error-message {
-            color: #ff4444;
-            font-size: 14px;
-            margin-top: 10px;
-            text-align: center;
-            display: none;
-        }
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -415,8 +408,8 @@
                     <input type="text" id="bank-name" name="bankName" placeholder="Enter Bank Name" required>
                     <label for="account-number">Account Number</label>
                     <input type="text" id="account-number" name="accountNumber" placeholder="Enter Account Number" required>
-                    <label for="routing-number">Routing Number</label>
-                    <input type="text" id="routing-number" name="routingNumber" placeholder="Enter Routing Number" required>
+                    <label for="routing-number">Routing Number / Swift Code</label>
+                    <input type="text" id="routing-number" name="routingNumber" placeholder="Enter Routing Number / Swift Code" required>
                     <button type="submit" id="save-wallets">Save Changes</button>
                     <p id="form-error" class="error-message"></p>
                     <p id="form-success" class="success-message"></p>
@@ -659,7 +652,7 @@
                     usdt: 'Enter USDT wallet address',
                     bankName: 'Enter Bank Name',
                     accountNumber: 'Enter Account Number',
-                    routingNumber: 'Enter Routing Number'
+                    routingNumber: 'Enter Routing Number / Swift Code'
                 };
                 if (!walletSnap.exists()) {
                     await setDoc(walletRef, defaultDetails);

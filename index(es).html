@@ -8,28 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="logo.jpg" type="image/x-icon">
     <style>
-        /* Loader styles */
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.3s ease-out;
-        }
-        .loader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .spinner {
-            font-size: 3rem;
-            color: #007bff;
-        }
         /* Button loading styles */
         .popup-content button.loading {
             position: relative;
@@ -130,64 +108,8 @@
         }
         .popup-content a:hover {
             text-decoration: underline;
-        }
-         .language{
-            margin-left: 20px;
-        }
-        #language-select{
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 10px;
-        }
-        .language-dropdown {
-    position: relative;
-    width: 150px;
-    font-family: Arial;
-}
-
-.lang-btn {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.lang-btn img {
-    width: 20px;
-}
-
-.lang-menu {
-    position: absolute;
-    top: 110%;
-    left: 0;
-    width: 100%;
-    background: white;
-    border: 1px solid #ccc;
-    display: none;
-    z-index: 10;
-}
-
-.lang-option {
-    padding: 8px 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.lang-option img {
-    width: 20px;
-}
-
-.lang-option:hover {
-    background: #f0f0f0;
-}
- .language{
+        }   
+        .language{
             margin-left: 20px;
         }
         #language-select{
@@ -246,18 +168,98 @@
 .language-dropdown.open .lang-menu {
     display: block;
 }
+.btc-calculator{
+  box-sizing: border-box;
+  width: 320px;
+  max-width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  backdrop-filter: blur(6px);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.04);
+  color: #e6eef8;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+  align-items: center;
+  margin: 0 auto;
+}
+
+/* Small structural helpers that belong to the calculator block */
+.btc-calculator .row{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.btc-calculator label{
+  font-size: 0.79rem;
+  opacity: 0.9;
+}
+
+.btc-calculator .value{
+  font-weight:600;
+  font-size:1.05rem;
+  text-align:right;
+}
+
+/* Inputs styled to look native but consistent */
+.btc-calculator input[type="number"],
+.btc-calculator input[type="text"],
+.btc-calculator select{
+  width:100%;
+  padding:8px 10px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.06);
+  background: rgba(0,0,0,0.28);
+  color:inherit;
+  font-size:0.95rem;
+  outline:none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+/* Primary action style (for a button inside the block if added) */
+.btc-calculator .btn{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  justify-content:center;
+  padding:10px 14px;
+  border-radius:10px;
+  border: none;
+  cursor:pointer;
+  font-weight:600;
+  background: linear-gradient(90deg,#f7931a,#ffb84d); /* BTC-like accent */
+  color:#08101a;
+  box-shadow: 0 6px 14px rgba(247,147,26,0.18);
+  width: 100%;
+}
+
+/* Compact responsive tweak */
+@media (max-width: 420px){
+  .btc-calculator{ padding:12px; width:100%;}
+  .btc-calculator .row{ flex-direction:column; align-items:stretch; }
+  .btc-calculator .value{ text-align:left; }
+}
+
+.hero-image-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
     </style>
 
 </head>
 <body>
-    <!-- Loader -->
-    <div id="loader" class="loader">
-        <i class="fa fa-spinner fa-spin spinner"></i>
-    </div>
     <div class="container">
         <header>
             <div class="alert-ticker-container">
-                <p class="ticker-content"> TENGA CUIDADO CON EL FRAUDE: Equity Hubs **NUNCA** le pedir&#225; que env&#237;e dinero a una cuenta personal. Deposita siempre fondos a trav&#233;s de los canales seguros y verificados de la plataforma. Proteja su inversi&#243;n. </p>
+                <p class="ticker-content"> TENGA CUIDADO CON EL FRAUDE: Equity Hubs **NUNCA** le pedir&#225; que env&#237;e dinero a una cuenta personal. Deposite siempre los fondos a trav&#233;s de los canales seguros y verificados de la plataforma. Proteja su inversi&#243;n. </p>
             </div>
             <nav>
                 <div class="nav-left-mobile">
@@ -267,32 +269,24 @@
                         <div class="hamburger-lines"></div>
                     </div>
                 </div>
-                <div class="nav-links" id="nav-links-menu">
-                     <a href="index(es).html">Inicio</a> 
-                     <a href="about(es).html">Qui&#233;nes somos</a> 
-                     <a href="contact(es).html">Contactos</a> 
-                    <a href="investment(es).html">Inversi&#243;n</a> 
-                </div>    
-              <div class="language-dropdown">
+                <div class="nav-links" id="nav-links-menu"> <a href="index.html">Inicio</a> <a href="about.html">Sobre nosotros</a> <a href="contact.html">Contactos</a> <a href="investment.html">Inversi&#243;n</a> </div>    
+               <div class="language-dropdown">
                  <button id="current-language" class="lang-btn">
                         <img id="current-flag" src="uk.svg" alt=""> 
-                        <span id="current-text">English</span>
+                        <span id="current-text">Ingl&#233;s</span>
                         <i class="fa fa-caret-down"></i>
                     </button>
 
                     <div class="lang-menu">
-                        <div class="lang-option" data-lang="index.html" data-flag="uk.svg" data-name="English">
-                            <img src="uk.svg"> English
-                        </div>
+                        <div class="lang-option" data-lang="index.html" data-flag="uk.svg" data-name="English"> <img src="uk.svg"> Ingl&#233;s </div>
 
-                        <div class="lang-option" data-lang="index(es).html" data-flag="spanish.png" data-name="Spanish">
-                            <img src="spanish.png"> Spanish
-                        </div>
+                        <div class="lang-option" data-lang="index(es).html" data-flag="spanish.png" data-name="Spanish"> <img src="spanish.png"> Espa&#241;ol </div>
                     </div>
                 </div>
-                <div class="nav-right-buttons auth-buttons"> <a href="#" class="login-btn">Login</a> <a href="#" class="register-btn">Registro <i class="fa-solid fa-angle-right"></i></a> </div>
+
+                <div class="nav-right-buttons auth-buttons"> <a href="#" class="login-btn">Iniciar sesi&#243;n</a> <a href="#" class="register-btn">Registrarse <i class="fa-solid fa-angle-right"></i></a> </div>
                 <div class="nav-right-buttons trade-buttons" style="display: none;">
-                    <a style="background-color: rgb(4, 28, 4); color: white; padding: 12px; border-radius: 5px;" href="dashboard(es).html" class="trade-btn">Comercio</a>
+                    <a style="background-color: rgb(4, 28, 4); color: white; padding: 12px; border-radius: 5px;" href="dashboard.html" class="trade-btn">Operar</a>
                 </div>
             </nav>
         </header>
@@ -300,205 +294,205 @@
       
         <!-- Login Popup -->
         <div id="login-popup" class="popup">
-            <div class="popup-content"> <span class="close-btn">&#215;</span> <h2>Iniciar sesi&#243;n</h2>&#191;<input type="email" id="login-email" placeholder="Correo electrónico" required="">O<input type="password" id="login-password" placeholder="Contraseña" required="">l<p id="login-error" class="error-message"></p>v<button id="login-submit">Iniciar sesi&#243;n</button>i<a href="#" id="forgot-password-link">d&#243; su contrase&#241;a?</a> <a href="#" id="switch-to-register">No tiene una cuenta? Registrarse</a> </div>
+            <div class="popup-content"> <span class="close-btn">&#215;</span> <h2>Iniciar sesi&#243;n</h2> <input type="email" id="login-email" placeholder="Correo electrónico" required=""> <input type="password" id="login-password" placeholder="Contraseña" required=""> <p id="login-error" class="error-message"></p> <button id="login-submit">Iniciar sesi&#243;n</button> <a href="#" id="forgot-password-link">&#191;Olvid&#243; su contrase&#241;a?</a> <a href="#" id="switch-to-register">&#191;No tiene una cuenta? Registrarse</a> </div>
         </div>
         <!-- Register Popup -->
         <div id="register-popup" class="popup">
-            <div class="popup-content"> <span class="close-btn">&#215;</span> <h2>Crear cuenta</h2>&#191;<input type="text" id="register-name" placeholder="Nombre" required="">Y<select id="register-country" required="">
+            <div class="popup-content"> <span class="close-btn">&#215;</span> <h2>Crear cuenta</h2> <input type="text" id="register-name" placeholder="Nombre" required=""> <select id="register-country" required="">
                     <option value="" disabled="" selected="">Seleccionar pa&#237;s</option>
                     <option value="AF">Afganist&#225;n</option>
-                     <option value="AL">Albania</option>
-                    <option value="DZ">Argelia</option>
-                    <option value="AS">Samoa Americana</option>
-                    <option value="AD">Andorra</option>
-                    <option value="AO">Angola</option>
-                    <option value="AR">Argentina</option>
-                    <option value="AM">Armenia</option>
-                    <option value="AU">Australia</option>
-                    <option value="AT">Austria</option>
-                    <option value="AZ">Azerbaiy&#225;n</option>
-                    <option value="BS">Bahamas</option>
-                    <option value="BH">Bahr&#233;in</option>
-                    <option value="BD">Bangladesh</option>
-                    <option value="BB">Barbados</option>
-                    <option value="BY">Bielorrusia</option>
-                    <option value="BE">B&#233;lgica</option>
-                    <option value="BZ">Belice</option>
-                    <option value="BJ">Ben&#237;n</option>
-                    <option value="BT">But&#225;n</option>
-                    <option value="BO">Bolivia</option>
-                    <option value="BA">Bosnia y Hercegovina</option>
-                    <option value="BW">Botsuana</option>
-                    <option value="BR">Brasil</option>
-                    <option value="BN">Brunei</option>
-                    <option value="BG">Bulgaria</option>
-                    <option value="BF">Burkina Faso</option>
-                    <option value="BI">Burundi</option>
-                    <option value="KH">Camboya</option>
-                    <option value="CM">Camer&#250;n</option>
-                    <option value="CA">Canad&#225;</option>
-                    <option value="CV">Cabo Verde</option>
-                    <option value="CF">Rep&#250;blica Centroafricana</option>
-                    <option value="TD">Chad</option>
-                    <option value="CL">Chile</option>
-                    <option value="CN">China</option>
-                    <option value="CO">Colombia</option>
-                    <option value="KM">Comoras</option>
-                    <option value="CD">Congo (RDC)</option>
-                    <option value="CG">Congo (Rep&#250;blica)</option>
-                    <option value="CR">Costa Rica</option>
-                    <option value="HR">Croacia</option>
-                    <option value="CU">Cuba</option>
-                    <option value="CY">Chipre</option>
-                    <option value="CZ">Rep&#250;blica Checa</option>
-                    <option value="DK">Dinamarca</option>
-                    <option value="DJ">Yibuti</option>
-                    <option value="DM">Dominica</option>
-                    <option value="DO">Rep&#250;blica Dominicana</option>
-                    <option value="EC">Ecuador</option>
-                    <option value="EG">Egipto</option>
-                    <option value="SV">El Salvador</option>
-                    <option value="GQ">Guinea Ecuatorial</option>
-                    <option value="ER">Eritrea</option>
-                    <option value="EE">Estonia</option>
-                    <option value="SZ">Eswatini</option>
-                    <option value="ET">Etiop&#237;a</option>
-                    <option value="FJ">Fiyi</option>
-                    <option value="FI">Finlandia</option>
-                    <option value="FR">Francia</option>
-                    <option value="GA">Gab&#243;n</option>
-                    <option value="GM">Gambia</option>
-                    <option value="GE">Georgia</option>
-                    <option value="DE">Alemania</option>
-                    <option value="GH">Ghana</option>
-                    <option value="GR">Grecia</option>
-                    <option value="GT">Guatemala</option>
-                    <option value="GN">Guinea</option>
-                    <option value="GW">Guinea-Bissau</option>
-                    <option value="GY">Guyana</option>
-                    <option value="HT">Hait&#237;</option>
-                    <option value="HN">Honduras</option>
-                    <option value="HU">Hungr&#237;a</option>
-                    <option value="IS">Islandia</option>
-                    <option value="IN">India</option>
-                    <option value="ID">Indonesia</option>
-                    <option value="IR">Ir&#225;n</option>
-                    <option value="IQ">Iraq</option>
-                    <option value="IE">Irlanda</option>
-                    <option value="IL">Israel</option>
-                    <option value="IT">Italia</option>
-                    <option value="JM">Jamaica</option>
-                    <option value="JP">Jap&#243;n</option>
-                    <option value="JO">Jordania</option>
-                    <option value="KZ">Kazajst&#225;n</option>
-                    <option value="KE">Kenia</option>
-                    <option value="KI">Kiribati</option>
-                    <option value="KW">Kuwait</option>
-                    <option value="KG">Kirguist&#225;n</option>
-                    <option value="LA">Laos</option>
-                    <option value="LV">Letonia</option>
-                    <option value="LB">L&#237;bano</option>
-                    <option value="LS">Lesotho</option>
-                    <option value="LR">Liberia</option>
-                    <option value="LY">Libia</option>
-                    <option value="LI">Liechtenstein</option>
-                    <option value="LT">Lituania</option>
-                    <option value="LU">Luxemburgo</option>
-                    <option value="MG">Madagascar</option>
-                    <option value="MW">Malaui</option>
-                    <option value="MY">Malasia</option>
-                    <option value="MV">Maldivas</option>
-                    <option value="ML">Mal&#237;</option>
-                    <option value="MT">Malta</option>
-                    <option value="MH">Islas Marshall</option>
-                    <option value="MR">Mauritania</option>
-                    <option value="MU">Mauricio</option>
-                    <option value="MX">M&#233;xico</option>
-                    <option value="FM">Micronesia</option>
-                    <option value="MD">Moldavia</option>
-                    <option value="MC">M&#243;naco</option>
-                    <option value="MN">Mongolia</option>
-                    <option value="ME">Montenegro</option>
-                    <option value="MA">Marruecos</option>
-                    <option value="MZ">Mozambique</option>
-                    <option value="MM">Myanmar</option>
-                    <option value="NA">Namibia</option>
-                    <option value="NR">Nauru</option>
-                    <option value="NP">Nepal</option>
-                    <option value="NL">Pa&#237;ses Bajos</option>
-                    <option value="NZ">Nueva Zelanda</option>
-                    <option value="NI">Nicaragua</option>
-                    <option value="NE">N&#237;ger</option>
-                    <option value="NG">Nigeria</option>
-                    <option value="NO">Noruega</option>
-                    <option value="OM">Om&#225;n</option>
-                    <option value="PK">Pakist&#225;n</option>
-                    <option value="PW">Palau</option>
-                    <option value="PA">Panam&#225;</option>
-                    <option value="PG">Pap&#250;a Nueva Guinea</option>
-                    <option value="PY">Paraguay</option>
-                    <option value="PE">Per&#250;</option>
-                    <option value="PH">Filipinas</option>
-                    <option value="PL">Polonia</option>
-                    <option value="PT">Portugal</option>
-                    <option value="QA">Qatar</option>
-                    <option value="RO">Ruman&#237;a</option>
-                    <option value="RU">Rusia</option>
-                    <option value="RW">Ruanda</option>
-                    <option value="KN">San Crist&#243;bal y Nieves</option>
-                    <option value="LC">Santa Luc&#237;a</option>
-                    <option value="VC">San Vicente y las Granadinas</option>
-                    <option value="WS">Samoa</option>
-                    <option value="SM">San Marino</option>
-                    <option value="ST">Santo Tom&#233; y Pr&#237;ncipe</option>
-                    <option value="SA">Arabia Saud&#237;</option>
-                    <option value="SN">Senegal</option>
-                    <option value="RS">Serbia</option>
-                    <option value="SC">Seychelles</option>
-                    <option value="SL">Sierra Leona</option>
-                    <option value="SG">Singapur</option>
-                    <option value="SK">Eslovaquia</option>
-                    <option value="SI">Eslovenia</option>
-                    <option value="SB">Islas Salom&#243;n</option>
-                    <option value="SO">Somalia</option>
-                    <option value="ZA">Sud&#225;frica</option>
-                    <option value="KR">Corea del Sur</option>
-                    <option value="ES">Espa&#241;a</option>
-                    <option value="LK">Sri Lanka</option>
-                    <option value="SD">Sud&#225;n</option>
-                    <option value="SR">Surinam</option>
-                    <option value="SE">Suecia</option>
-                    <option value="CH">Suiza</option>
-                    <option value="SY">Siria</option>
-                    <option value="TW">Taiw&#225;n</option>
-                    <option value="TJ">Tayikist&#225;n</option>
-                    <option value="TZ">Tanzania</option>
-                    <option value="TH">Tailandia</option>
-                    <option value="TG">Togo</option>
-                    <option value="TO">Tonga</option>
-                    <option value="TT">Trinidad y Tobago</option>
-                    <option value="TN">T&#250;nez</option>
-                    <option value="TR">Turqu&#237;a</option>
-                    <option value="TM">Turkmenist&#225;n</option>
-                    <option value="TV">Tuvalu</option>
-                    <option value="UG">Uganda</option>
-                    <option value="UA">Ucrania</option>
-                    <option value="AE">Emiratos &#193;rabes Unidos</option>
-                    <option value="GB">Reino Unido</option>
-                    <option value="US">Estados Unidos</option>
-                    <option value="UY">Uruguay</option>
-                    <option value="UZ">Uzbekist&#225;n</option>
-                    <option value="VU">Vanuatu</option>
-                    <option value="VE">Venezuela</option>
-                    <option value="VN">Vietnam</option>
-                    <option value="YE">Yemen</option>
-                    <option value="ZM">Zambia</option>
-                    <option value="ZW">Zimbabue</option>
-                </select>a<input type="tel" id="register-phone" placeholder="Número de teléfono" required=""> <input type="text" id="register-referral" placeholder="Código de referencia (opcional)">t<input type="email" id="register-email" placeholder="Correo electrónico" required="">i<input type="password" id="register-password" placeholder="Contraseña" required="">e<input type="password" id="register-confirm-password" placeholder="Confirmar contraseña" required="">n<p id="register-error" class="error-message"></p>e<button id="register-submit">Reg&#237;strese en</button> <a href="#" id="switch-to-login">una cuenta? Iniciar sesi&#243;n</a> </div>
+                     <option value="AL">Albania</option>
+                    <option value="DZ">Argelia</option>
+                    <option value="AS">Samoa Americana</option>
+                    <option value="AD">Andorra</option>
+                    <option value="AO">Angola</option>
+                    <option value="AR">Argentina</option>
+                    <option value="AM">Armenia</option>
+                    <option value="AU">Australia</option>
+                    <option value="AT">Austria</option>
+                    <option value="AZ">Azerbaiy&#225;n</option>
+                    <option value="BS">Bahamas</option>
+                    <option value="BH">Bar&#233;in</option>
+                    <option value="BD">Bangladesh</option>
+                    <option value="BB">Barbados</option>
+                    <option value="BY">Bielorrusia</option>
+                    <option value="BE">B&#233;lgica</option>
+                    <option value="BZ">Belice</option>
+                    <option value="BJ">Ben&#237;n</option>
+                    <option value="BT">But&#225;n</option>
+                    <option value="BO">Bolivia</option>
+                    <option value="BA">Bosnia y Herzegovina</option>
+                    <option value="BW">Botsuana</option>
+                    <option value="BR">Brasil</option>
+                    <option value="BN">Brun&#233;i</option>
+                    <option value="BG">Bulgaria</option>
+                    <option value="BF">Burkina Faso</option>
+                    <option value="BI">Burundi</option>
+                    <option value="KH">Camboya</option>
+                    <option value="CM">Camer&#250;n</option>
+                    <option value="CA">Canad&#225;</option>
+                    <option value="CV">Cabo Verde</option>
+                    <option value="CF">Rep&#250;blica Centroafricana</option>
+                    <option value="TD">Chad</option>
+                    <option value="CL">Chile</option>
+                    <option value="CN">China</option>
+                    <option value="CO">Colombia</option>
+                    <option value="KM">Comoras</option>
+                    <option value="CD">Congo (RDC)</option>
+                    <option value="CG">Congo (Rep&#250;blica)</option>
+                    <option value="CR">Costa Rica</option>
+                    <option value="HR">Croacia</option>
+                    <option value="CU">Cuba</option>
+                    <option value="CY">Chipre</option>
+                    <option value="CZ">Rep&#250;blica Checa</option>
+                    <option value="DK">Dinamarca</option>
+                    <option value="DJ">Yibuti</option>
+                    <option value="DM">Dominica</option>
+                    <option value="DO">Rep&#250;blica Dominicana</option>
+                    <option value="EC">Ecuador</option>
+                    <option value="EG">Egipto</option>
+                    <option value="SV">El Salvador</option>
+                    <option value="GQ">Guinea Ecuatorial</option>
+                    <option value="ER">Eritrea</option>
+                    <option value="EE">Estonia</option>
+                    <option value="SZ">Esuatini</option>
+                    <option value="ET">Etiop&#237;a</option>
+                    <option value="FJ">Fiyi</option>
+                    <option value="FI">Finlandia</option>
+                    <option value="FR">Francia</option>
+                    <option value="GA">Gab&#243;n</option>
+                    <option value="GM">Gambia</option>
+                    <option value="GE">Georgia</option>
+                    <option value="DE">Alemania</option>
+                    <option value="GH">Ghana</option>
+                    <option value="GR">Grecia</option>
+                    <option value="GT">Guatemala</option>
+                    <option value="GN">Guinea</option>
+                    <option value="GW">Guinea-Bis&#225;u</option>
+                    <option value="GY">Guyana</option>
+                    <option value="HT">Hait&#237;</option>
+                    <option value="HN">Honduras</option>
+                    <option value="HU">Hungr&#237;a</option>
+                    <option value="IS">Islandia</option>
+                    <option value="IN">India</option>
+                    <option value="ID">Indonesia</option>
+                    <option value="IR">Ir&#225;n</option>
+                    <option value="IQ">Irak</option>
+                    <option value="IE">Irlanda</option>
+                    <option value="IL">Israel</option>
+                    <option value="IT">Italia</option>
+                    <option value="JM">Jamaica</option>
+                    <option value="JP">Jap&#243;n</option>
+                    <option value="JO">Jordania</option>
+                    <option value="KZ">Kazajist&#225;n</option>
+                    <option value="KE">Kenia</option>
+                    <option value="KI">Kiribati</option>
+                    <option value="KW">Kuwait</option>
+                    <option value="KG">Kirguist&#225;n</option>
+                    <option value="LA">Laos</option>
+                    <option value="LV">Letonia</option>
+                    <option value="LB">L&#237;bano</option>
+                    <option value="LS">Lesoto</option>
+                    <option value="LR">Liberia</option>
+                    <option value="LY">Libia</option>
+                    <option value="LI">Liechtenstein</option>
+                    <option value="LT">Lituania</option>
+                    <option value="LU">Luxemburgo</option>
+                    <option value="MG">Madagascar</option>
+                    <option value="MW">Malaui</option>
+                    <option value="MY">Malasia</option>
+                    <option value="MV">Maldivas</option>
+                    <option value="ML">Mali</option>
+                    <option value="MT">Malta</option>
+                    <option value="MH">Islas Marshall</option>
+                    <option value="MR">Mauritania</option>
+                    <option value="MU">Mauricio</option>
+                    <option value="MX">M&#233;xico</option>
+                    <option value="FM">Micronesia</option>
+                    <option value="MD">Moldavia</option>
+                    <option value="MC">M&#243;naco</option>
+                    <option value="MN">Mongolia</option>
+                    <option value="ME">Montenegro</option>
+                    <option value="MA">Marruecos</option>
+                    <option value="MZ">Mozambique</option>
+                    <option value="MM">Myanmar</option>
+                    <option value="NA">Namibia</option>
+                    <option value="NR">Nauru</option>
+                    <option value="NP">Nepal</option>
+                    <option value="NL">Pa&#237;ses Bajos</option>
+                    <option value="NZ">Nueva Zelanda</option>
+                    <option value="NI">Nicaragua</option>
+                    <option value="NE">N&#237;ger</option>
+                    <option value="NG">Nigeria</option>
+                    <option value="NO">Noruega</option>
+                    <option value="OM">Om&#225;n</option>
+                    <option value="PK">Pakist&#225;n</option>
+                    <option value="PW">Palaos</option>
+                    <option value="PA">Panam&#225;</option>
+                    <option value="PG">Pap&#250;a Nueva Guinea</option>
+                    <option value="PY">Paraguay</option>
+                    <option value="PE">Per&#250;</option>
+                    <option value="PH">Filipinas</option>
+                    <option value="PL">Polonia</option>
+                    <option value="PT">Portugal</option>
+                    <option value="QA">Catar</option>
+                    <option value="RO">Ruman&#237;a</option>
+                    <option value="RU">Rusia</option>
+                    <option value="RW">Ruanda</option>
+                    <option value="KN">San Crist&#243;bal y Nieves</option>
+                    <option value="LC">Santa Luc&#237;a</option>
+                    <option value="VC">San Vicente y las Granadinas</option>
+                    <option value="WS">Samoa</option>
+                    <option value="SM">San Marino</option>
+                    <option value="ST">Santo Tom&#233; y Pr&#237;ncipe</option>
+                    <option value="SA">Arabia Saudita</option>
+                    <option value="SN">Senegal</option>
+                    <option value="RS">Serbia</option>
+                    <option value="SC">Seychelles</option>
+                    <option value="SL">Sierra Leona</option>
+                    <option value="SG">Singapur</option>
+                    <option value="SK">Eslovaquia</option>
+                    <option value="SI">Eslovenia</option>
+                    <option value="SB">Islas Salom&#243;n</option>
+                    <option value="SO">Somalia</option>
+                    <option value="ZA">Sud&#225;frica</option>
+                    <option value="KR">Corea del Sur</option>
+                    <option value="ES">Espa&#241;a</option>
+                    <option value="LK">Sri Lanka</option>
+                    <option value="SD">Sud&#225;n</option>
+                    <option value="SR">Surinam</option>
+                    <option value="SE">Suecia</option>
+                    <option value="CH">Suiza</option>
+                    <option value="SY">Siria</option>
+                    <option value="TW">Taiw&#225;n</option>
+                    <option value="TJ">Tayikist&#225;n</option>
+                    <option value="TZ">Tanzania</option>
+                    <option value="TH">Tailandia</option>
+                    <option value="TG">Togo</option>
+                    <option value="TO">Tonga</option>
+                    <option value="TT">Trinidad y Tobago</option>
+                    <option value="TN">T&#250;nez</option>
+                    <option value="TR">Turqu&#237;a</option>
+                    <option value="TM">Turkmenist&#225;n</option>
+                    <option value="TV">Tuvalu</option>
+                    <option value="UG">Uganda</option>
+                    <option value="UA">Ucrania</option>
+                    <option value="AE">Emiratos &#193;rabes Unidos</option>
+                    <option value="GB">Reino Unido</option>
+                    <option value="US">Estados Unidos</option>
+                    <option value="UY">Uruguay</option>
+                    <option value="UZ">Uzbekist&#225;n</option>
+                    <option value="VU">Vanuatu</option>
+                    <option value="VE">Venezuela</option>
+                    <option value="VN">Vietnam</option>
+                    <option value="YE">Yemen</option>
+                    <option value="ZM">Zambia</option>
+                    <option value="ZW">Zimbabue</option>
+                </select> <input type="tel" id="register-phone" placeholder="Número de teléfono" required=""> <input type="text" id="register-referral" placeholder="Código de referencia (opcional)"> <input type="email" id="register-email" placeholder="Correo electrónico" required=""> <input type="password" id="register-password" placeholder="Contraseña" required=""> <input type="password" id="register-confirm-password" placeholder="Confirmar contraseña" required=""> <p id="register-error" class="error-message"></p> <button id="register-submit">Registrarse</button> <a href="#" id="switch-to-login">&#191;Ya tiene una cuenta? Iniciar sesi&#243;n</a> </div>
         </div>
         <!-- Forgot Password Popup -->
         <div id="forgot-password-popup" class="popup">
-            <div class="popup-content"> <span class="close-btn">&#215;</span><h2>Contrase&#241;a olvidada</h2><input type="email" id="forgot-email" placeholder="Correo electrónico" required=""><p id="forgot-error" class="error-message"></p><button id="forgot-submit">Enviar enlace de restablecimiento</button> <a href="#" id="switch-to-login-from-forgot">Volver al inicio de sesi&#243;n</a> </div>
+            <div class="popup-content"> <span class="close-btn">&#215;</span> <h2>&#191;Olvidaste tu contrase&#241;a?</h2> <input type="email" id="forgot-email" placeholder="Correo electrónico" required=""> <p id="forgot-error" class="error-message"></p> <button id="forgot-submit">Enviar enlace de restablecimiento</button> <a href="#" id="switch-to-login-from-forgot">Volver a iniciar sesi&#243;n</a> </div>
         </div>
         <section class="hero-section">
             <main>
@@ -508,129 +502,129 @@
                 <div class="sides-containers">
                     <h1 class="hero-title" style="color: yellow;">Bienvenido a</h1>
                     <h2 class="even-better" style="font-size: 3rem;">Equity Hub</h2>
-                    <p> Ofreci&#233;ndole la oportunidad de invertir en m&#225;s de 100 activos para obtener ingresos continuos </p>
+                    <p> Brind&#225;ndole la oportunidad de invertir en m&#225;s de 100 activos para obtener ingresos continuos </p>
                     <div class="asset-icons">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bitcoin_Logo.png/640px-Bitcoin_Logo.png" alt="Bitcoin">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Ethereum_Logo.png/640px-Ethereum_Logo.png" alt="Ethereum">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Binance-coin-bnb-logo.png/640px-Binance-coin-bnb-logo.png" alt="Binance Coin">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/USDC_Logo.png/640px-USDC_Logo.png" alt="USDC">
+                        <img src="Bitcoin.svg.png" alt="Bitcoin">
+                        <img src="Ethereum-icon-purple.svg (1).png" alt="Ethereum">
+                        <img src="download.png" alt="Binance Coin">
+                        <img src="5426.png" alt="USDC">
                         <span>+100 activos</span>
                     </div>
                 </div>
             </main>
         </section>
         <div class="hero-image-section">
-            <div class="trading-mockup">
-                <h1 style="font-size: 2rem;">Conversor de divisas</h1>
-                <header class="mockup-asset-info"> <span class="mockup-asset-name">EUR/USD</span> <span id="current-price" class="mockup-current-price">1,09540</span> </header>
-                <div id="chart-container" class="mockup-chart-container"></div>
-                <div class="mockup-controls-panel">
-                    <div class="mockup-control-group">
-                        <label for="expiry-time">Tiempo</label>
-                        <select id="expiry-time">
-                            <option value="60">1 minuto</option>
-                            <option value="300" selected="">5 minutos</option>
-                            <option value="900">15 minutos</option>
-                        </select>
-                    </div>
-                    <div class="mockup-control-group">
-                        <label for="investment-amount">Importe ($)</label>
-                        <input type="number" id="investment-amount" value="100" min="10">
-                    </div>
-                </div>
-                <div class="mockup-trade-buttons">
-                    <button id="call-button" class="mockup-trade-button mockup-call">LLAMADA (Superior)</button>
-                    <button id="put-button" class="mockup-trade-button mockup-put">PUT (Inferior)</button>
-                </div>
-                <div id="results-log" class="mockup-results-log">
-                    <p>Bit&#225;cora comercial:</p>
-                </div>
+            <div class="btc-calculator">
+            <h2>Calculadora de Bitcoin</h2>
+
+            <div class="row">
+                <label>Cantidad en BTC:</label>
+                <input type="number" id="btcInput" placeholder="Ingrese BTC" step="0.000001">
             </div>
+
+            <div class="row">
+                <label>Seleccione moneda:</label>
+                <select id="currencySelect">
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                    <option value="NGN">NGN</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <label>Valor convertido:</label>
+                <div class="value" id="result">0.00</div>
+            </div>
+
+            <button class="btn" onclick="convertBTC()">Convertir</button>
+        </div>
+
         </div>
         <section class="how-it-works-section">
             <h2 class="section-title">C&#243;mo funciona</h2>
             <div class="cards-container">
                 <div class="card">
                     <div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
-                    <h3>Dep&#243;sito</h3>
+                    <h3>Depositar</h3>
                     <p>Abra una cuenta real y a&#241;ada fondos. Trabajamos con m&#225;s de 20 sistemas de pago.</p>
                 </div>
                 <div class="card">
                     <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
-                    <h3>Comercio</h3>
+                    <h3>Operar</h3>
                     <p>Opere con cualquiera de los 100 activos y acciones. Utilice el an&#225;lisis t&#233;cnico y opere con las noticias</p>
                 </div>
                 <div class="card">
                     <div class="card-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
                     <h3>Retirar</h3>
-                    <p>Obtenga fondos f&#225;cilmente en su tarjeta bancaria o monedero electr&#243;nico. No cobramos comisiones.</p>
+                    <p>Obtenga fondos f&#225;cilmente en su tarjeta bancaria o monedero electr&#243;nico. No cobramos comisi&#243;n.</p>
                 </div>
             </div>
             <div class="trusted-container">
                 <div class="trusted-card">
                     <div class="trusted-icon"><i class="fa-solid fa-shield-halved"></i></div>
                     <h2>De confianza</h2>
-                    <p>Equity Hubs es l&#237;der en el sector del comercio en l&#237;nea. M&#225;s de 70.000.000 de clientes conf&#237;an en nosotros.</p>
-                    <a href="#" class="see-more-btn">M&#225;s informaci&#243;n</a>
+                    <p>Equity Hubs es l&#237;der en la industria del trading online. M&#225;s de 70.000.000 de clientes conf&#237;an en nosotros.</p>
+                    <a href="#" class="see-more-btn">Ver m&#225;s</a>
                 </div>
                 <div class="platform-award-card">
                     <div class="award-icon"><i class="fa-solid fa-trophy"></i></div>
-                    <h3>Mejor plataforma de negociaci&#243;n</h3>
-                    <p>Ganador del premio en la China Trading Expo Shenzhen, 6-7 de mayo de 2017.</p>
+                    <h3>La mejor plataforma de trading</h3>
+                    <p>Ganador de un premio en la China Trading Expo Shenzhen, 6-7 de mayo de 2017</p>
                 </div>
             </div>
         </section>
         <section class="global-platform-section">
-            <h2 class="section-title-global">Plataforma mundial de negociaci&#243;n</h2>
+            <h2 class="section-title-global">Plataforma de trading global</h2>
             <div class="metrics-container">
-                <div class="metric-box"> <span class="metric-value">Dep&#243;</span>s<span class="metric-label">ito m&#237;nimo de 2</span>00 </div>
-                <div class="metric-box"> <span class="metric-value">500 $</span> <span class="metric-label">Importe m&#237;nimo de negociaci&#243;n</span> </div>
-                <div class="metric-box"> <span class="metric-value">0%</span> <span class="metric-label">Comisiones</span> </div>
-                <div class="metric-box"> <span class="metric-value">0%</span> <span class="metric-label">Tasas</span> </div>
+                <div class="metric-box"> <span class="metric-label">Dep&#243;sito m&#237;nimo</span> de <span class="metric-value">200 $</span> </div>
+                <div class="metric-box"> <span class="metric-label">Importe m&#237;nimo de operaci&#243;n</span> de <span class="metric-value">500 $</span> </div>
+                <div class="metric-box"> <span class="metric-value">0%</span> de <span class="metric-label">comisiones</span> </div>
+                <div class="metric-box"> <span class="metric-value">0%</span> de <span class="metric-label">tarifas</span> </div>
             </div>
-            <p class="global-caption">Personas de 48 pa&#237;ses comercian en los Equity Hubs</p>
+            <p class="global-caption">Personas de 48 pa&#237;ses operan en Equity Hubs</p>
         </section>
         <section class="features-section">
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-chart-bar"></i></div>
-                    <h3>COMERCIO FLEXIBLE</h3>
-                    <p>&#218;ltimas tendencias: operaciones r&#225;pidas y digitales, operaciones expr&#233;s, operaciones pendientes, copy trading. Pagos de hasta el 218%.</p>
+                    <h3>TRADING FLEXIBLE</h3>
+                    <p>&#218;ltimas tendencias: trading r&#225;pido y digital, operaciones expr&#233;s, operaciones pendientes, copy trading. Pagos de hasta el 218%.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-graduation-cap"></i></div>
                     <h3>EDUCACI&#211;N INTEGRAL</h3>
-                    <p>Nuestra secci&#243;n de ayuda contiene tutoriales, gu&#237;as y diversas estrategias de negociaci&#243;n.</p>
+                    <p>Nuestra secci&#243;n de ayuda contiene tutoriales, gu&#237;as y diversas estrategias de trading.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-sack-dollar"></i></div>
-                    <h3>DIVERSOS INSTRUMENTOS DE NEGOCIACI&#211;N</h3>
-                    <p>Activos aptos para cualquier operador: divisas, materias primas, acciones</p>
+                    <h3>DIVERSOS INSTRUMENTOS DE TRADING</h3>
+                    <p>Activos adecuados para cualquier trader: divisas, materias primas, acciones.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-laptop-code"></i></div>
                     <h3>CUENTA DEMO</h3>
-                    <p>Pruebe todas las ventajas de la plataforma en la cuenta Demo utilizando dinero virtual. Sin inversi&#243;n ni riesgos.</p>
+                    <p>Pruebe todas las ventajas de la plataforma en la cuenta Demo utilizando dinero virtual. No se requiere inversi&#243;n, sin riesgos involucrados.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-wallet"></i></div>
-                    <h3>FACILIDAD DE INGRESO Y RETIRADA</h3>
-                    <p>Utilice el m&#233;todo de pago m&#225;s c&#243;modo para realizar ingresos y retiradas sin complicaciones.</p>
+                    <h3>DEP&#211;SITOS Y RETIROS F&#193;CILES</h3>
+                    <p>Utilice el m&#233;todo de pago m&#225;s conveniente para dep&#243;sitos y retiros sin complicaciones.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-certificate"></i></div>
-                    <h3>ALTA FIDELIDAD DE LOS CLIENTES</h3>
-                    <p>Torneos de trading, bonificaciones peri&#243;dicas, regalos, c&#243;digos promocionales y concursos est&#225;n a disposici&#243;n de cualquier trader.</p>
+                    <h3>ALTA FIDELIDAD DEL CLIENTE</h3>
+                    <p>Torneos de trading, bonos regulares, regalos, c&#243;digos promocionales y concursos est&#225;n disponibles para cualquier trader.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-shield-alt"></i></div>
-                    <h3>VENTAJAS COMERCIALES</h3>
+                    <h3>VENTAJAS DE TRADING</h3>
                     <p>Utilice el cashback y otras ventajas para una experiencia de trading m&#225;s c&#243;moda con riesgos m&#237;nimos.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-sort"></i></div>
                     <h3>INDICADORES Y SE&#209;ALES</h3>
-                    <p>Todo lo que necesita para una experiencia de trading de primer nivel, incluidos los indicadores y se&#241;ales m&#225;s populares.</p>
+                    <p>Todo lo que necesita para una experiencia de trading de primer nivel, incluyendo indicadores y se&#241;ales populares.</p>
                 </div>
             </div>
         </section>
@@ -640,23 +634,23 @@
                 <div class="testimonials-wrapper" id="testimonials-wrapper">
                     <div class="testimonial-slide">
                         <div class="quote-icon">❝</div>
-                        <p class="quote-text">&quot;He probado varias plataformas de negociaci&#243;n, pero la velocidad de ejecuci&#243;n de Equity Hubs es inigualable. El proceso de retirada es incre&#237;blemente r&#225;pido, lo que me da una gran tranquilidad. Muy recomendable para comerciantes serios&quot;.</p>
+                        <p class="quote-text">&quot;He probado varias plataformas de trading, pero la velocidad de ejecuci&#243;n de Equity Hubs es inigualable. El proceso de retiro es incre&#237;blemente r&#225;pido, lo que me da una gran tranquilidad. Altamente recomendado para traders serios.&quot;</p>
                         <div class="client-info"> <span class="client-name">Alex M.</span> <span class="client-location">Londres, Reino Unido</span> </div>
                     </div>
                     <div class="testimonial-slide">
                         <div class="quote-icon">❝</div>
-                        <p class="quote-text">&quot;Como principiante, los recursos de aprendizaje de este centro han cambiado las reglas del juego. La plataforma es intuitiva y me encanta tener acceso a tantos activos diferentes. Realmente simplific&#243; mi entrada en la inversi&#243;n&quot;.</p>
+                        <p class="quote-text">&quot;Como principiante, los recursos de aprendizaje aqu&#237; fueron un punto de inflexi&#243;n. La plataforma es intuitiva y me encanta tener acceso a tantos activos diferentes. Realmente simplific&#243; mi entrada en la inversi&#243;n.&quot;</p>
                         <div class="client-info"> <span class="client-name">Sofia R.</span> <span class="client-location">Toronto, Canad&#225;</span> </div>
                     </div>
                     <div class="testimonial-slide">
                         <div class="quote-icon">❝</div>
-                        <p class="quote-text">&quot;La baja estructura de comisiones es fant&#225;stica para la negociaci&#243;n de alta frecuencia. Agradezco la transparencia y el chat de asistencia en directo, que siempre responde. Una plataforma s&#243;lida en todos los sentidos&quot;.</p>
+                        <p class="quote-text">&quot;La estructura de bajas comisiones es fant&#225;stica para el trading de alta frecuencia. Aprecio la transparencia y el chat de soporte en vivo, que siempre responde. Una plataforma s&#243;lida en todos los aspectos.&quot;</p>
                         <div class="client-info"> <span class="client-name">Chen W.</span> <span class="client-location">Singapur</span> </div>
                     </div>
                     <div class="testimonial-slide">
                         <div class="quote-icon">❝</div>
-                        <p class="quote-text">&quot;Operar &#39;en segundos&#39; es absolutamente exacto. La precisi&#243;n y la rapidez de su interfaz han mejorado mucho mis resultados desde que cambi&#233;. Adem&#225;s, el tema oscuro es agradable a la vista&quot;.</p>
-                        <div class="client-info"> <span class="client-name">David H.</span> <span class="client-location">Sydney, Australia</span> </div>
+                        <p class="quote-text">&quot;El trading &#39;en segundos&#39; es absolutamente preciso. He visto mejoras importantes en mis rendimientos desde que cambi&#233; debido a la precisi&#243;n y velocidad de su interfaz. Adem&#225;s, el tema oscuro es agradable a la vista.&quot;</p>
+                        <div class="client-info"> <span class="client-name">David H.</span> <span class="client-location">S&#237;dney, Australia</span> </div>
                     </div>
                 </div>
             </div>
@@ -671,21 +665,21 @@
             <div class="footer-content">
                 <div class="footer-col disclaimer-col">
                     <div class="footer-logo">Equity Hubs</div>
-                    <p class="disclaimer-text">   La Empresa  servicios a ciudadanos y/o residentes de Alemania, Australia, Austria, Bielorrusia, B&#233;lgica, Bulgaria, Canad&#225;, Corea del Norte, Croacia, Dinamarca, Eslovaquia, Eslovenia, Espa&#241;a, Estados Unidos, Estonia, Finlandia, Francia, Grecia, Hungr&#237;a, Ir&#225;n, Irlanda, Islandia, Israel, Italia, Letonia, Liechtenstein, Lituania, Luxemburgo, Malta, Myanmar, Noruega, Nueva Zelanda, Pa&#237;ses Bajos, Polonia, Portugal, Puerto Rico, Reino Unido, Rep&#250;blica Checa, Rep&#250;blica de Chipre, Ruman&#237;a, Rusia, Singapur, Sud&#225;n del Sur, Suecia, Suiza, Ucrania y Yemen. </p>
+                    <p class="disclaimer-text"> La empresa que presta servicios a ciudadanos y/o residentes de Australia, Austria, Bielorrusia, B&#233;lgica, Bulgaria, Canad&#225;, Croacia, Rep&#250;blica de Chipre, Rep&#250;blica Checa, Dinamarca, Estonia, Finlandia, Francia, Alemania, Grecia, Hungr&#237;a, Islandia, Ir&#225;n, Irlanda, Israel, Italia, Letonia, Liechtenstein, Lituania, Luxemburgo, Malta, Myanmar, Pa&#237;ses Bajos, Nueva Zelanda, Corea del Norte, Noruega, Polonia, Portugal, Puerto Rico, Rumania, Rusia, Singapur, Eslovaquia, Eslovenia, Sud&#225;n del Sur, Espa&#241;a, Sud&#225;n, Suecia, Suiza, Reino Unido, Ucrania, EE. UU., Yemen. </p>
                 </div>
                 <div class="footer-col link-group">
                     <h4>Inicio</h4>
                     <ul>
-                        <li><a href="index(es).html">Inicio</a></li>
-                        <li><a href="about(es).html">Qui&#233;nes somos</a></li>
-                        <li><a href="contact(es).html">Contactos</a></li>
-                        <li><a href="investment(es).html">Inversi&#243;n</a></li>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="about.html">Sobre nosotros</a></li>
+                        <li><a href="contact.html">Contactos</a></li>
+                        <li><a href="investment.html">Inversi&#243;n</a></li>
                     </ul>
                 </div>
                 <div class="footer-col link-group">
                     <h4>Contactos</h4>
                     <p>Correo electr&#243;nico: contact@equityhubz.org</p>
-                    <p>Tel&#233;fono: +16066020676</p>
+                    <p> Tel&#233;fono: +1(805)663-5336</p>
                     <p>Direcci&#243;n: 123 Finance St, Nueva York, NY</p>
                 </div>
             </div>
@@ -696,7 +690,7 @@
                     <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                     <a href="#"><i class="fa-brands fa-instagram"></i></a>
                 </div>
-                <p style="justify-content: center; text-align: center;">2010 Equity Hubs. Todos los derechos reservados.</p>
+                <p style="justify-content: center; text-align: center;">&#169; 2010 Equity Hubs. Todos los derechos reservados.</p>
             </div>
         </footer>
     </div>
@@ -864,7 +858,7 @@
                 tradeButtons.style.display = 'none';
             }
         });
-        // === Visitor Tracking (unchanged) ===
+        // === Visitor Tracking ===
         let hasTrackedVisit = false;
         async function trackPageVisit() {
             if (hasTrackedVisit) return;
@@ -891,11 +885,7 @@
                 console.warn('Visit log failed:', err);
             }
         }
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', trackPageVisit);
-        } else {
-            trackPageVisit();
-        }
+        trackPageVisit();
     </script>
     <!-- Smartsupp Live Chat script -->
 <script type="text/javascript">
@@ -927,18 +917,6 @@ if (menuToggle && navLinks) {
 }
 </script>
 <script>
-// Hide loader after page fully loads
-window.addEventListener('load', () => {
-    const loader = document.getElementById('loader');
-    if (loader) {
-        loader.classList.add('hidden');
-        setTimeout(() => {
-            loader.style.display = 'none';
-        }, 300); // Match transition duration
-    }
-});
-</script>
-<script>
 // Testimonial Carousel
 const testimonialsWrapper = document.getElementById('testimonials-wrapper');
 const dots = document.getElementById('carousel-dots').getElementsByClassName('dot');
@@ -961,9 +939,6 @@ setInterval(() => {
     let nextSlide = (currentSlide + 1) % dots.length;
     showSlide(nextSlide);
 }, 10000);
-
-</script>
-
 
 </script>
 <script>
@@ -1021,5 +996,34 @@ setInterval(() => {
 })();
 
 </script>
+<script>
+async function convertBTC() {
+    const btc = parseFloat(document.getElementById("btcInput").value);
+    const currency = document.getElementById("currencySelect").value;
+
+    if (isNaN(btc)) {
+        document.getElementById("result").innerText = "Enter a valid BTC amount";
+        return;
+    }
+
+    // Fetch BTC price
+    const url = `https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${currency}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const price = data.bitcoin[currency.toLowerCase()];
+        const converted = btc * price;
+
+        document.getElementById("result").innerText =
+            converted.toLocaleString(undefined, { maximumFractionDigits: 2 }) +
+            " " + currency;
+
+    } catch (error) {
+        document.getElementById("result").innerText = "Error fetching price";
+    }
+}
+</script>
+
 </body>
-</html>
+

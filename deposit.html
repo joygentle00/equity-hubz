@@ -59,6 +59,20 @@
         .payment-method h2{color:#00ffff;margin-bottom:20px;text-align:center;font-weight:600;letter-spacing:1px;}
         .deposit-button{width:100%;padding:12px;background:#00ffff;color:#000;border:none;border-radius:8px;font-size:16px;cursor:pointer;transition:background .3s;}
         .deposit-button:hover{background:#00e5e5;}
+        
+        /* Payment Details Display Section */
+        .payment-details-display{background:#0c1018;padding:20px;border-radius:12px;box-shadow:inset 0 0 20px rgba(0,255,255,.05);margin-bottom:30px;}
+        .payment-details-display h3{color:#00ffff;margin-bottom:15px;text-align:center;font-weight:600;letter-spacing:1px;font-size:18px;}
+        .details-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:15px;}
+        .detail-card{background:#111827;padding:14px;border-radius:10px;border-left:3px solid #00ffff;display:flex;align-items:center;gap:12px;}
+        .detail-icon{font-size:24px;color:#00ffff;min-width:30px;text-align:center;}
+        .detail-content{flex:1;min-width:0;}
+        .detail-label{font-size:12px;color:#00ffff;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;}
+        .detail-value{font-size:13px;font-family:monospace;color:#fff;word-break:break-all;padding:6px;background:#0c1018;border-radius:6px;user-select:all;}
+        .detail-copy-btn{background:none;border:none;color:#00ffff;cursor:pointer;font-size:16px;padding:6px;transition:color .2s;flex-shrink:0;}
+        .detail-copy-btn:hover{color:#19ffe3;}
+        .detail-copy-btn.copied{color:#00ff00;}
+        
         #deposit-popup{display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.5);z-index:2000;justify-content:center;align-items:center;overflow:auto;}
         #deposit-popup .deposit-modal-content{background:#1e293b;padding:32px 24px;border-radius:16px;max-width:400px;width:90%;box-shadow:0 0 24px rgba(0,255,255,.15);position:relative;max-height:90vh;overflow-y:auto;}
         .wallet-row{display:flex;align-items:center;gap:12px;background:#3c3c3c;color:#fff;padding:12px;border-radius:8px;text-align:left;font-weight:600;margin-bottom:10px;word-break:break-all;flex-wrap:wrap;}
@@ -134,10 +148,10 @@
             color: #aaa;
         }
 
-        @media (max-width:900px){.market-widgets-row{flex-direction:column;gap:20px;}.market-widget{max-width:100%;}}
-        @media (max-width:768px){.container{flex-direction:column;height:auto;}.sidebar{position:fixed;top:0;left:0;height:100%;transform:translateX(-100%);z-index:999;}.sidebar.show{transform:translateX(0);}.hamburger{display:block;}.main-content{padding:20px;}.balance-details{flex-direction:column;}.balance-info-grid{flex:1 1 100%;order:1;grid-template-columns:1fr;gap:16px;min-width:unset;}.balance-chart{flex:1 1 100%;order:2;height:250px;min-width:unset;}.market-widget{padding:16px;}.payment-method{padding:15px;}.welcome{font-size:20px;}}
-        @media (max-width:600px){#deposit-popup .deposit-modal-content{padding:16px 5px;max-width:95vw;}.wallet-row{font-size:14px;padding:8px;}}
-        @media (max-width:500px){.main-content{padding:10px;}.balance-section{padding:10px;}.market-widget-title{font-size:18px;}.market-widget{padding:10px;}.info-value{font-size:18px;}.balance-value{font-size:24px;}}
+        @media (max-width:900px){.market-widgets-row{flex-direction:column;gap:20px;}.market-widget{max-width:100%;}.details-grid{grid-template-columns:1fr;}}
+        @media (max-width:768px){.container{flex-direction:column;height:auto;}.sidebar{position:fixed;top:0;left:0;height:100%;transform:translateX(-100%);z-index:999;}.sidebar.show{transform:translateX(0);}.hamburger{display:block;}.main-content{padding:20px;}.balance-details{flex-direction:column;}.balance-info-grid{flex:1 1 100%;order:1;grid-template-columns:1fr;gap:16px;min-width:unset;}.balance-chart{flex:1 1 100%;order:2;height:250px;min-width:unset;}.market-widget{padding:16px;}.payment-method{padding:15px;}.welcome{font-size:20px;}.detail-card{flex-direction:column;align-items:flex-start;}}
+        @media (max-width:600px){#deposit-popup .deposit-modal-content{padding:16px 5px;max-width:95vw;}.wallet-row{font-size:14px;padding:8px;}.detail-value{font-size:12px;}.detail-label{font-size:11px;}}
+        @media (max-width:500px){.main-content{padding:10px;}.balance-section{padding:10px;}.market-widget-title{font-size:18px;}.market-widget{padding:10px;}.info-value{font-size:18px;}.balance-value{font-size:24px;}.payment-details-display{padding:15px;}.detail-card{padding:12px;}}
     </style>
 </head>
 <body>
@@ -159,9 +173,83 @@
         <main class="main-content">
             <h1 class="welcome" id="welcome-message">Welcome, User!</h1>
 
+            <!-- PAYMENT DETAILS DISPLAY (BEFORE DEPOSIT BUTTON) -->
+            <div class="payment-details-display" id="payment-details-section">
+                <h3>💰 Payment Methods Available</h3>
+                <div class="details-grid">
+                    <!-- Crypto -->
+                    <div class="detail-card">
+                        <div class="detail-icon"><i class="fa-brands fa-bitcoin"></i></div>
+                        <div class="detail-content">
+                            <div class="detail-label">Bitcoin (BTC)</div>
+                            <div class="detail-value" id="detail-btc">Loading...</div>
+                        </div>
+                        <button type="button" class="detail-copy-btn" onclick="copyDetailField('detail-btc', this)"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="detail-icon"><i class="fa-brands fa-ethereum"></i></div>
+                        <div class="detail-content">
+                            <div class="detail-label">Ethereum (ETH)</div>
+                            <div class="detail-value" id="detail-eth">Loading...</div>
+                        </div>
+                        <button type="button" class="detail-copy-btn" onclick="copyDetailField('detail-eth', this)"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="detail-icon"><i class="fa-brands fa-usd-coin"></i></div>
+                        <div class="detail-content">
+                            <div class="detail-label">USDC</div>
+                            <div class="detail-value" id="detail-usdc">Loading...</div>
+                        </div>
+                        <button type="button" class="detail-copy-btn" onclick="copyDetailField('detail-usdc', this)"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="detail-icon"><i class="fa-brands fa-tether"></i></div>
+                        <div class="detail-content">
+                            <div class="detail-label">USDT (Tether)</div>
+                            <div class="detail-value" id="detail-usdt">Loading...</div>
+                        </div>
+                        <button type="button" class="detail-copy-btn" onclick="copyDetailField('detail-usdt', this)"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+
+                    <!-- Bank -->
+                    <div class="banks">
+                        <h3>Pay Through Bank </h3>
+                    <div class="detail-card">
+                        <div class="detail-icon"><i class="fa-solid fa-building-columns"></i></div>
+                        <div class="detail-content">
+                            <div class="detail-label">Bank Name</div>
+                            <div class="detail-value" id="detail-bank-name">Loading...</div>
+                        </div>
+                        <button type="button" class="detail-copy-btn" onclick="copyDetailField('detail-bank-name', this)"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-icon"><i class="fa-solid fa-credit-card"></i></div>
+                        <div class="detail-content">
+                            <div class="detail-label">Account Number</div>
+                            <div class="detail-value" id="detail-account-number">Loading...</div>
+                        </div>
+                        <button type="button" class="detail-copy-btn" onclick="copyDetailField('detail-account-number', this)"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="detail-icon"><i class="fa-solid fa-code"></i></div>
+                        <div class="detail-content">
+                            <div class="detail-label">Routing / Swift Code</div>
+                            <div class="detail-value" id="detail-routing-number">Loading...</div>
+                        </div>
+                        <button type="button" class="detail-copy-btn" onclick="copyDetailField('detail-routing-number', this)"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </div>
+            </div>
+
             <div class="payment-method">
                 <h2>Deposit Funds</h2>
-                <button class="deposit-button" id="popup-wallets">Deposit Now!</button>
+                <button class="deposit-button" id="popup-wallets">Upload Payment Receipt</button>
             </div>
 
             <!-- DEPOSIT HISTORY -->
@@ -237,30 +325,6 @@
             <h2 style="color:#00ffff;text-align:center;margin-bottom:18px;">Deposit Funds</h2>
 
             <form id="depositForm">
-                <!-- Wallets -->
-                <div class="field-group" id="group-wallet">
-                    <label>Select Payment Method</label>
-                    <div style="display:flex;flex-direction:column;gap:8px;">
-                        <div class="wallet-row"><i class="fa-brands fa-bitcoin"></i> Bitcoin: <span class="wallet-address" id="btc-wallet">Loading...</span>
-                            <button type="button" class="copy-btn" onclick="copyWallet('btc-wallet', this)"><i class="fa-regular fa-copy"></i></button></div>
-                        <div class="wallet-row"><i class="fa-brands fa-ethereum"></i> Ethereum: <span class="wallet-address" id="eth-wallet">Loading...</span>
-                            <button type="button" class="copy-btn" onclick="copyWallet('eth-wallet', this)"><i class="fa-regular fa-copy"></i></button></div>
-                        <div class="wallet-row"><i class="fa-brands fa-usd-coin"></i> USDC: <span class="wallet-address" id="usdc-wallet">Loading...</span>
-                            <button type="button" class="copy-btn" onclick="copyWallet('usdc-wallet', this)"><i class="fa-regular fa-copy"></i></button></div>
-                        <div class="wallet-row"><i class="fa-brands fa-tether"></i> USDT: <span class="wallet-address" id="usdt-wallet">Loading...</span>
-                            <button type="button" class="copy-btn" onclick="copyWallet('usdt-wallet', this)"><i class="fa-regular fa-copy"></i></button></div>
-                        <div class="wallet-row"><i class="fa-solid fa-building-columns"></i> Bank: 
-                            <div class="bank-details">
-                                <span class="wallet-address" id="bank-name">Loading...</span>
-                                <span class="wallet-address" id="account-number">Loading...</span>
-                                <span class="wallet-address" id="routing-number">Loading...</span>
-                            </div>
-                            <button type="button" class="copy-btn" onclick="copyWallet('bank-details', this)"><i class="fa-regular fa-copy"></i></button>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-check check"></i>
-                </div>
-
                 <!-- Amount -->
                 <div class="field-group" id="group-amount">
                     <label>Enter Amount (USD)</label>
@@ -314,7 +378,7 @@
         let currentUser = null;
 
         const CLOUDINARY_CLOUD_NAME = 'dredyfvhv';
-        const CLOUDINARY_UPLOAD_PRESET = 'deposit_proofs';   // ← correct name
+        const CLOUDINARY_UPLOAD_PRESET = 'deposit_proofs';
 
         document.addEventListener('DOMContentLoaded', () => {
             // File name display
@@ -329,6 +393,17 @@
                 onSnapshot(walletRef, snap => {
                     const defaults = { btc: 'Enter Bitcoin', eth: 'Enter Ethereum', usdc: 'Enter USDC', usdt: 'Enter USDT', bankName: 'Bank Name', accountNumber: 'Account #', routingNumber: 'Routing #' };
                     const data = snap.exists() ? snap.data() : defaults;
+                    
+                    // Display section
+                    ['btc','eth','usdc','usdt'].forEach(id => {
+                        const el = document.getElementById(`detail-${id}`);
+                        if (el) el.textContent = data[id] || defaults[id];
+                    });
+                    document.getElementById('detail-bank-name').textContent = data.bankName || defaults.bankName;
+                    document.getElementById('detail-account-number').textContent = data.accountNumber || defaults.accountNumber;
+                    document.getElementById('detail-routing-number').textContent = data.routingNumber || defaults.routingNumber;
+                    
+                    // Popup section
                     ['btc','eth','usdc','usdt'].forEach(id => {
                         const el = document.getElementById(`${id}-wallet`);
                         if (el) el.textContent = data[id] || defaults[id];
@@ -388,8 +463,6 @@
                         .map(d => ({ id: d.id, ...d.data() }))
                         .sort((a, b) => (b.submittedAt?.toMillis() || 0) - (a.submittedAt?.toMillis() || 0));
 
-                    let hasPendingOrApproved = false;
-
                     requests.forEach(req => {
                         const date = req.submittedAt?.toDate?.()?.toLocaleString() || 'Unknown time';
                         const status = req.status || 'pending';
@@ -411,23 +484,11 @@
                             </div>
                         `;
                         historyList.appendChild(item);
-
-                        if (!hasPendingOrApproved && (status === 'pending' || status === 'approved')) {
-                            hasPendingOrApproved = true;
-                            statusEl.textContent = status === 'approved' ? 'Approved!' : 'Pending...';
-                            statusEl.className = `status-msg status-${status}`;
-                            if (status === 'approved') {
-                                ['amount', 'wallet', 'proof'].forEach(id => {
-                                    const g = document.getElementById(`group-${id}`);
-                                    if (g) g.classList.add('approved');
-                                });
-                                form.style.display = 'none';
-                            } else {
-                                form.style.display = 'block';
-                            }
-                        }
                     });
 
+                    // Always show the form - users can deposit unlimited times
+                    statusEl.textContent = '';
+                    form.style.display = 'block';
                     historySection.style.display = 'block';
                 });
             }
@@ -486,14 +547,39 @@
             if (closeBtn) closeBtn.onclick = () => popup.style.display='none';
             if (popup) popup.onclick = e => { if (e.target === popup) popup.style.display='none'; };
 
-            // Copy
+            // Copy Detail Field
+            window.copyDetailField = (id, btn) => {
+                const text = document.getElementById(id)?.textContent.trim() || '';
+                if (!text) return;
+                navigator.clipboard.writeText(text).then(() => {
+                    btn.classList.add('copied');
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                    setTimeout(() => {
+                        btn.classList.remove('copied');
+                        btn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+                    }, 1500);
+                });
+            };
+
+            // Copy Bank Details
+            window.copyBankDetails = (btn) => {
+                const bankName = document.getElementById('bank-name')?.textContent || '';
+                const accountNumber = document.getElementById('account-number')?.textContent || '';
+                const routingNumber = document.getElementById('routing-number')?.textContent || '';
+                const text = `${bankName}\n${accountNumber}\n${routingNumber}`;
+                
+                if (!text.trim()) return;
+                navigator.clipboard.writeText(text).then(() => {
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                    setTimeout(() => btn.innerHTML = '<i class="fa-regular fa-copy"></i>', 1500);
+                });
+            };
+
+            // Copy Wallet
             window.copyWallet = (id, btn) => {
                 let text = '';
-                if (id === 'bank-details') {
-                    text = `${document.getElementById('bank-name')?.textContent}\n${document.getElementById('account-number')?.textContent}\n${document.getElementById('routing-number')?.textContent}`;
-                } else {
-                    text = document.getElementById(id)?.textContent.trim() || '';
-                }
+                text = document.getElementById(id)?.textContent.trim() || '';
+                
                 if (!text) return;
                 navigator.clipboard.writeText(text).then(() => {
                     btn.innerHTML = '<i class="fa-solid fa-check"></i>';
@@ -581,7 +667,7 @@ window.smartsupp||(function(d) {
   c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
 })(document);
 </script>
-<noscript> Powered by <a href=“https://www.smartsupp.com” target=“_blank”>Smartsupp</a></noscript>
+<noscript> Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
 
 </body>
 </html>
